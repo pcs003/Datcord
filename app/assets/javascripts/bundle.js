@@ -221,7 +221,7 @@ var Root = function Root(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.HashRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_App__WEBPACK_IMPORTED_MODULE_1__.default, null)));
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Root); //test
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Root); //test2
 
 /***/ }),
 
