@@ -58,8 +58,48 @@
 
 .top-div header nav a:hover {
     color: rgb(112,150,255);
-    box-shadow:
+    box-shadow: 0 0 5px 5px black
 }
+
+.top-div .middle-blob-wrapper {
+    width:100%;
+    height: 725px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.top-div .middle-blob-wrapper .middle-blob {
+    width: 60%;
+    height: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-family: sans-serif;
+    justify-content: space-between;
+}
+
+.top-div h1 {
+    font-weight: bolder;
+    font-size: 66px;
+}
+
+.top-div p {
+    text-align: center;
+    font-size: 25px;
+    padding: 0px;
+    line-height: 40px;
+}
+
+.top-div .middle-blob .discord-buttons img {
+    width: 20px;
+    height: 20px;
+}
+
+
+
 
 .middle-div {
     background-image: image_url('landing_page/MiddleBGLandingPage.png');
