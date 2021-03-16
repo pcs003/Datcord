@@ -7,14 +7,15 @@ export const RECEIVE_SESSION_ERRORS = 'RECEIVE_SESSION_ERRORS';
 export const login = (user) => (dispatch) => (
     APIUtil.login(user).then(user => (
         dispatch(receiveCurrentUser(user))
-    ), (e) => (
-        dispatch(receiveErrors(e.responseJSON))
-    ))
+    ), (e) => {
+        console.log(e);
+        return dispatch(receiveErrors(e.responseJSON))
+    })
 )
 
 export const logout = () => (dispatch) => (
     APIUtil.logout().then(() => (
-        dispatch(logoutCurrentUser(user))
+        dispatch(logoutCurrentUser())
     ))
 )
 
