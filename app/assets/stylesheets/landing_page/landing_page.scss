@@ -1,0 +1,69 @@
+@font-face {
+    font-family:'discord';
+    src: font_url('unisans.otf');
+}
+
+.top-div {
+    background-image: linear-gradient(90deg, rgb(42,94,232), rgb(112,150,255));
+    width: 100%;
+    height: 835px;
+}
+
+.top-div header {
+    display: flex;
+    justify-content: space-between;
+    font-family:'discord', sans-serif;
+    
+    height:110px;
+}
+
+.top-div header .header-logo-link {
+    margin: auto 55px;
+}
+
+.top-div header .navlinks {
+    display: flex;
+    width: 40%;
+    margin: auto 0;
+    justify-content: space-around;
+}
+
+.top-div header a {
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+}
+
+.top-div header img.header-logo {
+    width: 170px;
+}
+
+.top-div header nav {
+    width: 280px;
+    text-align: center;
+    display: flex;
+}
+
+.top-div header nav a{
+    margin: auto 55px auto auto;
+    background-color: white;
+    color:black;
+    border-radius: 30px;
+    font-weight: 300;
+    padding: 19px 23px;
+    font-size: 16px;
+}
+
+.top-div header nav a:hover {
+    color: rgb(112,150,255);
+    box-shadow:
+}
+
+.middle-div {
+    background-image: image_url('landing_page/MiddleBGLandingPage.png');
+    background-size: cover;
+    width: 100%;
+    height: 5000px;
+}
