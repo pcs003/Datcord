@@ -11,8 +11,8 @@ export default class LandingPage extends React.Component {
                         <a className="header-logo-link"href="/"><img className="header-logo" src={window.headerLogoURL}/></a>
                         <div className="navlinks">
                             <a href="/">Download</a>
-                            <a href="/">Why Discord?</a>
-                            <a href="/">Nitro</a>
+                            <Link to="/whydatcord">Why Datcord?</Link>
+                            <a href="/">Propane</a>
                             <a href="/">Safety</a>
                             <a href="/">Support</a>
                         </div>
@@ -21,10 +21,10 @@ export default class LandingPage extends React.Component {
                     <div className="middle-blob-wrapper">
                         <div className="middle-blob">
                             <h1>Your place to talk</h1>
-                            <p>Whether you’re part of a school club, gaming group, worldwide art community, or just a handful of friends that want to spend time together, Discord makes it easy to talk every day and hang out more often.</p>
+                            <p>Whether you’re part of a school club, gaming group, worldwide art community, or just a handful of friends that want to spend time together, Datcord makes it easy to talk every day and hang out more often.</p>
                             <div className="discord-buttons">
-                                <a href="/"><img src={window.downloadIconURL}/>Download for Windows</a>
-                                <Link to="/">Open Discord in your browser</Link>
+                                <a className="white" href="/"><img src={window.downloadIconURL}/>Download for Windows</a>
+                                <Link className="black" to="/">Open Discord in your browser</Link>
                             </div>
                         </div>
                     </div>
