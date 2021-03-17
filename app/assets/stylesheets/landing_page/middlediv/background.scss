@@ -1,0 +1,13 @@
+.middle-div {
+    background-image: image_url('landing_page/MiddleBGLandingPage.png');
+    background-size: cover;
+    width: 100%;
+    height: 4450px;
+    display:flex;
+    flex-direction: column;
+}
+
+.end-middle .sparkles {
+    z-index: 0;
+    margin: auto;
+}

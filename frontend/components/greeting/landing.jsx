@@ -56,10 +56,42 @@ export default class LandingPage extends React.Component {
                     </div>
                 </div>
                 <div className="middle-div">
-                    
+                    <div className="section one">
+                        <img className = "chat-img" src={window.landingPageMid1URL} />
+                        <div className = "blurb">
+                            <h1>An invite-only place with plenty of room to talk</h1>
+                            <p>Discord servers are organized into topic-based channels where you can collaborate, share, and just talk about your day without clogging up a group chat.</p>
+                        </div>
+                    </div>
+                    <div className="section two">
+                        <img className = "voice-img" src={window.landingPageMid2URL} />
+                        <div className = "blurb">
+                            <h1>Where hanging out is easy</h1>
+                            <p>Grab a seat in a voice channel when you’re free. Friends in your server can see you’re around and instantly pop in to talk without having to call.</p>
+                        </div>
+                    </div>
+                    <div className="section three">
+                        <img className = "server-img" src={window.landingPageMid3URL} />
+                        <div className = "blurb">
+                            <h1>From a few to a fandom</h1>
+                            <p>Get a community of any size running with moderation tools and custom member access. Give members special powers, set up private channels, and more.</p>
+                        </div>
+                    </div>
+                    <div className="section four">
+                        <img className = "tech-img" src={window.landingPageMid4URL} />
+                        <div className = "blurb">
+                            <h1>Reliable tech for staying close</h1>
+                            <p>Low-latency voice and video feels like you’re in the same room. Wave hello over video, watch friends stream their games, or gather up and have a drawing session with screen share.</p>
+                        </div>
+                    </div>
+                    <div className="end-middle">
+                        <img className="sparkles" src={window.landingPageSparklesURL} />
+                        <h2>Ready to start your jounrey?</h2>
+                        <a className="download" href="/"><img src={window.downloadWhiteIconURL}/>Download for Windows</a>
+                    </div>
                 </div>
                 <div className="bottom-div">
-
+                    
                 </div>
             </div>
         )
