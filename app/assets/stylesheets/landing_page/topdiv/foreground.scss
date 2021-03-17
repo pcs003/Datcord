@@ -3,22 +3,29 @@
     src: font_url('unisans.otf');
 }
 
+// LANDING PAGE TOP DIV CSS
+
 .top-div {
-    background-image: linear-gradient(90deg, rgb(42,94,232), rgb(112,150,255));
+    background-image: linear-gradient(0deg,#7196ff -.45%,#2a5ee8 71.18%);
     width: 100%;
-    height: 835px;
+    height: 625px;
 }
 
+// LANDING PAGE TOP DIV HEADER CSS
+
 .top-div header {
+    width: 1280px;
+    margin: auto;
     display: flex;
     justify-content: space-between;
     font-family:'discord', sans-serif;
-    
-    height:110px;
+    z-index: 999;
+    height:80px;
 }
 
 .top-div header .header-logo-link {
-    margin: auto 55px;
+    margin: auto 40px;
+    z-index: 999;
 }
 
 .top-div header .navlinks {
@@ -26,34 +33,39 @@
     width: 40%;
     margin: auto 0;
     justify-content: space-around;
+    z-index: 999;
 }
 
 .top-div header a {
     text-decoration: none;
     font-family: sans-serif;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 15px;
     color: white;
+    z-index: 999;
 }
 
 .top-div header img.header-logo {
-    width: 170px;
+    width: 140px;
+    z-index: 999;
 }
 
 .top-div header nav {
-    width: 280px;
+    width: 200px;
     text-align: center;
     display: flex;
+    z-index: 999;
 }
 
 .top-div header nav a{
-    margin: auto 55px auto auto;
+    margin: auto 40px auto auto;
     background-color: white;
     color: rgb(35,39,42);;
     border-radius: 30px;
     font-weight: 300;
-    padding: 19px 23px;
-    font-size: 16px;
+    padding: 13.5px 17px;
+    font-size: 12px;
+    z-index: 999;
 }
 
 .top-div header nav a:hover {
@@ -63,11 +75,12 @@
 }
 
 .top-div .middle-blob-wrapper {
-    width:100%;
-    height: 725px;
+    width:1280px;
+    height: 545px;
     margin: auto;
     display: flex;
     align-items: center;
+    z-index: 1;
 }
 
 .top-div .middle-blob-wrapper .middle-blob {
@@ -80,23 +93,29 @@
     color: white;
     font-family: sans-serif;
     justify-content: space-between;
+    z-index: 1;
 }
 
 .top-div h1 {
     font-weight: bolder;
-    font-size: 66px;
+    font-size: 50px;
 }
 
 .top-div p {
+    margin: 40px 0;
     text-align: center;
-    font-size: 25px;
+    font-size: 18.5px;
     padding: 0px;
-    line-height: 40px;
+    line-height: 32px;
+    color: rgba(250,250,250,0.9);
+    font-family: sans-serif;
 }
 
+// LANDING PAGE TOP DIV MIDDLE BLOB CSS
+
 .top-div .middle-blob .discord-buttons img {
-    width: 20px;
-    height: 25px;
+    width: 16px;
+    height: 20px;
     margin: auto;
     padding-right: 15px;
 }
@@ -104,13 +123,13 @@
 .top-div .middle-blob .discord-buttons {
     display:flex;
     justify-content: center;
-    width: 88%;
+    width: 650px;
 }
 
 .top-div .middle-blob .discord-buttons a {
-    padding: 24px 44px;
+    padding: 18px 32px;
     text-decoration: none;
-    font-size: 26px;
+    font-size: 19px;
     border-radius: 40px;
     margin: auto;
     display: flex;
@@ -128,9 +147,6 @@
     color: white;
 }
 
-.middle-div {
-    background-image: image_url('landing_page/MiddleBGLandingPage.png');
-    background-size: cover;
-    width: 100%;
-    height: 5000px;
-}
+
+
+

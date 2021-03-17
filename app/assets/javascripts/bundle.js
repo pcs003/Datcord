@@ -467,7 +467,78 @@ var LandingPage = /*#__PURE__*/function (_React$Component) {
       }), "Download for Windows"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
         className: "black",
         to: "/"
-      }, "Open Discord in your browser"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, "Open Discord in your browser")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "bg"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "slice-four",
+        src: window.landingPageSlice4URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "slice-three",
+        src: window.landingPageSlice3URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "slice-two",
+        src: window.landingPageSlice2URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "slice-one",
+        src: window.landingPageSlice1URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "castle-one",
+        src: window.landingPageCastle1URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "castle-two",
+        src: window.landingPageCastle2URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "large-lb-cloud-two",
+        src: window.landingPageLargeLBCloud2URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "large-lb-cloud-one",
+        src: window.landingPageLargeLBCloud1URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "large-b-cloud-one-b",
+        src: window.landingPageLargeBCloud1URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "large-b-cloud-two",
+        src: window.landingPageLargeBCloud2URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "large-b-cloud-one-a",
+        src: window.landingPageLargeBCloud1URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "medium-b-cloud",
+        src: window.landingPageMediumBCloudURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "medium-lb-cloud",
+        src: window.landingPageMediumLBCloudURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "medium-p-cloud",
+        src: window.landingPageMediumPCloudURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "medium-db-cloud",
+        src: window.landingPageMediumDBCloudURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "diamond",
+        src: window.landingPageDiamondURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "floating-ship",
+        src: window.landingPageFloatingShipURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "small-bottom-cloud-one",
+        src: window.landingPageSmallBottomCloud1URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "small-bottom-cloud-two",
+        src: window.landingPageSmallBottomCloud2URL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "balloon-guy",
+        src: window.landingPageBalloonGuyURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "city",
+        src: window.landingPageCityURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "man-and-frog",
+        src: window.landingPageManFrogURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "group",
+        src: window.landingPageGroupURL
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "middle-div"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "bottom-div"

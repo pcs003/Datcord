@@ -28,6 +28,32 @@ export default class LandingPage extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <div className="bg">
+                        <img className="slice-four" src={window.landingPageSlice4URL} />
+                        <img className="slice-three" src={window.landingPageSlice3URL} />
+                        <img className="slice-two" src={window.landingPageSlice2URL} />
+                        <img className="slice-one" src={window.landingPageSlice1URL} />
+                        <img className="castle-one" src={window.landingPageCastle1URL} />
+                        <img className="castle-two" src={window.landingPageCastle2URL} />
+                        <img className="large-lb-cloud-two" src={window.landingPageLargeLBCloud2URL} />
+                        <img className="large-lb-cloud-one" src={window.landingPageLargeLBCloud1URL} />
+                        <img className="large-b-cloud-one-b" src={window.landingPageLargeBCloud1URL} />
+                        <img className="large-b-cloud-two" src={window.landingPageLargeBCloud2URL} />
+                        <img className="large-b-cloud-one-a" src={window.landingPageLargeBCloud1URL} />
+                        <img className="medium-b-cloud" src={window.landingPageMediumBCloudURL} />
+                        <img className="medium-lb-cloud" src={window.landingPageMediumLBCloudURL} />
+                        <img className="medium-p-cloud" src={window.landingPageMediumPCloudURL} />
+                        <img className="medium-db-cloud" src={window.landingPageMediumDBCloudURL} />
+                        <img className="diamond" src={window.landingPageDiamondURL} />
+                        <img className="floating-ship" src={window.landingPageFloatingShipURL} />
+                        <img className="small-bottom-cloud-one" src={window.landingPageSmallBottomCloud1URL} />
+                        <img className="small-bottom-cloud-two" src={window.landingPageSmallBottomCloud2URL} />
+                        <img className="balloon-guy" src={window.landingPageBalloonGuyURL} />
+                        <img className="city" src={window.landingPageCityURL} />
+                        <img className="man-and-frog" src={window.landingPageManFrogURL} />
+                        <img className="group" src={window.landingPageGroupURL} />
+
+                    </div>
                 </div>
                 <div className="middle-div">
                     

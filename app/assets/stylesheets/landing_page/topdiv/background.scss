@@ -1,0 +1,268 @@
+// LANDING PAGE TOP DIV BACKGROUND CSS
+
+
+.top-div .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 625px;
+    width: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.top-div .bg .city {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -506px;
+}
+
+.top-div .bg .group {
+    display: block;
+    bottom: 0;
+    left: 50%;
+    margin-left: 368px;
+    position: absolute;
+}
+
+.top-div .bg .man-and-frog{
+    display: block;
+    bottom: 0;
+    right: 50%;
+    margin-right: 350px;
+    position: absolute;
+}
+
+.top-div .bg .diamond {
+    position: absolute;
+    top: 18%;
+    left: Calc(50% + 180px);
+}
+
+// MOVING OBJECTS
+
+.top-div .bg .floating-ship{
+    position: absolute;
+    top: 20%;
+    left: Calc(50% - 450px);
+    animation-duration: 240s;
+    animation-name: shipMove;
+    animation-iteration-count: infinite;
+  }
+  
+@keyframes shipMove {
+    from {
+        transform: translate(0,0);
+    }
+  
+    to {
+        transform: translate(1920px,0);
+    }
+}
+
+.top-div .bg .castle-one{
+    position: absolute;
+    top: 13%;
+    left: Calc(50% + 200px);
+    animation-duration: 360s;
+    animation-name: castleOneMove;
+    animation-iteration-count: infinite;
+  }
+  
+@keyframes castleOneMove {
+    from {
+        transform: translate(0,0);
+    }
+  
+    to {
+        transform: translate(1920px,0);
+    }
+}
+
+.top-div .bg .castle-two{
+    position: absolute;
+    top: 13%;
+    left: Calc(50% - 1170px);
+    animation-duration: 360s;
+    animation-name: castleTwoMove;
+    animation-iteration-count: infinite;
+  }
+  
+@keyframes castleTwoMove {
+    from {
+        transform: translate(0,0);
+    }
+  
+    to {
+        transform: translate(1920px,0);
+    }
+}
+
+.top-div .bg .balloon-guy{
+    position: absolute;
+    left: Calc(50% - 200px);
+    bottom: -100px;
+    animation-duration: 90s;
+    animation-name: balloonGuyMove;
+    animation-iteration-count: infinite;
+    animation-delay: 180s;
+  }
+  
+@keyframes balloonGuyMove {
+    from {
+        transform: translate(0,0);
+    }
+  
+    to {
+        transform: translate(0,-880px);
+    }
+}
+
+// MOVING CLOUDS
+
+.top-div .bg .small-bottom-cloud-one{
+    position: absolute;
+    left: 50%;
+    bottom: 15px;
+    animation-duration: 180s;
+    animation-name: smallCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .small-bottom-cloud-two{
+    position: absolute;
+    left: Calc(50% - 300px);
+    bottom: 40px;
+    animation-duration: 180s;
+    animation-name: smallCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .medium-b-cloud{
+    position: absolute;
+    left: Calc(50% - 175px);
+    bottom: 0px;
+    animation-duration: 180s;
+    animation-name: smallCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .medium-p-cloud{
+    position: absolute;
+    left: Calc(50% + 350px);
+    top: 34%;
+    animation-duration: 180s;
+    animation-name: smallCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .medium-lb-cloud{
+    position: absolute;
+    left: Calc(50% + 850px);
+    top: 10%;
+    animation-duration: 180s;
+    animation-name: smallCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .medium-db-cloud{
+    position: absolute;
+    left: Calc(50% - 1200px);
+    top: 45%;
+    animation-duration: 180s;
+    animation-name: smallCloudMove;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smallCloudMove {
+    from {
+        transform: translate(0,0);
+    }
+  
+    to {
+        transform: translate(1920px,0);
+    }
+}
+
+.top-div .bg .large-b-cloud-one-a{
+    position: absolute;
+    left: Calc(50% + 640px);
+    bottom: 0;
+    animation-duration: 200s;
+    animation-name: largeCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .large-b-cloud-two{
+    position: absolute;
+    left: Calc(50% - 1250px);
+    bottom: 0;
+    animation-duration: 200s;
+    animation-name: largeCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .large-b-cloud-one-b{
+    position: absolute;
+    left: Calc(50% - 2000px);
+    bottom: 0;
+    animation-duration: 200s;
+    animation-name: largeCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .large-lb-cloud-one{
+    position: absolute;
+    left: Calc(50% + 80px);
+    bottom: 0;
+    animation-duration: 200s;
+    animation-name: largeCloudMove;
+    animation-iteration-count: infinite;
+}
+
+.top-div .bg .large-lb-cloud-two{
+    position: absolute;
+    left: Calc(50% - 750px);
+    bottom: 0;
+    animation-duration: 200s;
+    animation-name: largeCloudMove;
+    animation-iteration-count: infinite;
+}
+
+@keyframes largeCloudMove {
+    from {
+        transform: translate(0,0);
+    }
+  
+    to {
+        transform: translate(1920px,0);
+    }
+}
+
+// SKY SLICES
+
+.top-div .bg .slice-one {
+    position: absolute;
+    top: 0;
+    left: Calc(50% - 705px);
+}
+
+.top-div .bg .slice-two {
+    position: absolute;
+    top: 0;
+    left: Calc(50% - 1075px);
+}
+
+.top-div .bg .slice-three {
+    position: absolute;
+    top: 0;
+    left: Calc(50% + 50px);
+}
+
+.top-div .bg .slice-four {
+    position: absolute;
+    top: 3%;
+    left: Calc(50% + 215px);
+}
