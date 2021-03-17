@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import Canvas from '../../util/login_canvas'
 
 export default class SessionForm extends React.Component {
     constructor(props) {
@@ -128,6 +129,7 @@ export default class SessionForm extends React.Component {
                 <style>
                     @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');
                 </style>
+                <Canvas />
                 <a href="/"><img className="logo" src={window.headerLogoURL} /></a>
                 <img className="login-bg" src={window.loginBGURL} />
                 <div className={boxClass}>

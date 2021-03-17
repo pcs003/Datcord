@@ -673,7 +673,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ SessionForm)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _util_login_canvas__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/login_canvas */ "./frontend/util/login_canvas.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -697,6 +698,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -862,11 +864,11 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       var subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
       var otherOption = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
         to: "/signup"
       }, "Register")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
         to: "/login"
       }, "Already have an account?"));
       var forgotPass = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
@@ -886,7 +888,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "login-signup-page"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_1__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
         href: "/"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "logo",
@@ -1182,6 +1184,164 @@ var configureStore = function configureStore() {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (configureStore);
+
+/***/ }),
+
+/***/ "./frontend/util/login_canvas.js":
+/*!***************************************!*\
+  !*** ./frontend/util/login_canvas.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var Canvas = function Canvas(props) {
+  var canvasRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var SCALE = 1.4;
+    var TWO_PI = Math.PI * 2;
+    var HALF_PI = Math.PI / 2;
+    var canvas = canvasRef.current;
+    var c = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var Blob = /*#__PURE__*/function () {
+      function Blob(c) {
+        _classCallCheck(this, Blob);
+
+        this.c = c;
+        this.wobbleIncrement = 0; // use this to change the size of the blob
+
+        this.radius = 500; // think of this as detail level
+        // number of conections in the `bezierSkin`
+
+        this.segments = 12;
+        this.step = HALF_PI / this.segments;
+        this.anchors = [];
+        this.radii = [];
+        this.thetaOff = [];
+        var bumpRadius = 100;
+        var halfBumpRadius = bumpRadius / 2;
+
+        for (var i = 0; i < this.segments + 2; i++) {
+          this.anchors.push(0, 0);
+          this.radii.push(Math.random() * bumpRadius - halfBumpRadius);
+          this.thetaOff.push(Math.random() * TWO_PI);
+        }
+
+        this.theta = 0;
+        this.thetaRamp = 0;
+        this.thetaRampDest = 12;
+        this.rampDamp = 25;
+      }
+
+      _createClass(Blob, [{
+        key: "update",
+        value: function update() {
+          this.thetaRamp += (this.thetaRampDest - this.thetaRamp) / this.rampDamp;
+          this.theta += 0.03;
+          this.anchors = [0, this.radius];
+
+          for (var i = 0; i <= this.segments + 2; i++) {
+            var sine = Math.sin(this.thetaOff[i] + this.theta + this.thetaRamp);
+            var rad = this.radius + this.radii[i] * sine;
+            var theta = this.step * i;
+            var x = rad * Math.sin(theta);
+            var y = rad * Math.cos(theta);
+            this.anchors.push(x, y);
+          }
+
+          c.save();
+          c.translate(-10, -10);
+          c.scale(SCALE, SCALE);
+          c.fillStyle = "#2E3035";
+          c.beginPath();
+          c.moveTo(0, 0);
+          bezierSkin(this.anchors, false);
+          c.lineTo(0, 0);
+          c.fill();
+          c.restore();
+        }
+      }]);
+
+      return Blob;
+    }();
+
+    var blob = new Blob();
+
+    function loop() {
+      c.clearRect(0, 0, canvas.width, canvas.height);
+      blob.update();
+      window.requestAnimationFrame(loop);
+    }
+
+    loop();
+
+    function bezierSkin(bez) {
+      var closed = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var avg = calcAvgs(bez);
+      var leng = bez.length;
+
+      if (closed) {
+        c.moveTo(avg[0], avg[1]);
+
+        for (var i = 2; i < leng; i += 2) {
+          var n = i + 1;
+          c.quadraticCurveTo(bez[i], bez[n], avg[i], avg[n]);
+        }
+
+        c.quadraticCurveTo(bez[0], bez[1], avg[0], avg[1]);
+      } else {
+        c.moveTo(bez[0], bez[1]);
+        c.lineTo(avg[0], avg[1]);
+
+        for (var _i = 2; _i < leng - 2; _i += 2) {
+          var _n = _i + 1;
+
+          c.quadraticCurveTo(bez[_i], bez[_n], avg[_i], avg[_n]);
+        }
+
+        c.lineTo(bez[leng - 2], bez[leng - 1]);
+      }
+    } // create anchor points by averaging the control points
+
+
+    function calcAvgs(p) {
+      var avg = [];
+      var leng = p.length;
+      var prev;
+
+      for (var i = 2; i < leng; i++) {
+        prev = i - 2;
+        avg.push((p[prev] + p[i]) / 2);
+      } // close
+
+
+      avg.push((p[0] + p[leng - 2]) / 2, (p[1] + p[leng - 1]) / 2);
+      return avg;
+    }
+  }, []);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("canvas", _extends({
+    ref: canvasRef
+  }, props));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Canvas);
 
 /***/ }),
 
