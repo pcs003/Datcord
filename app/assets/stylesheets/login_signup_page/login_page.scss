@@ -41,10 +41,33 @@
     text-align: center;
     margin: auto auto auto 250px;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0,0.2);
+    animation-name: slideInFromTop;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+}
+
+@keyframes slideInFromTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%) scale(2,2);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1,1);
+    }
+    99% {
+        transform: translateY(1%);
+    }
+    100% {
+      
+        transform: translateY(0%);
+    }
 }
 
 .login-signup-page .box.signup-box {
     margin: auto auto auto 400px;
+    padding-top:25px;
+    padding-bottom: 20px;
 }
 
 
@@ -58,7 +81,7 @@
     h2.create-header { 
         font-weight: 700;
         font-size: 24px;
-        margin: 20px 20px -5px 20px;
+        margin: 20px 20px -10px 20px;
     }
     a{
         color: rgb(114,137,218);
@@ -84,7 +107,7 @@
             label {
                 color: #8e9297;
                 font-weight:600;
-                font-size: 13px;
+                font-size: 12px;
                 position: relative;
                 margin: 10px 0;
             }
@@ -92,12 +115,52 @@
                 background-color: rgb(49,51,57);
                 border: solid rgb(25,25,25) 1px;
                 border-radius: 3px;
-                width: 100%;
+                width: 98%;
                 height: 40px;
                 margin-bottom: 10px;
                 color: #dcddde;
                 font-family: 'Catamaran', sans-serif;
                 font-size: 16px;
+            }
+
+            select {
+                background-color: rgb(49,51,57);
+                font-size: 16px;
+                font-family: 'Catamaran', sans-serif;
+                color: #b9bbbe;
+                border: solid rgb(25,25,25) 1px;
+                padding: 5px;
+                margin: 0 10px 5px 10px;
+                border-radius: 3px;
+            }
+
+            select#month {
+                width:150px;
+                margin-left: 0;
+            }
+
+            select#day {
+                width: 100px;
+            }
+
+            select#year {
+                width: 125px;
+                margin-right: 5px;
+            }
+
+            select:hover {
+                border: solid black 1px;
+                outline: none;
+                transition: 0.25s;
+                
+            }
+
+            select#year option:hover {
+                box-shadow: 0 0 10px 100px #fff inset;
+            }
+
+            select option:focus {
+                color: rgb(25,25,25);
             }
             
         }
@@ -107,7 +170,7 @@
             color: white;
             width: 415px;
             height: 45px;
-            margin: 10px 0;
+            margin: 20px 0 10px 0;
             font-weight: 500;
         }
 
@@ -125,7 +188,7 @@
         .tos {
             font-size: 12px;
             color:#72767d;
-            margin-top: 10px;
+            margin-top: 30px;
         }
 
         .other-option {

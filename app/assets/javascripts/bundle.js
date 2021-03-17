@@ -723,7 +723,11 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         email: "",
         username: "",
         password: "",
-        birthdate: ""
+        birthdate: "",
+        day: "",
+        month: "",
+        year: "",
+        animate: true
       };
     }
 
@@ -744,6 +748,16 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     value: function update(field) {
       var _this2 = this;
 
+      if (field === "day" || field === "year" || field === "month") {
+        return function (e) {
+          _this2.setState(_defineProperty({}, field, e.currentTarget.value));
+
+          _this2.setState({
+            birthdate: _this2.state.month + "/" + _this2.state.day + "/" + _this2.state.year
+          });
+        };
+      }
+
       return function (e) {
         return _this2.setState(_defineProperty({}, field, e.currentTarget.value));
       };
@@ -760,24 +774,84 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      console.log("birthdate: ".concat(this.state.birthdate));
       var usernameField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        "for": "username"
+        htmlFor: "username"
       }, "USERNAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "username",
         type: "text",
         onChange: this.update('username')
       }));
+      var days = [];
+
+      for (var i = 1; i < 32; i++) {
+        days.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+          key: i,
+          value: i
+        }, i));
+      }
+
+      var years = [];
+
+      for (var _i = 0; _i < 152; _i++) {
+        years.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+          key: _i,
+          value: 2021 - _i
+        }, 2021 - _i));
+      }
+
       var birthdateField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        "for": "dob"
-      }, "DATE OF BIRTH"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        id: "dob",
-        type: "text",
-        onChange: this.update('birthdate')
-      }));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "DATE OF BIRTH"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "selects"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        id: "month",
+        onChange: this.update("month")
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "",
+        disabled: true,
+        selected: true
+      }, "Month"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "01"
+      }, "January"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "02"
+      }, "February"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "03"
+      }, "March"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "04"
+      }, "April"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "05"
+      }, "May"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "06"
+      }, "June"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "07"
+      }, "July"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "08"
+      }, "August"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "09"
+      }, "September"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "10"
+      }, "October"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "11"
+      }, "November"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "12"
+      }, "December")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        id: "day",
+        onChange: this.update("day")
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "",
+        disabled: true,
+        selected: true
+      }, "Day"), days), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        id: "year",
+        onChange: this.update("year")
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        value: "",
+        disabled: true,
+        selected: true
+      }, "Year"), years)));
       var boxClass = this.props.formType === 'Log In' ? "box" : "box signup-box";
       var submitVal = this.props.formType === 'Log In' ? 'Login' : 'Continue';
       var header = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
@@ -829,7 +903,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        "for": "email"
+        htmlFor: "email"
       }, "EMAIL"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "email",
         type: "text",
@@ -837,7 +911,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       })), usernameField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        "for": "password"
+        htmlFor: "password"
       }, "PASSWORD"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "password",
         type: "text",

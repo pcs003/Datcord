@@ -14,14 +14,20 @@ export default class SessionForm extends React.Component {
                 email: "",
                 username: "",
                 password: "",
-                birthdate: ""
+                birthdate: "",
+                day: "",
+                month: "",
+                year: "",
+                animate: true
             };
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
         this.errors = this.errors.bind(this)
         this.update = this.update.bind(this)
+
     }
+
 
     handleSubmit(e) {
         e.preventDefault();
@@ -29,6 +35,16 @@ export default class SessionForm extends React.Component {
     }
 
     update(field) {
+        if (field === "day" || field === "year" || field === "month" ) {
+            return e => {
+                this.setState({
+                    [field]: e.currentTarget.value
+                });
+                this.setState({
+                    birthdate: (this.state.month + "/" + this.state.day + "/" + this.state.year)
+                })
+            }
+        }
         return e => this.setState({
             [field]: e.currentTarget.value
         });
@@ -47,19 +63,56 @@ export default class SessionForm extends React.Component {
     }
 
     render() {
+        console.log(`birthdate: ${this.state.birthdate}`)
         const usernameField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
-                <label for="username" >USERNAME</label>
+                <label htmlFor="username" >USERNAME</label>
                 <input id="username" type="text" onChange={this.update('username')}/>
             </div>
         );
+
+
+        const days = [];
+        for (let i = 1; i < 32; i++) {
+            days.push(<option key={i} value={i}>{i}</option>)
+        }
+
+        const years = [];
+        for (let i = 0; i < 152; i++) {
+            years.push(<option key={i} value={2021 - i}>{2021 - i}</option>)
+        }
+
         const birthdateField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
-                <label for="dob" >DATE OF BIRTH</label>
-                <input id="dob" type="text" onChange={this.update('birthdate')}/>
+                <label>DATE OF BIRTH</label>
+                <div className="selects">
+                    <select id="month" onChange={this.update("month")}>
+                        <option value="" disabled selected>Month</option>
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <select id="day" onChange={this.update("day")}>
+                        <option value="" disabled selected>Day</option>
+                        {days}
+                    </select>
+                    <select id="year" onChange={this.update("year")}>
+                        <option value="" disabled selected>Year</option>
+                        {years}
+                    </select>
+                </div>
             </div>
         );
-        const boxClass = this.props.formType === 'Log In' ? "box" : "box signup-box"
+        const boxClass = this.props.formType === 'Log In' ? "box" : "box signup-box";
         const submitVal =  this.props.formType === 'Log In' ? 'Login' : 'Continue';
         const header = this.props.formType === 'Log In' ? <h2 className="welcome-header">Welcome Back!</h2> : <h2 className="create-header">Create an account</h2>;
         const subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
@@ -84,14 +137,14 @@ export default class SessionForm extends React.Component {
                         {this.errors()}
                         <form onSubmit={this.handleSubmit}>
                             <div className="field">
-                                <label for="email">EMAIL</label>
+                                <label htmlFor="email">EMAIL</label>
                                 <input id="email" type="text" onChange={this.update('email')}/>
                             </div>
 
                             {usernameField}
 
                             <div className="field">
-                                <label for="password">PASSWORD</label>
+                                <label htmlFor="password">PASSWORD</label>
                                 <input id="password" type="text" onChange={this.update('password')}/>
                                 {forgotPass}
                             </div>      
