@@ -760,34 +760,96 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var usernameField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "username", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      var usernameField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "field"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        "for": "username"
+      }, "USERNAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "username",
         type: "text",
         onChange: this.update('username')
       }));
-      var birthdateField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Date of Birth", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      var birthdateField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "field"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        "for": "dob"
+      }, "DATE OF BIRTH"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "dob",
         type: "text",
         onChange: this.update('birthdate')
       }));
+      var boxClass = this.props.formType === 'Log In' ? "box" : "box signup-box";
       var submitVal = this.props.formType === 'Log In' ? 'Login' : 'Continue';
-      var header = this.props.formType === 'Log In' ? 'Welcome Back!' : 'Create an account';
+      var header = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        className: "welcome-header"
+      }, "Welcome Back!") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        className: "create-header"
+      }, "Create an account");
       var subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
-      var otherOption = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+      var otherOption = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "other-option"
+      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
         to: "/signup"
-      }, "Register")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+      }, "Register")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "other-option"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
         to: "/login"
-      }, "Already have an account?");
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, header), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, subHeader), this.errors(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+      }, "Already have an account?"));
+      var forgotPass = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        className: "forgot-pass",
+        href: ""
+      }, "Forgot your password?") : "";
+      var terms = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "tos"
+      }, "By registering you agree to Datcord's ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        href: "#/signup"
+      }, "Terms of Service"), " and ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        href: "#/signup"
+      }, "Privacy Policy"));
+      var barcode = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "fake-barcode",
+        src: window.loginBarcodeURL
+      }) : "";
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "login-signup-page"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        href: "/"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "logo",
+        src: window.headerLogoURL
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "login-bg",
+        src: window.loginBGURL
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: boxClass
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "form-box"
+      }, header, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, subHeader), this.errors(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
         onSubmit: this.handleSubmit
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "email", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "field"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        "for": "email"
+      }, "EMAIL"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "email",
         type: "text",
         onChange: this.update('email')
-      })), usernameField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "password", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      })), usernameField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "field"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        "for": "password"
+      }, "PASSWORD"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "password",
         type: "text",
         onChange: this.update('password')
-      })), birthdateField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      }), forgotPass), birthdateField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "field"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "submit",
         value: submitVal
-      }), otherOption));
+      }), otherOption, terms))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "barcode-box"
+      }, barcode)));
     }
   }]);
 
