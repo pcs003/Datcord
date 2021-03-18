@@ -10,6 +10,8 @@ export default class SessionForm extends React.Component {
             this.state = {
                 email: "",
                 password: "",
+                emailErrored: false,
+                passwordErrored: false
             };
         } else {
             this.state = {
@@ -19,7 +21,7 @@ export default class SessionForm extends React.Component {
                 birthdate: "",
                 day: "",
                 month: "",
-                year: ""
+                year: "",
             };
         }
 
@@ -34,15 +36,27 @@ export default class SessionForm extends React.Component {
     }
 
     componentDidMount() {
-        this.props.clearErrors();
+
         let box = document.getElementById("box");
 
         box.classList.remove("deactivate");
         
-        if (this.props.formType === "Log In") {
-
-        }
+        // this.handleErrors();
+        
+        
     }
+
+    // handleErrors() {
+    //     if (this.props.formType === 'Log In') {
+    //         if (this.props.errors.length > 0) {
+    //             this.setState({
+    //                 emailErrored: (this.props.errors[0] != ''),
+    //                 passwordErrored: (this.props.errors[1] != '')
+    //             })
+    //         }
+    //     }
+    //     console.log(this.props.errors)
+    // }
 
     transitionOut(e) {
         e.preventDefault();
@@ -70,7 +84,9 @@ export default class SessionForm extends React.Component {
     
     handleSubmit(e) {
         e.preventDefault();
+        // this.handleErrors();
         this.props.clearErrors();
+
         let formattedState = {};
         if (this.props.formType === 'Sign Up'){
 
@@ -132,7 +148,7 @@ export default class SessionForm extends React.Component {
             }
         } else if (this.props.formType === 'Sign Up') {
             let thisEmail = this.state.email.slice(0);
-            if (this.props.errors.includes("Email is invalid") > 0) {
+            if (this.props.errors.includes("Email is invalid")) {
                 if (!thisEmail.split("").includes("@")){
                     return ` - Please include an '@' in the email address.`;
                 } 
@@ -160,6 +176,7 @@ export default class SessionForm extends React.Component {
     }
 
     render() {
+        // this allows for redirecting after a delay so transitionOut works
         if (this.state.redirect) {
             if (this.props.formType === 'Log In') {
                 return <Redirect push to="/signup" />;
@@ -167,27 +184,46 @@ export default class SessionForm extends React.Component {
                 return <Redirect push to="/login" />;
             }    
         }
+
+        // set classes for labels based on if errored or not
+        let emailClass = ""
+        let passwordClass = ""
+        let usernameClass = ""
+        if (this.props.formType === 'Log In' && this.props.errors.length > 0) {
+            emailClass = this.props.errors[0] === '' ? "" : "errored";
+            passwordClass = this.props.errors[1] === '' ? "" : "errored";
+        }
+        if (this.props.formType === 'Sign Up' && this.props.errors.length > 0) {
+            emailClass = this.props.errors.includes("Email is invalid") ? "errored" : "";
+            passwordClass = this.props.errors.includes("Password is too short (minimum is 6 characters)") ? "errored" : ""
+            usernameClass = (this.props.errors.includes("Username is too long (maximum is 32 characters)") || 
+                             this.props.errors.includes("Username is too short (minimum is 2 characters)")) ? "errored" : "";
+        }
+
+        // this is the username field that onlyu appears on sign up
         const usernameField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
-                <label id="username" className="" htmlFor="username" >USERNAME{this.usernameErrors()}</label>
-                <input name="username" type="text" onChange={this.update('username')}/>
+                <label id="username-label" className={usernameClass} htmlFor="username" >USERNAME{this.usernameErrors()}</label>
+                <input id="username" className={usernameClass} type="text" onChange={this.update('username')}/>
             </div>
         );
 
-
+        // generates array of day options
         const days = [];
         for (let i = 1; i < 32; i++) {
             days.push(<option key={i} value={i}>{i}</option>)
         }
 
+        // generates array of year options
         const years = [];
         for (let i = 0; i < 152; i++) {
             years.push(<option key={i} value={2021 - i}>{2021 - i}</option>)
         }
 
+        // this is the birthdate select tag that only appears on sign up
         const birthdateField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
-                <label id="dob">DATE OF BIRTH</label>
+                <label id="dob-label">DATE OF BIRTH</label>
                 <div className="selects">
                     <select id="month" defaultValue="00" onChange={this.update("month")}>
                         <option value="00" disabled >Month</option>
@@ -215,6 +251,8 @@ export default class SessionForm extends React.Component {
                 </div>
             </div>
         );
+
+
         const boxClass = this.props.formType === 'Log In' ? "box" : "box signup-box";
         const submitVal =  this.props.formType === 'Log In' ? 'Login' : 'Continue';
         const header = this.props.formType === 'Log In' ? <h2 className="welcome-header">Welcome Back!</h2> : <h2 className="create-header">Create an account</h2>;
@@ -233,6 +271,10 @@ export default class SessionForm extends React.Component {
                 </div>
             </div>
         ) : ""
+        
+        
+
+
         return (
             
             <div className="login-signup-page">
@@ -249,15 +291,15 @@ export default class SessionForm extends React.Component {
                         
                         <form onSubmit={this.handleSubmit}>
                             <div className="field">
-                                <label id="email" className="" htmlFor="email">EMAIL{this.emailErrors()}</label>
-                                <input name="email" type="text" onChange={this.update('email')}/>
+                                <label id="email-label" className={emailClass} htmlFor="email">EMAIL{this.emailErrors()}</label>
+                                <input id="email" className={emailClass} type="text" onChange={this.update('email')}/>
                             </div>
 
                             {usernameField}
 
                             <div className="field">
-                                <label id="password" className="" htmlFor="password">PASSWORD{this.passwordErrors()}</label>
-                                <input name="password" type="text" onChange={this.update('password')}/>
+                                <label id="password-label" className={passwordClass} htmlFor="password">PASSWORD{this.passwordErrors()}</label>
+                                <input id="password" className={passwordClass} type="password" onChange={this.update('password')}/>
                                 {forgotPass}
                             </div>      
 

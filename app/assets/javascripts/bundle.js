@@ -730,7 +730,9 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     if (_this.props.formType === 'Log In') {
       _this.state = {
         email: "",
-        password: ""
+        password: "",
+        emailErrored: false,
+        passwordErrored: false
       };
     } else {
       _this.state = {
@@ -758,12 +760,20 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   _createClass(SessionForm, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.clearErrors();
       var box = document.getElementById("box");
-      box.classList.remove("deactivate");
+      box.classList.remove("deactivate"); // this.handleErrors();
+    } // handleErrors() {
+    //     if (this.props.formType === 'Log In') {
+    //         if (this.props.errors.length > 0) {
+    //             this.setState({
+    //                 emailErrored: (this.props.errors[0] != ''),
+    //                 passwordErrored: (this.props.errors[1] != '')
+    //             })
+    //         }
+    //     }
+    //     console.log(this.props.errors)
+    // }
 
-      if (this.props.formType === "Log In") {}
-    }
   }, {
     key: "transitionOut",
     value: function transitionOut(e) {
@@ -791,7 +801,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
-      e.preventDefault();
+      e.preventDefault(); // this.handleErrors();
+
       this.props.clearErrors();
       var formattedState = {};
 
@@ -854,7 +865,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       } else if (this.props.formType === 'Sign Up') {
         var thisEmail = this.state.email.slice(0);
 
-        if (this.props.errors.includes("Email is invalid") > 0) {
+        if (this.props.errors.includes("Email is invalid")) {
           if (!thisEmail.split("").includes("@")) {
             return " - Please include an '@' in the email address.";
           } else {
@@ -883,6 +894,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      // this allows for redirecting after a delay so transitionOut works
       if (this.state.redirect) {
         if (this.props.formType === 'Log In') {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router__WEBPACK_IMPORTED_MODULE_2__.Redirect, {
@@ -895,19 +907,38 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
             to: "/login"
           });
         }
+      } // set classes for labels based on if errored or not
+
+
+      var emailClass = "";
+      var passwordClass = "";
+      var usernameClass = "";
+
+      if (this.props.formType === 'Log In' && this.props.errors.length > 0) {
+        emailClass = this.props.errors[0] === '' ? "" : "errored";
+        passwordClass = this.props.errors[1] === '' ? "" : "errored";
       }
+
+      if (this.props.formType === 'Sign Up' && this.props.errors.length > 0) {
+        emailClass = this.props.errors.includes("Email is invalid") ? "errored" : "";
+        passwordClass = this.props.errors.includes("Password is too short (minimum is 6 characters)") ? "errored" : "";
+        usernameClass = this.props.errors.includes("Username is too long (maximum is 32 characters)") || this.props.errors.includes("Username is too short (minimum is 2 characters)") ? "errored" : "";
+      } // this is the username field that onlyu appears on sign up
+
 
       var usernameField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        id: "username",
-        className: "",
+        id: "username-label",
+        className: usernameClass,
         htmlFor: "username"
       }, "USERNAME", this.usernameErrors()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        name: "username",
+        id: "username",
+        className: usernameClass,
         type: "text",
         onChange: this.update('username')
-      }));
+      })); // generates array of day options
+
       var days = [];
 
       for (var i = 1; i < 32; i++) {
@@ -915,7 +946,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
           key: i,
           value: i
         }, i));
-      }
+      } // generates array of year options
+
 
       var years = [];
 
@@ -924,12 +956,13 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
           key: _i,
           value: 2021 - _i
         }, 2021 - _i));
-      }
+      } // this is the birthdate select tag that only appears on sign up
+
 
       var birthdateField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        id: "dob"
+        id: "dob-label"
       }, "DATE OF BIRTH"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "selects"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
@@ -1037,22 +1070,24 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        id: "email",
-        className: "",
+        id: "email-label",
+        className: emailClass,
         htmlFor: "email"
       }, "EMAIL", this.emailErrors()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        name: "email",
+        id: "email",
+        className: emailClass,
         type: "text",
         onChange: this.update('email')
       })), usernameField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        id: "password",
-        className: "",
+        id: "password-label",
+        className: passwordClass,
         htmlFor: "password"
       }, "PASSWORD", this.passwordErrors()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        name: "password",
-        type: "text",
+        id: "password",
+        className: passwordClass,
+        type: "password",
         onChange: this.update('password')
       }), forgotPass), birthdateField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"

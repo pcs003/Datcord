@@ -150,6 +150,13 @@
                 color: #dcddde;
                 font-family: 'Catamaran', sans-serif;
                 font-size: 16px;
+                padding-left: 10px;
+            }
+
+            input[type=password] {
+                font-size: 22px;
+                font-weight:500;
+                letter-spacing: 2px;
             }
 
             select {
@@ -209,7 +216,7 @@
             background-color: rgba(116, 139, 223, 0.774);
         }
 
-        input[type=text]:focus {
+        input[type=text]:focus, input[type=password]:focus {
             outline: none;
             border-color: rgb(114,137,218);     
         }
@@ -228,6 +235,14 @@
         .forgot-pass {
             font-size: 14px;
             margin-bottom: 10px;
+        }
+
+        label.errored {
+            color: red;
+        }
+
+        input[type=text].errored, input[type=password].errored {
+            border-color: red;
         }
 
         
