@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import Canvas from '../../util/login_canvas'
+import { Redirect } from 'react-router';
 
 export default class SessionForm extends React.Component {
     constructor(props) {
@@ -26,7 +27,27 @@ export default class SessionForm extends React.Component {
         this.errors = this.errors.bind(this)
         this.update = this.update.bind(this)
         this.demoUser = this.demoUser.bind(this)
+        this.transitionOut = this.transitionOut.bind(this)
     }
+
+    componentDidMount() {
+        let box = document.getElementById("box");
+        console.log(box);
+        box.classList.remove("deactivate");
+    }
+
+    transitionOut(e) {
+        e.preventDefault();
+
+        let box = document.getElementById("box");
+        console.log(box);
+        box.classList.add("deactivate");
+
+        setTimeout(() => {
+            this.setState({redirect: true});
+        }, 100);
+    }
+
 
     demoUser(e) {
         e.preventDefault();
@@ -86,6 +107,13 @@ export default class SessionForm extends React.Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            if (this.props.formType === 'Log In') {
+                return <Redirect push to="/signup" />;
+            } else if (this.props.formType === 'Sign Up') {
+                return <Redirect push to="/login" />;
+            }    
+        }
         const usernameField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
                 <label htmlFor="username" >USERNAME</label>
@@ -138,7 +166,7 @@ export default class SessionForm extends React.Component {
         const submitVal =  this.props.formType === 'Log In' ? 'Login' : 'Continue';
         const header = this.props.formType === 'Log In' ? <h2 className="welcome-header">Welcome Back!</h2> : <h2 className="create-header">Create an account</h2>;
         const subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
-        const otherOption = this.props.formType === 'Log In' ? <span className="other-option">Need an account? <Link to="/signup">Register</Link></span> : <span className="other-option"><Link to="/login">Already have an account?</Link></span>
+        const otherOption = this.props.formType === 'Log In' ? <span className="other-option">Need an account? <Link onClick={this.transitionOut} to="/signup">Register</Link></span> : <span className="other-option"><Link onClick={this.transitionOut} to="/login">Already have an account?</Link></span>
         const forgotPass = this.props.formType === 'Log In' ? <a className="forgot-pass" href="">Forgot your password?</a> : "";
         const terms = this.props.formType === 'Log In' ? "" : (
             <span className="tos">By registering you agree to Datcord's <a href="#/signup">Terms of Service</a> and <a href="#/signup">Privacy Policy</a></span>
@@ -161,7 +189,7 @@ export default class SessionForm extends React.Component {
                 <Canvas />
                 <a href="/"><img className="logo" src={window.headerLogoURL} /></a>
                 <img className="login-bg" src={window.loginBGURL} />
-                <div className={boxClass}>
+                <div id="box" className={boxClass}>
                     <div className="form-box">
                         {header}
                         <h3>{subHeader}</h3>
