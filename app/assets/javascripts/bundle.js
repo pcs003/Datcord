@@ -344,7 +344,7 @@ var Greeting = function Greeting(_ref) {
   return currentUser ? greeting() : links();
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Greeting); //testing branching
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Greeting);
 
 /***/ }),
 
