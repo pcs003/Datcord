@@ -25,7 +25,16 @@ export default class SessionForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.errors = this.errors.bind(this)
         this.update = this.update.bind(this)
+        this.demoUser = this.demoUser.bind(this)
+    }
 
+    demoUser(e) {
+        e.preventDefault();
+
+        this.props.processForm({
+            email: "demouser@datcord.com",
+            password: "password123"
+        });
     }
 
     
@@ -33,12 +42,7 @@ export default class SessionForm extends React.Component {
         e.preventDefault();
         let formattedState = {};
         if (this.props.formType === 'Sign Up'){
-            let el = document.getElementById('month');
-            let ev = document.createEvent('Event');
-            ev.initEvent('change', true, false);
-            el.dispatchEvent(ev);
-            
-            console.log(this.state.birthdate)
+
             formattedState = {
                 email: this.state.email,
                 username: this.state.username,
@@ -139,7 +143,15 @@ export default class SessionForm extends React.Component {
         const terms = this.props.formType === 'Log In' ? "" : (
             <span className="tos">By registering you agree to Datcord's <a href="#/signup">Terms of Service</a> and <a href="#/signup">Privacy Policy</a></span>
         )
-        const barcode = this.props.formType === 'Log In' ? <img className= "fake-barcode" src={window.loginBarcodeURL} /> : ""
+        const barcode = this.props.formType === 'Log In' ? (
+            <div className="barcode-box">
+                <img onClick={this.demoUser} className= "fake-barcode" src={window.loginBarcodeURL} />
+                <div className="barcode-text">
+                    <h2>Log in with demo account</h2>
+                    <p>Click the barcode to log in with a demo account</p>
+                </div>
+            </div>
+        ) : ""
         return (
             
             <div className="login-signup-page">
@@ -178,9 +190,9 @@ export default class SessionForm extends React.Component {
                             
                         </form>
                     </div>
-                    <div className="barcode-box">
-                        {barcode}
-                    </div>
+                    
+                    {barcode}
+                    
 
                 </div>
             </div>

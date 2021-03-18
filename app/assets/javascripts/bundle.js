@@ -132,7 +132,6 @@ var login = function login(user) {
     return _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__.login(user).then(function (user) {
       return dispatch(receiveCurrentUser(user));
     }, function (e) {
-      console.log(e);
       return dispatch(receiveErrors(e.responseJSON));
     });
   };
@@ -735,21 +734,26 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.errors = _this.errors.bind(_assertThisInitialized(_this));
     _this.update = _this.update.bind(_assertThisInitialized(_this));
+    _this.demoUser = _this.demoUser.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(SessionForm, [{
+    key: "demoUser",
+    value: function demoUser(e) {
+      e.preventDefault();
+      this.props.processForm({
+        email: "demouser@datcord.com",
+        password: "password123"
+      });
+    }
+  }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
       e.preventDefault();
       var formattedState = {};
 
       if (this.props.formType === 'Sign Up') {
-        var el = document.getElementById('month');
-        var ev = document.createEvent('Event');
-        ev.initEvent('change', true, false);
-        el.dispatchEvent(ev);
-        console.log(this.state.birthdate);
         formattedState = {
           email: this.state.email,
           username: this.state.username,
@@ -895,10 +899,15 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, "Terms of Service"), " and ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
         href: "#/signup"
       }, "Privacy Policy"));
-      var barcode = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      var barcode = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "barcode-box"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        onClick: this.demoUser,
         className: "fake-barcode",
         src: window.loginBarcodeURL
-      }) : "";
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "barcode-text"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Log in with demo account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Click the barcode to log in with a demo account"))) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "login-signup-page"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_1__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
@@ -936,9 +945,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "submit",
         value: submitVal
-      }), otherOption, terms))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "barcode-box"
-      }, barcode)));
+      }), otherOption, terms))), barcode));
     }
   }]);
 
@@ -1225,7 +1232,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Canvas = function Canvas(props) {
   var canvasRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var SCALE = 1.4;
+    var SCALE = 1.5;
     var TWO_PI = Math.PI * 2;
     var HALF_PI = Math.PI / 2;
     var canvas = canvasRef.current;

@@ -8,7 +8,6 @@ export const login = (user) => (dispatch) => (
     APIUtil.login(user).then(user => (
         dispatch(receiveCurrentUser(user))
     ), (e) => {
-        console.log(e);
         return dispatch(receiveErrors(e.responseJSON))
     })
 )

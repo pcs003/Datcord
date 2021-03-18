@@ -5,7 +5,7 @@ const Canvas = props => {
   const canvasRef = useRef(null)
   
   useEffect(() => {
-    const SCALE = 1.4;
+    const SCALE = 1.5;
     const TWO_PI = Math.PI * 2;
     const HALF_PI = Math.PI / 2;
     const canvas = canvasRef.current
