@@ -18,8 +18,7 @@ export default class SessionForm extends React.Component {
                 birthdate: "",
                 day: "",
                 month: "",
-                year: "",
-                animate: true
+                year: ""
             };
         }
 
@@ -29,26 +28,45 @@ export default class SessionForm extends React.Component {
 
     }
 
-
+    
     handleSubmit(e) {
         e.preventDefault();
-        this.props.processForm(this.state);
+        let formattedState = {};
+        if (this.props.formType === 'Sign Up'){
+            let el = document.getElementById('month');
+            let ev = document.createEvent('Event');
+            ev.initEvent('change', true, false);
+            el.dispatchEvent(ev);
+            
+            console.log(this.state.birthdate)
+            formattedState = {
+                email: this.state.email,
+                username: this.state.username,
+                password: this.state.password,
+                birthdate: new Date(this.state.birthdate)
+            }
+        } else {
+            formattedState = {
+                email: this.state.email,
+                password: this.state.password
+            }
+        }
+        
+        this.props.processForm(formattedState);
     }
 
     update(field) {
-        if (field === "day" || field === "year" || field === "month" ) {
-            return e => {
-                this.setState({
-                    [field]: e.currentTarget.value
-                });
+
+        return e => {
+            this.setState({
+                [field]: e.target.value
+            }, () => {
                 this.setState({
                     birthdate: (this.state.month + "/" + this.state.day + "/" + this.state.year)
                 })
-            }
+            });
         }
-        return e => this.setState({
-            [field]: e.currentTarget.value
-        });
+        
     }
 
     errors() {
@@ -64,7 +82,6 @@ export default class SessionForm extends React.Component {
     }
 
     render() {
-        console.log(`birthdate: ${this.state.birthdate}`)
         const usernameField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
                 <label htmlFor="username" >USERNAME</label>
@@ -87,8 +104,8 @@ export default class SessionForm extends React.Component {
             <div className="field">
                 <label>DATE OF BIRTH</label>
                 <div className="selects">
-                    <select id="month" onChange={this.update("month")}>
-                        <option value="" disabled selected>Month</option>
+                    <select id="month" defaultValue="00" onChange={this.update("month")}>
+                        <option value="00" disabled >Month</option>
                         <option value="01">January</option>
                         <option value="02">February</option>
                         <option value="03">March</option>
@@ -102,12 +119,12 @@ export default class SessionForm extends React.Component {
                         <option value="11">November</option>
                         <option value="12">December</option>
                     </select>
-                    <select id="day" onChange={this.update("day")}>
-                        <option value="" disabled selected>Day</option>
+                    <select id="day" defaultValue="00" onChange={this.update("day")}>
+                        <option value="00" disabled >Day</option>
                         {days}
                     </select>
-                    <select id="year" onChange={this.update("year")}>
-                        <option value="" disabled selected>Year</option>
+                    <select id="year" defaultValue="00" onChange={this.update("year")}>
+                        <option value="00" disabled >Year</option>
                         {years}
                     </select>
                 </div>

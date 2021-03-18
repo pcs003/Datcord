@@ -728,8 +728,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         birthdate: "",
         day: "",
         month: "",
-        year: "",
-        animate: true
+        year: ""
       };
     }
 
@@ -743,25 +742,40 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     key: "handleSubmit",
     value: function handleSubmit(e) {
       e.preventDefault();
-      this.props.processForm(this.state);
+      var formattedState = {};
+
+      if (this.props.formType === 'Sign Up') {
+        var el = document.getElementById('month');
+        var ev = document.createEvent('Event');
+        ev.initEvent('change', true, false);
+        el.dispatchEvent(ev);
+        console.log(this.state.birthdate);
+        formattedState = {
+          email: this.state.email,
+          username: this.state.username,
+          password: this.state.password,
+          birthdate: new Date(this.state.birthdate)
+        };
+      } else {
+        formattedState = {
+          email: this.state.email,
+          password: this.state.password
+        };
+      }
+
+      this.props.processForm(formattedState);
     }
   }, {
     key: "update",
     value: function update(field) {
       var _this2 = this;
 
-      if (field === "day" || field === "year" || field === "month") {
-        return function (e) {
-          _this2.setState(_defineProperty({}, field, e.currentTarget.value));
-
+      return function (e) {
+        _this2.setState(_defineProperty({}, field, e.target.value), function () {
           _this2.setState({
             birthdate: _this2.state.month + "/" + _this2.state.day + "/" + _this2.state.year
           });
-        };
-      }
-
-      return function (e) {
-        return _this2.setState(_defineProperty({}, field, e.currentTarget.value));
+        });
       };
     }
   }, {
@@ -776,7 +790,6 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log("birthdate: ".concat(this.state.birthdate));
       var usernameField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
@@ -810,11 +823,11 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         className: "selects"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
         id: "month",
+        defaultValue: "00",
         onChange: this.update("month")
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
-        value: "",
-        disabled: true,
-        selected: true
+        value: "00",
+        disabled: true
       }, "Month"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "01"
       }, "January"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
@@ -841,18 +854,18 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         value: "12"
       }, "December")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
         id: "day",
+        defaultValue: "00",
         onChange: this.update("day")
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
-        value: "",
-        disabled: true,
-        selected: true
+        value: "00",
+        disabled: true
       }, "Day"), days), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
         id: "year",
+        defaultValue: "00",
         onChange: this.update("year")
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
-        value: "",
-        disabled: true,
-        selected: true
+        value: "00",
+        disabled: true
       }, "Year"), years)));
       var boxClass = this.props.formType === 'Log In' ? "box" : "box signup-box";
       var submitVal = this.props.formType === 'Log In' ? 'Login' : 'Continue';
@@ -1403,6 +1416,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "logout": () => (/* binding */ logout)
 /* harmony export */ });
 var signup = function signup(user) {
+  console.log(user);
   return $.ajax({
     method: 'POST',
     url: '/api/users',
