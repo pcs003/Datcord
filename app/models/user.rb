@@ -2,6 +2,8 @@ class User < ApplicationRecord
     validates :username, :email, :password_digest, :session_token, :birthdate, presence:true
     validates :email, :session_token, uniqueness:true
     validates :password, length: {minimum:6}, allow_nil: true
+    validates :username, length: {minimum:2, maximum: 32}
+    validates_format_of :email,:with => /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
     #FPGIER
 
     attr_reader :password

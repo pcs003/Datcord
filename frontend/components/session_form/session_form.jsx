@@ -28,19 +28,28 @@ export default class SessionForm extends React.Component {
         this.update = this.update.bind(this)
         this.demoUser = this.demoUser.bind(this)
         this.transitionOut = this.transitionOut.bind(this)
+        this.emailErrors = this.emailErrors.bind(this)
+        this.passwordErrors = this.passwordErrors.bind(this)
+        this.usernameErrors = this.usernameErrors.bind(this)
     }
 
     componentDidMount() {
+        this.props.clearErrors();
         let box = document.getElementById("box");
-        console.log(box);
+
         box.classList.remove("deactivate");
+        
+        if (this.props.formType === "Log In") {
+
+        }
     }
 
     transitionOut(e) {
         e.preventDefault();
 
+        this.props.clearErrors();
         let box = document.getElementById("box");
-        console.log(box);
+
         box.classList.add("deactivate");
 
         setTimeout(() => {
@@ -61,6 +70,7 @@ export default class SessionForm extends React.Component {
     
     handleSubmit(e) {
         e.preventDefault();
+        this.props.clearErrors();
         let formattedState = {};
         if (this.props.formType === 'Sign Up'){
 
@@ -106,6 +116,49 @@ export default class SessionForm extends React.Component {
         );
     }
 
+    usernameErrors() {
+        if (this.props.formType === 'Sign Up') {
+            if(this.props.errors.includes("Username is too long (maximum is 32 characters)") || this.props.errors.includes("Username is too short (minimum is 2 characters)")) {
+                return " - Must be between 2 and 32 in length"
+            }
+        }
+        return "";
+    }
+
+    emailErrors(){
+        if (this.props.formType === 'Log In') {
+            if (this.props.errors.length > 0) {
+                return this.props.errors[0]
+            }
+        } else if (this.props.formType === 'Sign Up') {
+            let thisEmail = this.state.email.slice(0);
+            if (this.props.errors.includes("Email is invalid") > 0) {
+                if (!thisEmail.split("").includes("@")){
+                    return ` - Please include an '@' in the email address.`;
+                } 
+                else {
+                    return ' - Not a well formed email address'
+                }
+            }
+        }
+
+
+        return "";
+    }
+
+    passwordErrors() {
+        if (this.props.formType === 'Log In') {
+            if (this.props.errors.length > 0) {
+                return this.props.errors[1]
+            }
+        } else if (this.props.formType === 'Sign Up') {
+            if (this.props.errors.includes("Password is too short (minimum is 6 characters)")) {
+                return " - Must be 6 or more in length"
+            }
+        }
+        return "";
+    }
+
     render() {
         if (this.state.redirect) {
             if (this.props.formType === 'Log In') {
@@ -116,8 +169,8 @@ export default class SessionForm extends React.Component {
         }
         const usernameField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
-                <label htmlFor="username" >USERNAME</label>
-                <input id="username" type="text" onChange={this.update('username')}/>
+                <label id="username" className="" htmlFor="username" >USERNAME{this.usernameErrors()}</label>
+                <input name="username" type="text" onChange={this.update('username')}/>
             </div>
         );
 
@@ -134,7 +187,7 @@ export default class SessionForm extends React.Component {
 
         const birthdateField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
-                <label>DATE OF BIRTH</label>
+                <label id="dob">DATE OF BIRTH</label>
                 <div className="selects">
                     <select id="month" defaultValue="00" onChange={this.update("month")}>
                         <option value="00" disabled >Month</option>
@@ -193,18 +246,18 @@ export default class SessionForm extends React.Component {
                     <div className="form-box">
                         {header}
                         <h3>{subHeader}</h3>
-                        {this.errors()}
+                        
                         <form onSubmit={this.handleSubmit}>
                             <div className="field">
-                                <label htmlFor="email">EMAIL</label>
-                                <input id="email" type="text" onChange={this.update('email')}/>
+                                <label id="email" className="" htmlFor="email">EMAIL{this.emailErrors()}</label>
+                                <input name="email" type="text" onChange={this.update('email')}/>
                             </div>
 
                             {usernameField}
 
                             <div className="field">
-                                <label htmlFor="password">PASSWORD</label>
-                                <input id="password" type="text" onChange={this.update('password')}/>
+                                <label id="password" className="" htmlFor="password">PASSWORD{this.passwordErrors()}</label>
+                                <input name="password" type="text" onChange={this.update('password')}/>
                                 {forgotPass}
                             </div>      
 

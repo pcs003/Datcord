@@ -115,18 +115,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "RECEIVE_CURRENT_USER": () => (/* binding */ RECEIVE_CURRENT_USER),
 /* harmony export */   "LOGOUT_CURRENT_USER": () => (/* binding */ LOGOUT_CURRENT_USER),
 /* harmony export */   "RECEIVE_SESSION_ERRORS": () => (/* binding */ RECEIVE_SESSION_ERRORS),
+/* harmony export */   "CLEAR_SESSION_ERRORS": () => (/* binding */ CLEAR_SESSION_ERRORS),
 /* harmony export */   "login": () => (/* binding */ login),
 /* harmony export */   "logout": () => (/* binding */ logout),
 /* harmony export */   "signup": () => (/* binding */ signup),
 /* harmony export */   "receiveCurrentUser": () => (/* binding */ receiveCurrentUser),
 /* harmony export */   "logoutCurrentUser": () => (/* binding */ logoutCurrentUser),
-/* harmony export */   "receiveErrors": () => (/* binding */ receiveErrors)
+/* harmony export */   "receiveErrors": () => (/* binding */ receiveErrors),
+/* harmony export */   "clearSessionErrors": () => (/* binding */ clearSessionErrors)
 /* harmony export */ });
 /* harmony import */ var _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/session_api_util */ "./frontend/util/session_api_util.js");
 
 var RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
 var LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER';
 var RECEIVE_SESSION_ERRORS = 'RECEIVE_SESSION_ERRORS';
+var CLEAR_SESSION_ERRORS = "CLEAR_SESSION_ERRORS";
 var login = function login(user) {
   return function (dispatch) {
     return _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__.login(user).then(function (user) {
@@ -167,6 +170,11 @@ var receiveErrors = function receiveErrors(errors) {
   return {
     type: RECEIVE_SESSION_ERRORS,
     errors: errors
+  };
+};
+var clearSessionErrors = function clearSessionErrors() {
+  return {
+    type: CLEAR_SESSION_ERRORS
   };
 };
 
@@ -652,6 +660,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     processForm: function processForm(user) {
       return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__.login)(user));
+    },
+    clearErrors: function clearErrors() {
+      return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__.clearSessionErrors)());
     }
   };
 };
@@ -738,15 +749,20 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     _this.update = _this.update.bind(_assertThisInitialized(_this));
     _this.demoUser = _this.demoUser.bind(_assertThisInitialized(_this));
     _this.transitionOut = _this.transitionOut.bind(_assertThisInitialized(_this));
+    _this.emailErrors = _this.emailErrors.bind(_assertThisInitialized(_this));
+    _this.passwordErrors = _this.passwordErrors.bind(_assertThisInitialized(_this));
+    _this.usernameErrors = _this.usernameErrors.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(SessionForm, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.props.clearErrors();
       var box = document.getElementById("box");
-      console.log(box);
       box.classList.remove("deactivate");
+
+      if (this.props.formType === "Log In") {}
     }
   }, {
     key: "transitionOut",
@@ -754,8 +770,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       e.preventDefault();
+      this.props.clearErrors();
       var box = document.getElementById("box");
-      console.log(box);
       box.classList.add("deactivate");
       setTimeout(function () {
         _this2.setState({
@@ -776,6 +792,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     key: "handleSubmit",
     value: function handleSubmit(e) {
       e.preventDefault();
+      this.props.clearErrors();
       var formattedState = {};
 
       if (this.props.formType === 'Sign Up') {
@@ -817,6 +834,53 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }));
     }
   }, {
+    key: "usernameErrors",
+    value: function usernameErrors() {
+      if (this.props.formType === 'Sign Up') {
+        if (this.props.errors.includes("Username is too long (maximum is 32 characters)") || this.props.errors.includes("Username is too short (minimum is 2 characters)")) {
+          return " - Must be between 2 and 32 in length";
+        }
+      }
+
+      return "";
+    }
+  }, {
+    key: "emailErrors",
+    value: function emailErrors() {
+      if (this.props.formType === 'Log In') {
+        if (this.props.errors.length > 0) {
+          return this.props.errors[0];
+        }
+      } else if (this.props.formType === 'Sign Up') {
+        var thisEmail = this.state.email.slice(0);
+
+        if (this.props.errors.includes("Email is invalid") > 0) {
+          if (!thisEmail.split("").includes("@")) {
+            return " - Please include an '@' in the email address.";
+          } else {
+            return ' - Not a well formed email address';
+          }
+        }
+      }
+
+      return "";
+    }
+  }, {
+    key: "passwordErrors",
+    value: function passwordErrors() {
+      if (this.props.formType === 'Log In') {
+        if (this.props.errors.length > 0) {
+          return this.props.errors[1];
+        }
+      } else if (this.props.formType === 'Sign Up') {
+        if (this.props.errors.includes("Password is too short (minimum is 6 characters)")) {
+          return " - Must be 6 or more in length";
+        }
+      }
+
+      return "";
+    }
+  }, {
     key: "render",
     value: function render() {
       if (this.state.redirect) {
@@ -836,9 +900,11 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       var usernameField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        htmlFor: "username"
-      }, "USERNAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "username",
+        className: "",
+        htmlFor: "username"
+      }, "USERNAME", this.usernameErrors()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        name: "username",
         type: "text",
         onChange: this.update('username')
       }));
@@ -862,7 +928,9 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
 
       var birthdateField = this.props.formType === 'Log In' ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "DATE OF BIRTH"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        id: "dob"
+      }, "DATE OF BIRTH"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "selects"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
         id: "month",
@@ -964,22 +1032,26 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         className: boxClass
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "form-box"
-      }, header, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, subHeader), this.errors(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+      }, header, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, subHeader), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
         onSubmit: this.handleSubmit
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        htmlFor: "email"
-      }, "EMAIL"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "email",
+        className: "",
+        htmlFor: "email"
+      }, "EMAIL", this.emailErrors()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        name: "email",
         type: "text",
         onChange: this.update('email')
       })), usernameField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "field"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
-        htmlFor: "password"
-      }, "PASSWORD"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "password",
+        className: "",
+        htmlFor: "password"
+      }, "PASSWORD", this.passwordErrors()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        name: "password",
         type: "text",
         onChange: this.update('password')
       }), forgotPass), birthdateField, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -1029,6 +1101,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     processForm: function processForm(user) {
       return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__.signup)(user));
+    },
+    clearErrors: function clearErrors() {
+      return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__.clearSessionErrors)());
     }
   };
 };
@@ -1133,6 +1208,9 @@ var sessionErrorsReducer = function sessionErrorsReducer() {
       return action.errors;
 
     case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_CURRENT_USER:
+      return [];
+
+    case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__.CLEAR_SESSION_ERRORS:
       return [];
 
     default:
