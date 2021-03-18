@@ -4,7 +4,19 @@ class User < ApplicationRecord
     validates :password, length: {minimum:6}, allow_nil: true
     validates :username, length: {minimum:2, maximum: 32}
     validates_format_of :email,:with => /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
-    #FPGIER
+    
+    has_many :owned_servers,
+        foreign_key: :owner_id,
+        class_name: :Server
+    
+    has_many :server_member_connections,
+        foreign_key: :member_id,
+        class_name: :ServerMember
+    
+    has_many :server_memberships,
+        through: :server_member_connections,
+        source: :server
+
 
     attr_reader :password
 
