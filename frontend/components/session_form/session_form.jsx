@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import Canvas from '../../util/login_canvas'
 import { Redirect } from 'react-router';
+import { RECEIVE_CURRENT_USER } from '../../actions/session_actions';
 
 export default class SessionForm extends React.Component {
     constructor(props) {
@@ -65,6 +66,10 @@ export default class SessionForm extends React.Component {
         this.props.processForm({
             email: "demouser@datcord.com",
             password: "password123"
+        }).then((action) => {
+            if (action.type === RECEIVE_CURRENT_USER) {
+                this.props.history.push("/channels/1")
+            }
         });
     }
 
@@ -94,7 +99,12 @@ export default class SessionForm extends React.Component {
             }
         }
         
-        this.props.processForm(formattedState);
+        this.props.processForm(formattedState).then((action) => {
+            if (action.type === RECEIVE_CURRENT_USER) {
+                this.props.history.push("/channels/1")
+            }
+        });
+        
     }
 
     update(field) {

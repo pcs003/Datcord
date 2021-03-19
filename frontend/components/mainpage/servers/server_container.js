@@ -1,12 +1,12 @@
 import { connect } from "react-redux"
-import { createServer, updateServer, fetchServers, fetchServer } from "../../actions/server_actions"
-import { logout } from "../../actions/session_actions"
-import MainPage from "./main_page"
+import { createServer, updateServer, fetchServers, fetchServer } from "../../../actions/server_actions"
+import { logout } from "../../../actions/session_actions"
+import Server from "./server"
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
     errors: state.errors.server,
-    servers: Object.values(state.entities.servers),
+    server: state.entities.servers[ownProps.match.params.server_id-1],
     currentUser: state.entities.users[state.session.id]
 })
 
@@ -18,4 +18,4 @@ const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage)
+export default connect(mapStateToProps, mapDispatchToProps)(Server)

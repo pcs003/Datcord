@@ -9,7 +9,8 @@ const Greeting = ({currentUser, logout}) => {
     )
     const greeting = () => (
         <nav className="greeting-logout">
-            <button className="logout-button" onClick={logout}>Log Out</button>
+            {/* <button className="logout-button" onClick={logout}>Log Out</button> */}
+            <Link to="/channels">Open Discord</Link>
         </nav>
     )
 

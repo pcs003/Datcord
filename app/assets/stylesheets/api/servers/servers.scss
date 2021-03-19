@@ -1,0 +1,26 @@
+// Place all the styles related to the api::servers controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div.discord-page {
+    display: flex;
+    position:absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow:hidden;
+    font-family: 'Catamaran', sans-serif;
+    color: #dcddde;
+
+    .server-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+    }
+    button.logout {
+        height: 40px;
+    }
+
+}
+
