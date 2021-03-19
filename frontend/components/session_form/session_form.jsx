@@ -41,22 +41,9 @@ export default class SessionForm extends React.Component {
 
         box.classList.remove("deactivate");
         
-        // this.handleErrors();
-        
         
     }
 
-    // handleErrors() {
-    //     if (this.props.formType === 'Log In') {
-    //         if (this.props.errors.length > 0) {
-    //             this.setState({
-    //                 emailErrored: (this.props.errors[0] != ''),
-    //                 passwordErrored: (this.props.errors[1] != '')
-    //             })
-    //         }
-    //     }
-    //     console.log(this.props.errors)
-    // }
 
     transitionOut(e) {
         e.preventDefault();
@@ -88,6 +75,10 @@ export default class SessionForm extends React.Component {
         this.props.clearErrors();
 
         let formattedState = {};
+        console.log(this.props.errors)
+        if (this.state.day === '' || this.state.month === '' || this.state.year === '') {
+            return;
+        }
         if (this.props.formType === 'Sign Up'){
 
             formattedState = {
@@ -147,6 +138,7 @@ export default class SessionForm extends React.Component {
                 return this.props.errors[0]
             }
         } else if (this.props.formType === 'Sign Up') {
+            
             let thisEmail = this.state.email.slice(0);
             if (this.props.errors.includes("Email is invalid")) {
                 if (!thisEmail.split("").includes("@")){
@@ -155,6 +147,8 @@ export default class SessionForm extends React.Component {
                 else {
                     return ' - Not a well formed email address'
                 }
+            } else if (this.props.errors.includes("Email has already been taken")) {
+                return ' - Email is already registered'
             }
         }
 
@@ -194,7 +188,7 @@ export default class SessionForm extends React.Component {
             passwordClass = this.props.errors[1] === '' ? "" : "errored";
         }
         if (this.props.formType === 'Sign Up' && this.props.errors.length > 0) {
-            emailClass = this.props.errors.includes("Email is invalid") ? "errored" : "";
+            emailClass = (this.props.errors.includes("Email is invalid") || this.props.errors.includes("Email has already been taken")) ? "errored" : "";
             passwordClass = this.props.errors.includes("Password is too short (minimum is 6 characters)") ? "errored" : ""
             usernameClass = (this.props.errors.includes("Username is too long (maximum is 32 characters)") || 
                              this.props.errors.includes("Username is too short (minimum is 2 characters)")) ? "errored" : "";
@@ -288,7 +282,7 @@ export default class SessionForm extends React.Component {
                     <div className="form-box">
                         {header}
                         <h3>{subHeader}</h3>
-                        
+
                         <form onSubmit={this.handleSubmit}>
                             <div className="field">
                                 <label id="email-label" className={emailClass} htmlFor="email">EMAIL{this.emailErrors()}</label>
