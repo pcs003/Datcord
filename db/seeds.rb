@@ -28,20 +28,25 @@ s4 = Server.create!({name:"Actor Association", owner_id: 3})
 s5 = Server.create!({name:"Athlete Army", owner_id: 6})
 
 sm1 = ServerMember.create!({member_id:4, server_id:1})
+sm15 = ServerMember.create!({member_id:1, server_id:1})
 
 sm2 = ServerMember.create!({member_id:1, server_id:2})
 sm3 = ServerMember.create!({member_id:5, server_id:2})
+sm16 = ServerMember.create!({member_id:7, server_id:2})
 
 sm4 = ServerMember.create!({member_id:1, server_id:3})
 sm5 = ServerMember.create!({member_id:2, server_id:3})
 sm6 = ServerMember.create!({member_id:3, server_id:3})
 sm7 = ServerMember.create!({member_id:6, server_id:3})
+sm17 = ServerMember.create!({member_id:4, server_id:3})
 
 sm8 = ServerMember.create!({member_id:1, server_id:4})
 sm9 = ServerMember.create!({member_id:2, server_id:4})
 sm10 = ServerMember.create!({member_id:6, server_id:4})
+sm18 = ServerMember.create!({member_id:3, server_id:4})
 
 sm11 = ServerMember.create!({member_id:1, server_id:5})
 sm12 = ServerMember.create!({member_id:2, server_id:5})
 sm13 = ServerMember.create!({member_id:5, server_id:5})
 sm14 = ServerMember.create!({member_id:7, server_id:5})
+sm19 = ServerMember.create!({member_id:6, server_id:5})

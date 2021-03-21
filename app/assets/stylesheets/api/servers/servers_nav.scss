@@ -2,7 +2,7 @@
     display:flex;
     flex-direction: column;
     align-items: center;
-    width:72px;
+    min-width:72px;
     overflow:auto;
     background-color: rgb(32,34,37);
     width: 72px;
@@ -10,6 +10,10 @@
     height:100%;
     padding: 5px 0;
     margin: auto;
+
+    a {
+        text-decoration: none;
+    }
 
     .nav-divider {
         height: 1px;
@@ -35,6 +39,7 @@
             padding-top: 5px;
             height: 48px;
             width: 40px;
+            color: black;
         }
 
         h3.nav-tab {
@@ -46,7 +51,7 @@
     }
 
     .nav-tab-frame:hover {
-        border-radius:12px;
+        border-radius:16px;
         background-color: rgb(114,137,218);
         transition:0.25s;
     }

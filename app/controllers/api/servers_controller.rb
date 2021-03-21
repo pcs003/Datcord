@@ -2,7 +2,7 @@ class Api::ServersController < ApplicationController
     
     def index
         # @servers = Server.all
-        @servers = current_user.owned_servers + current_user.server_memberships 
+        @servers = current_user.server_memberships 
         render 'api/servers/index'
     end
 

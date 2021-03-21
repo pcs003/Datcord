@@ -19,11 +19,12 @@ export default class SideNav extends React.Component {
     render() {
         let serverEles = null;
         if (this.props.servers != {}) {
-            serverEles = this.props.servers.map((server) => {
-                let serverLink = `/channels/${server.id}`
+            console.log(this.props.servers)
+            serverEles = this.props.servers.map((server, i) => {
+                let serverLink = `/channels/${i + 1}`
                 return (
-                    <Link to={serverLink}>
-                        <div key={server.id} className="nav-tab-frame">
+                    <Link key={i} to={serverLink}>
+                        <div className="nav-tab-frame">
                             <h3 className="nav-tab">{this.abbreviate(server.name)}</h3>
                         </div>
                     </Link>
