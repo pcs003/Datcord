@@ -24,7 +24,7 @@
 
     .current-user {
         width: 100%;
-        height: 50px;
+        min-height: 52px;
         position: relative;
         bottom: 0;
         background-color: #292B2F;
@@ -47,7 +47,7 @@
         }
 
         .user-info {
-            
+            margin-right: 5px;
             div.current-user-name {
                 font-size: 14px;
                 font-weight: 700;
@@ -68,6 +68,22 @@
                 cursor: pointer;
                 white-space: nowrap;
             }
+        }
+
+        .svg-wrapper {
+            width:32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            cursor: pointer;
+
+            svg {
+                margin: auto;
+            }
+        }
+
+        .svg-wrapper:hover {
+            background-color: rgba(79,84,92,0.32);
         }
         
     }
