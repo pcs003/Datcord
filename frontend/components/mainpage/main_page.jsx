@@ -1,5 +1,5 @@
 import React from 'react'
-import SideNav from './side_nav/side_nav'
+
 import ServerContainer from './servers/server_container'
 import { AuthRoute, ProtectedRoute } from '../../util/route_util';
 
@@ -21,11 +21,7 @@ export default class MainPage extends React.Component {
     render() {
         
         return (
-            <div className="discord-page">
-                <SideNav servers={this.props.servers} getServers={this.props.getServers}/>
-                
-                {/* <ServerContainer /> */}
-
+            <div>
                 <ProtectedRoute path="/channels/:server_id" component={ServerContainer} />
             </div>
         )

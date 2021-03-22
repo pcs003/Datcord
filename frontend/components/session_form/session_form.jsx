@@ -204,7 +204,7 @@ export default class SessionForm extends React.Component {
                              this.props.errors.includes("Username is too short (minimum is 2 characters)")) ? "errored" : "";
         }
 
-        // this is the username field that onlyu appears on sign up
+        // this is the username field that only appears on sign up
         const usernameField = this.props.formType === 'Log In' ? "" : (
             <div className="field">
                 <label id="username-label" className={usernameClass} htmlFor="username" >USERNAME{this.usernameErrors()}</label>

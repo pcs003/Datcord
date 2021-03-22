@@ -6,7 +6,7 @@ import Server from "./server"
 
 const mapStateToProps = (state, ownProps) => ({
     errors: state.errors.server,
-    servers: state.entities.servers,
+    servers: Object.values(state.entities.servers),
     server: state.entities.servers[ownProps.match.params.server_id-1],
     currentUser: state.entities.users[state.session.id]
 })
