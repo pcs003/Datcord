@@ -83,12 +83,12 @@ export default class SideNav extends React.Component {
         }
 
         let updateLeaveOption = this.props.currentUser.id == this.state.clickedServer.owner_id ? (
-            <div className="update-server-div">
-                <span id={this.state.clickedServer.id} onClick={this.props.openServerSettings}>Server Settings</span>
+            <div className="update-server-div" onClick={this.props.openServerSettings} >
+                <span id={this.state.clickedServer.id} >Server Settings</span>
             </div>
         ) : (
-            <div className="leave-server-div">
-                <span onClick={this.leaveServer} >Leave Server</span>
+            <div className="leave-server-div" onClick={this.leaveServer}>
+                <span>Leave Server</span>
             </div>
         );
 
