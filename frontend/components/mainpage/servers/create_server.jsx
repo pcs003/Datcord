@@ -89,6 +89,7 @@ export default class CreateServer extends React.Component {
                 
                 this.props.joinServer({inviteCode:iCode}).done((action) =>{
                     this.props.closeCreateServerForm();
+                    this.props.getServers();
                     this.props.history.push(`/channels/${action.server.server.id}`)
                 }).fail(()=> {
                     this.setState({

@@ -1007,6 +1007,8 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
           }).done(function (action) {
             _this2.props.closeCreateServerForm();
 
+            _this2.props.getServers();
+
             _this2.props.history.push("/channels/".concat(action.server.server.id));
           }).fail(function () {
             _this2.setState({
@@ -1363,6 +1365,7 @@ var CurrentUserInfo = /*#__PURE__*/function (_React$Component) {
       }, this.props.currentUser.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "current-user-number"
       }, "#", this.props.currentUser.id)), muteButton, deafenButton, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.props.openUserSettings,
         className: "svg-wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         width: "20",
@@ -1519,7 +1522,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _side_nav_side_nav__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../side_nav/side_nav */ "./frontend/components/mainpage/side_nav/side_nav.jsx");
 /* harmony import */ var _create_server__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./create_server */ "./frontend/components/mainpage/servers/create_server.jsx");
 /* harmony import */ var _current_user_info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./current_user_info */ "./frontend/components/mainpage/servers/current_user_info.jsx");
-/* harmony import */ var _server_settings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./server_settings */ "./frontend/components/mainpage/servers/server_settings.jsx");
+/* harmony import */ var _settings_layers_server_settings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./settings_layers/server_settings */ "./frontend/components/mainpage/servers/settings_layers/server_settings.jsx");
+/* harmony import */ var _settings_layers_user_settings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./settings_layers/user_settings */ "./frontend/components/mainpage/servers/settings_layers/user_settings.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1549,6 +1553,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Server = /*#__PURE__*/function (_React$Component) {
   _inherits(Server, _React$Component);
 
@@ -1567,6 +1572,8 @@ var Server = /*#__PURE__*/function (_React$Component) {
     _this.closeCreateServerForm = _this.closeCreateServerForm.bind(_assertThisInitialized(_this));
     _this.openServerSettings = _this.openServerSettings.bind(_assertThisInitialized(_this));
     _this.closeServerSettings = _this.closeServerSettings.bind(_assertThisInitialized(_this));
+    _this.openUserSettings = _this.openUserSettings.bind(_assertThisInitialized(_this));
+    _this.closeUserSettings = _this.closeUserSettings.bind(_assertThisInitialized(_this));
     _this.state = {
       muted: false,
       deafened: false,
@@ -1683,6 +1690,31 @@ var Server = /*#__PURE__*/function (_React$Component) {
       }, 100);
     }
   }, {
+    key: "openUserSettings",
+    value: function openUserSettings(e) {
+      e.preventDefault();
+      this.setState({
+        layerName: "userSettings"
+      });
+    }
+  }, {
+    key: "closeUserSettings",
+    value: function closeUserSettings(e) {
+      var _this4 = this;
+
+      if (e) {
+        e.preventDefault();
+      }
+
+      var wrapper = document.getElementById("user-settings-modal-wrapper");
+      wrapper.classList.add("inactive");
+      setTimeout(function () {
+        _this4.setState({
+          layerName: ""
+        });
+      }, 100);
+    }
+  }, {
     key: "render",
     value: function render() {
       var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
@@ -1726,7 +1758,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
           createServer: this.props.createServer
         });
       } else if (this.state.layerName === "serverSettings") {
-        currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_server_settings__WEBPACK_IMPORTED_MODULE_5__.default, {
+        currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_settings_layers_server_settings__WEBPACK_IMPORTED_MODULE_5__.default, {
           updateServer: this.props.updateServer,
           clickedServerName: this.state.clickedServerName,
           getServers: this.props.getServers,
@@ -1736,7 +1768,13 @@ var Server = /*#__PURE__*/function (_React$Component) {
           deleteServer: this.props.deleteServer,
           closeServerSettings: this.closeServerSettings
         });
-      } else if (this.state.layerName === "userSettings") {} //handles user vs server page
+      } else if (this.state.layerName === "userSettings") {
+        currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_settings_layers_user_settings__WEBPACK_IMPORTED_MODULE_6__.default, {
+          closeUserSettings: this.closeUserSettings,
+          logout: this.props.logout,
+          currentUser: this.props.currentUser
+        });
+      } //handles user vs server page
 
 
       var serverPage = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -1748,6 +1786,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, currentServerName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "channel-nav"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_current_user_info__WEBPACK_IMPORTED_MODULE_4__.default, {
+        openUserSettings: this.openUserSettings,
         muted: this.state.muted,
         deafened: this.state.deafened,
         currentUser: this.props.currentUser,
@@ -1761,10 +1800,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
         className: "messaging-div"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-members-nav"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-        className: "logout",
-        onClick: this.props.logout
-      }, "Log Out"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
         className: "members-header"
       }, "MEMBERS\u2014", memberListElements.length), memberListElements, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "user-list-item invis"
@@ -1780,6 +1816,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "channel-nav"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_current_user_info__WEBPACK_IMPORTED_MODULE_4__.default, {
+        openUserSettings: this.openUserSettings,
         muted: this.state.muted,
         deafened: this.state.deafened,
         currentUser: this.props.currentUser,
@@ -1896,10 +1933,10 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 /***/ }),
 
-/***/ "./frontend/components/mainpage/servers/server_settings.jsx":
-/*!******************************************************************!*\
-  !*** ./frontend/components/mainpage/servers/server_settings.jsx ***!
-  \******************************************************************/
+/***/ "./frontend/components/mainpage/servers/settings_layers/server_settings.jsx":
+/*!**********************************************************************************!*\
+  !*** ./frontend/components/mainpage/servers/settings_layers/server_settings.jsx ***!
+  \**********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2104,6 +2141,180 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return ServerSettings;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+
+
+/***/ }),
+
+/***/ "./frontend/components/mainpage/servers/settings_layers/user_settings.jsx":
+/*!********************************************************************************!*\
+  !*** ./frontend/components/mainpage/servers/settings_layers/user_settings.jsx ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UserSettings)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var UserSettings = /*#__PURE__*/function (_React$Component) {
+  _inherits(UserSettings, _React$Component);
+
+  var _super = _createSuper(UserSettings);
+
+  function UserSettings(props) {
+    var _this;
+
+    _classCallCheck(this, UserSettings);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      emailRevealed: false
+    };
+    _this.toggleRevealEmail = _this.toggleRevealEmail.bind(_assertThisInitialized(_this));
+    _this.censorEmail = _this.censorEmail.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(UserSettings, [{
+    key: "toggleRevealEmail",
+    value: function toggleRevealEmail(e) {
+      e.preventDefault();
+      var current = this.state.emailRevealed;
+      this.setState({
+        emailRevealed: !current
+      });
+    }
+  }, {
+    key: "censorEmail",
+    value: function censorEmail(email) {
+      var idx = email.indexOf("@");
+      var stars = "*".repeat(idx);
+      return stars + email.slice(idx);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
+      var currentPicStyle = {
+        backgroundColor: colors[this.props.currentUser.id % colors.length]
+      };
+      var toggleText = this.state.emailRevealed ? "Hide" : "Reveal";
+      var emailText = this.state.emailRevealed ? this.props.currentUser.email : this.censorEmail(this.props.currentUser.email);
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "user-settings-modal-wrapper",
+        className: "user-settings-modal-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "sidebar"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "sidebar-content"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "USER SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "My Account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Privacy & Safety"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Authorized Apps"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Connections"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "BILLING SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        className: "nitro"
+      }, "Discord Nitro"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Server Boost"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Gift Inventory"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Billing"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "APP SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Voice & Video"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Text & Images"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Appearance"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Notifications"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Keybinds"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Language"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Windows Settings"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Streamer Mode"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "GAMING SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Game Activity"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Overlay"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Change Log"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "HypeSquad"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        className: "logout-button",
+        onClick: this.props.logout
+      }, "Log Out"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "personal-links"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        href: "https://github.com/pcs003"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        src: window.githubLogo,
+        alt: ""
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        href: "https://www.linkedin.com/in/parth-shah-b6265763/"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        src: window.linkedInLogo,
+        alt: ""
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", null, "Created by Parth Shah"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", null, "Hosted on Heroku"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "content"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "close-form-container"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "close-form",
+        onClick: this.props.closeUserSettings
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        width: "24",
+        height: "24",
+        viewBox: "0 0 24 24"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#dcddde",
+        d: "M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "esc-text"
+      }, "ESC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "MY ACCOUNT"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "my-account-info"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "top"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "upload-image-icon"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        type: "file",
+        accept: "image/jpg, image/png, image/jpeg"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "current-image",
+        style: currentPicStyle
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "default-profile-pic",
+        src: window.whiteDatcordRobot,
+        alt: ""
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "message"
+      }, "CHANGE AVATAR")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "name-num"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, this.props.currentUser.username, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "#", this.props.currentUser.id)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "bottom"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "username"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "USERNAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h4", null, this.props.currentUser.username, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "#", this.props.currentUser.id))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "email"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "EMAIL"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h4", null, emailText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "toggle",
+        onClick: this.toggleRevealEmail
+      }, toggleText))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "phone-number"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "PHONE NUMBER"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h4", null, "You can't add phone numbers yet"))))));
+    }
+  }]);
+
+  return UserSettings;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
 

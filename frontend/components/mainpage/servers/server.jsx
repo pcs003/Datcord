@@ -3,7 +3,8 @@ import InfoNavbar from './info_navbar'
 import SideNav from '../side_nav/side_nav'
 import CreateServer from './create_server'
 import CurrentUserInfo from './current_user_info'
-import ServerSettings from './server_settings'
+import ServerSettings from './settings_layers/server_settings'
+import UserSettings from './settings_layers/user_settings'
 
 export default class Server extends React.Component {
     constructor(props) {
@@ -16,6 +17,8 @@ export default class Server extends React.Component {
         this.closeCreateServerForm = this.closeCreateServerForm.bind(this)
         this.openServerSettings = this.openServerSettings.bind(this)
         this.closeServerSettings = this.closeServerSettings.bind(this)
+        this.openUserSettings = this.openUserSettings.bind(this)
+        this.closeUserSettings = this.closeUserSettings.bind(this)
 
         this.state = {
             muted: false,
@@ -117,6 +120,29 @@ export default class Server extends React.Component {
         }, 100);
     }
 
+    openUserSettings(e) {
+        e.preventDefault();
+        this.setState({
+            layerName: "userSettings"
+        })
+    }
+
+    closeUserSettings(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        
+        let wrapper = document.getElementById("user-settings-modal-wrapper");
+
+        wrapper.classList.add("inactive");
+
+        setTimeout(() => {
+            this.setState({
+                layerName: ""
+            })
+        }, 100);
+    }
+
     
     render() {
         let colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"]
@@ -149,7 +175,7 @@ export default class Server extends React.Component {
         } else if (this.state.layerName === "serverSettings") {
             currentLayer = <ServerSettings updateServer={this.props.updateServer} clickedServerName={this.state.clickedServerName} getServers={this.props.getServers} servers={this.props.servers} history={this.props.history} clickedServerId={this.state.clickedServerId} deleteServer={this.props.deleteServer} closeServerSettings={this.closeServerSettings} />
         } else if (this.state.layerName === "userSettings") {
-            
+            currentLayer = <UserSettings closeUserSettings={this.closeUserSettings} logout={this.props.logout} currentUser={this.props.currentUser}/>
         }
 
         //handles user vs server page
@@ -162,14 +188,13 @@ export default class Server extends React.Component {
                     <div className="channel-nav">
                         
                     </div>
-                    <CurrentUserInfo muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
+                    <CurrentUserInfo openUserSettings={this.openUserSettings} muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
                 </div>
                 <div className="right-div">
                     <InfoNavbar />
                     <div className="messages-users-div">
                         <div className="messaging-div"></div>
                         <div className="server-members-nav">
-                            <button className="logout" onClick={this.props.logout}>Log Out</button>
                             <h2 className="members-header">MEMBERS&mdash;{memberListElements.length}</h2>
                             {memberListElements}
                             <div className="user-list-item invis">
@@ -192,7 +217,7 @@ export default class Server extends React.Component {
                     <div className="channel-nav">
                         
                     </div>
-                    <CurrentUserInfo muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
+                    <CurrentUserInfo openUserSettings={this.openUserSettings} muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
                 </div>
                 <div className="right-div">
                     <div className="info-navbar">
