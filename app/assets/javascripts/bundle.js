@@ -915,12 +915,18 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       screenNum: 1,
       forward: true,
-      serverName: ""
+      serverName: "",
+      inviteCode: "",
+      joiningServer: false,
+      joinError: "*"
     };
     _this.forwardScreen = _this.forwardScreen.bind(_assertThisInitialized(_this));
     _this.backScreen = _this.backScreen.bind(_assertThisInitialized(_this));
     _this.updateName = _this.updateName.bind(_assertThisInitialized(_this));
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_assertThisInitialized(_this));
+    _this.onClickJoin = _this.onClickJoin.bind(_assertThisInitialized(_this));
+    _this.handleJoinSubmit = _this.handleJoinSubmit.bind(_assertThisInitialized(_this));
+    _this.updateCode = _this.updateCode.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -931,7 +937,8 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
       var currScreen = this.state.screenNum;
       this.setState({
         screenNum: currScreen + 1,
-        forward: true
+        forward: true,
+        joiningServer: false
       });
     }
   }, {
@@ -948,31 +955,87 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
     key: "updateName",
     value: function updateName(e) {
       e.preventDefault();
-      console.log("updating name");
       this.setState({
         serverName: e.target.value
       });
     }
   }, {
-    key: "handleFormSubmit",
-    value: function handleFormSubmit(e) {
+    key: "updateCode",
+    value: function updateCode(e) {
+      e.preventDefault();
+      this.setState({
+        inviteCode: e.target.value
+      });
+    }
+  }, {
+    key: "onClickJoin",
+    value: function onClickJoin(e) {
+      e.preventDefault();
+      var currScreen = this.state.screenNum;
+      this.setState({
+        screenNum: currScreen + 1,
+        forward: true,
+        joiningServer: true
+      });
+    }
+  }, {
+    key: "handleJoinSubmit",
+    value: function handleJoinSubmit(e) {
       var _this2 = this;
 
       e.preventDefault();
-      console.log("here");
+
+      if (this.state.inviteCode === "") {
+        this.setState({
+          joinError: "- Please enter a valid invite link or invite code"
+        });
+      } else {
+        var raw = this.state.inviteCode;
+        var iCode = parseInt(raw);
+
+        if (raw.length < 6) {
+          this.setState({
+            joinError: "- The invite is invalid or has expired"
+          });
+        } else {
+          if (raw.length > 6) {
+            iCode = parseInt(raw.slice(raw.length - 6));
+          }
+
+          this.props.joinServer({
+            inviteCode: iCode
+          }).done(function (action) {
+            _this2.props.closeCreateServerForm();
+
+            _this2.props.history.push("/channels/".concat(action.server.server.id));
+          }).fail(function () {
+            _this2.setState({
+              joinError: "- The invite is invalid or has expired"
+            });
+          });
+        }
+      } // this.props.joinServer({inviteCode: this.state.inviteCode})
+
+    }
+  }, {
+    key: "handleFormSubmit",
+    value: function handleFormSubmit(e) {
+      var _this3 = this;
+
+      e.preventDefault();
       var serverState = {
         name: this.state.serverName,
         owner_id: this.props.currentUser.id
       };
       this.props.createServer(serverState).then(function (action) {
         if (action.type === _actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.RECEIVE_SERVER) {
-          _this2.props.joinServer({
+          _this3.props.joinServer({
             inviteCode: action.server.server.invite_code
           });
 
-          _this2.props.closeCreateServerForm();
+          _this3.props.closeCreateServerForm();
 
-          _this2.props.history.push("/channels/".concat(action.server.server.id));
+          _this3.props.history.push("/channels/".concat(action.server.server.id));
         }
       });
     }
@@ -1000,6 +1063,74 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
         }
       }
 
+      var linkHeader = "";
+      var linkClass = "";
+
+      if (this.state.joinError === "*") {
+        linkHeader = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "*");
+      } else {
+        linkHeader = this.state.joinError;
+        linkClass = "errored";
+      } // this hanles whether you are joining or creating a server
+
+
+      var second = this.state.joiningServer ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "second-screen join"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "screen-two-header"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Join a server"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Enter an invite below to join an existing server")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "form-container"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        className: linkClass,
+        htmlFor: "code"
+      }, "INVITE LINK ", linkHeader), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        name: "code",
+        type: "text",
+        onChange: this.updateCode,
+        placeholder: "https://discord.gg/hTKzmak"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "INVITES SHOULD LOOK LIKE"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "link-examples"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "hTKzmak"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "https://discord.gg/hTKzmak"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "https://discord.gg/cool-people"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "back-join"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        onClick: this.backScreen
+      }, "Back"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        onClick: this.handleJoinSubmit,
+        type: "submit",
+        value: "Join Server"
+      }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "second-screen"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "screen-two-header"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Tell us more about your server"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "In order to help you with your setup, is your new server for just a few friends or a larger community?")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "two-to-three-button",
+        onClick: this.forwardScreen
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        src: window.clubCommunityIcon,
+        alt: ""
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "For a club or community")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "right-arrow",
+        src: window.rightArrowIcon,
+        alt: ""
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "two-to-three-button",
+        onClick: this.forwardScreen
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        src: window.meFriendsIcon,
+        alt: ""
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "For me and my friends")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "right-arrow",
+        src: window.rightArrowIcon,
+        alt: ""
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "skip-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Not sure? You can ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        onClick: this.forwardScreen
+      }, "skip this question"), " for now")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "back-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        onClick: this.backScreen
+      }, "Back")));
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "create-server-modal-wrapper",
         className: "create-server-modal-wrapper"
@@ -1038,39 +1169,9 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
         className: "bottom-divider"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "join-existing-div"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Have an invite already?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", null, "Join a Server"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "second-screen"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "screen-two-header"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Tell us more about your server"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "In order to help you with your setup, is your new server for just a few friends or a larger community?")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "two-to-three-button",
-        onClick: this.forwardScreen
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.clubCommunityIcon,
-        alt: ""
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "For a club or community")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        className: "right-arrow",
-        src: window.rightArrowIcon,
-        alt: ""
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "two-to-three-button",
-        onClick: this.forwardScreen
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.meFriendsIcon,
-        alt: ""
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "For me and my friends")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        className: "right-arrow",
-        src: window.rightArrowIcon,
-        alt: ""
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "skip-div"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Not sure? You can ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
-        onClick: this.forwardScreen
-      }, "skip this question"), " for now")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "back-div"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
-        onClick: this.backScreen
-      }, "Back"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Have an invite already?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        onClick: this.onClickJoin
+      }, "Join a Server"))), second, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "third-screen"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "screen-three-header"
@@ -1635,7 +1736,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
           deleteServer: this.props.deleteServer,
           closeServerSettings: this.closeServerSettings
         });
-      } //handles user vs server page
+      } else if (this.state.layerName === "userSettings") {} //handles user vs server page
 
 
       var serverPage = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2117,6 +2218,8 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       this.props.leaveServer({
         serverId: this.state.clickedServer.id
       }).then(function () {
+        _this2.props.getServers();
+
         _this2.props.history.push("/channels/@me");
       });
     }

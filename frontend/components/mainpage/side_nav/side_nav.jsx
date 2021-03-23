@@ -49,6 +49,7 @@ export default class SideNav extends React.Component {
     leaveServer(e) {
         e.preventDefault();
         this.props.leaveServer({serverId: this.state.clickedServer.id}).then(() => {
+            this.props.getServers();
             this.props.history.push(`/channels/@me`)
         })
     }

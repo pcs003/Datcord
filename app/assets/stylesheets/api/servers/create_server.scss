@@ -12,7 +12,7 @@
 
     .create-server-modal {
         position: absolute;
-        top: Calc(50% - 280px);
+        top: Calc(50% - 180px);
         left: Calc(50% - 220px);
         height: auto;
         min-width: 440px;
@@ -273,6 +273,92 @@
                         color: black;
                         font-size: 14px;
                         margin-left: 16px;
+                    }
+                }
+
+                .form-container {
+                    width: 408px;
+                    margin-bottom: 10px;
+
+                    label {
+                        color: #4f5660;
+                        font-size: 12px;
+                        font-weight: 600;
+                        margin-bottom: 8px;
+
+                        span {
+                            color: red;
+                        }
+                    }
+
+                    label.errored {
+                        color: red;
+                    }
+
+                    input[type=text] {
+                        width: 408px;
+                        height: 40px;
+                        color: black;
+                        background-color: #E1E2E5;
+                        padding-left:10px;
+                        outline: none;
+                        border: none;
+                        font-size: 16px;
+                        margin: 8px auto 24px auto;
+                    }
+
+                    .link-examples {
+                        margin: 16px auto;
+
+                        h2 {
+                            color: #060607;
+                            font-size: 14px;
+                        }
+                    }
+
+                    
+                }
+
+                .back-join {
+
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    background-color: #F6F6F7;
+                    min-width: 440px;
+                    height: 90px;
+
+                    h2 {
+                        cursor: pointer;
+                        color: black;
+                        font-size: 14px;
+                        margin-left: 16px;
+                    }
+
+                    input[type=submit] {
+                        margin-right: 16px;
+                        border:none;
+                        background-color: #7289da;
+                        color: white;
+                        min-height: 38px;
+                        min-width: 96px;
+                        border-radius: 3px;
+                        transition: 0.17s;
+                        cursor: pointer;
+                    }
+
+                    input[type=submit]:hover {
+                        background-color: #677bc4;
+                        transition: 0.17s;
+                    }
+                }
+            }
+
+            .second-screen.join {
+                .screen-two-header {
+                    p {
+                        font-size: 14px;
                     }
                 }
             }

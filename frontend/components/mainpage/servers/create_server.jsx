@@ -1,5 +1,5 @@
 import React from 'react'
-import { RECEIVE_SERVER } from '../../../actions/server_actions'
+import { RECEIVE_SERVER, RECEIVE_SERVER_ERRORS } from '../../../actions/server_actions'
 
 export default class CreateServer extends React.Component {
     constructor(props) {
@@ -8,13 +8,19 @@ export default class CreateServer extends React.Component {
         this.state = {
             screenNum: 1,
             forward: true,
-            serverName: ""
+            serverName: "",
+            inviteCode: "",
+            joiningServer: false,
+            joinError: "*"
         }
 
         this.forwardScreen = this.forwardScreen.bind(this)
         this.backScreen = this.backScreen.bind(this)
         this.updateName = this.updateName.bind(this)
         this.handleFormSubmit = this.handleFormSubmit.bind(this)
+        this.onClickJoin = this.onClickJoin.bind(this)
+        this.handleJoinSubmit = this.handleJoinSubmit.bind(this)
+        this.updateCode = this.updateCode.bind(this)
     }
 
     forwardScreen(e) {
@@ -22,7 +28,8 @@ export default class CreateServer extends React.Component {
         let currScreen = this.state.screenNum
         this.setState({
             screenNum: currScreen + 1,
-            forward: true
+            forward: true,
+            joiningServer: false
         })
     }
 
@@ -37,15 +44,67 @@ export default class CreateServer extends React.Component {
 
     updateName(e) {
         e.preventDefault();
-        console.log("updating name")
+
         this.setState({
             serverName: e.target.value
         })
     }
 
+    updateCode(e) {
+        e.preventDefault();
+        this.setState({
+            inviteCode: e.target.value
+        })
+    }
+
+    onClickJoin(e) {
+        e.preventDefault();
+        let currScreen = this.state.screenNum
+        this.setState({
+            screenNum: currScreen + 1,
+            forward: true,
+            joiningServer: true
+        })
+    }
+
+    handleJoinSubmit(e) {
+        e.preventDefault();
+
+        if (this.state.inviteCode === "") {
+            this.setState({
+                joinError: "- Please enter a valid invite link or invite code"
+            })
+        } else {
+            let raw = this.state.inviteCode;
+            let iCode = parseInt(raw)
+
+            if (raw.length < 6) {
+                this.setState({
+                    joinError: "- The invite is invalid or has expired"
+                })
+            } else {
+                if (raw.length > 6) {
+                    iCode = parseInt(raw.slice(raw.length - 6))
+                }
+                
+                this.props.joinServer({inviteCode:iCode}).done((action) =>{
+                    this.props.closeCreateServerForm();
+                    this.props.history.push(`/channels/${action.server.server.id}`)
+                }).fail(()=> {
+                    this.setState({
+                        joinError: "- The invite is invalid or has expired"
+                    })
+                })
+            } 
+            
+            
+        }
+        // this.props.joinServer({inviteCode: this.state.inviteCode})
+    }
+
     handleFormSubmit(e) {
         e.preventDefault();
-        console.log("here")
+
         let serverState = {
             name: this.state.serverName,
             owner_id: this.props.currentUser.id
@@ -78,6 +137,66 @@ export default class CreateServer extends React.Component {
                 screenClass = "all-screens third forward"
             }
         }
+
+        let linkHeader = "";
+        let linkClass = "";
+        if (this.state.joinError === "*") {
+            linkHeader = <span>*</span>;
+        } else {
+            linkHeader = this.state.joinError;
+            linkClass = "errored"
+        }
+
+        // this hanles whether you are joining or creating a server
+        let second = this.state.joiningServer ? (
+            <div className="second-screen join">
+                <div className="screen-two-header">
+                    <h2>Join a server</h2>
+                    <p>Enter an invite below to join an existing server</p>
+                </div>
+                <div className="form-container">
+                    <label className={linkClass} htmlFor="code">INVITE LINK {linkHeader}</label>
+                    <input name="code" type="text" onChange={this.updateCode} placeholder="https://discord.gg/hTKzmak" />
+                    <label>INVITES SHOULD LOOK LIKE</label>
+                    <div className="link-examples">
+                        <h3>hTKzmak</h3>
+                        <h3>https://discord.gg/hTKzmak</h3>
+                        <h3>https://discord.gg/cool-people</h3>
+                    </div>
+                </div>
+                <div className="back-join">
+                    <h2 onClick={this.backScreen}>Back</h2>
+                    <input onClick={this.handleJoinSubmit} type="submit" value="Join Server" />
+                </div>
+            </div>
+        ) : (
+            <div className="second-screen">
+                <div className="screen-two-header">
+                    <h2>Tell us more about your server</h2>
+                    <p>In order to help you with your setup, is your new server for just a few friends or a larger community?</p>
+                </div>
+                <div className="two-to-three-button" onClick={this.forwardScreen}>
+                    <div>
+                        <img src={window.clubCommunityIcon} alt=""/>
+                        <h2>For a club or community</h2>
+                    </div>
+                    <img className="right-arrow" src={window.rightArrowIcon} alt=""/>
+                </div>
+                <div className="two-to-three-button" onClick={this.forwardScreen}>
+                    <div>
+                        <img src={window.meFriendsIcon} alt=""/>
+                        <h2>For me and my friends</h2>
+                    </div>
+                    <img className="right-arrow" src={window.rightArrowIcon} alt=""/>
+                </div>
+                <div className="skip-div">
+                    <h2>Not sure? You can <a onClick={this.forwardScreen}>skip this question</a> for now</h2>
+                </div>
+                <div className="back-div">
+                    <h2 onClick={this.backScreen}>Back</h2>
+                </div>
+            </div>
+        )
         
         
         return (
@@ -105,35 +224,10 @@ export default class CreateServer extends React.Component {
                             <div className="bottom-divider"></div>
                             <div className="join-existing-div">
                                 <h2>Have an invite already?</h2>
-                                <button>Join a Server</button>
+                                <button onClick={this.onClickJoin}>Join a Server</button>
                             </div>
                         </div>
-                        <div className="second-screen">
-                            <div className="screen-two-header">
-                                <h2>Tell us more about your server</h2>
-                                <p>In order to help you with your setup, is your new server for just a few friends or a larger community?</p>
-                            </div>
-                            <div className="two-to-three-button" onClick={this.forwardScreen}>
-                                <div>
-                                    <img src={window.clubCommunityIcon} alt=""/>
-                                    <h2>For a club or community</h2>
-                                </div>
-                                <img className="right-arrow" src={window.rightArrowIcon} alt=""/>
-                            </div>
-                            <div className="two-to-three-button" onClick={this.forwardScreen}>
-                                <div>
-                                    <img src={window.meFriendsIcon} alt=""/>
-                                    <h2>For me and my friends</h2>
-                                </div>
-                                <img className="right-arrow" src={window.rightArrowIcon} alt=""/>
-                            </div>
-                            <div className="skip-div">
-                                <h2>Not sure? You can <a onClick={this.forwardScreen}>skip this question</a> for now</h2>
-                            </div>
-                            <div className="back-div">
-                                <h2 onClick={this.backScreen}>Back</h2>
-                            </div>
-                        </div>
+                        {second}
                         <div className="third-screen">
                             <div className="screen-three-header">
                                 <h2>Customize your server</h2>

@@ -148,6 +148,8 @@ export default class Server extends React.Component {
             currentLayer = <CreateServer getServers={this.props.getServers} servers={this.props.servers} joinServer={this.props.joinServer} currentUser={this.props.currentUser} history={this.props.history} isActive={this.state.layerName === "createServer"} closeCreateServerForm={this.closeCreateServerForm} createServer={this.props.createServer} /> ;
         } else if (this.state.layerName === "serverSettings") {
             currentLayer = <ServerSettings updateServer={this.props.updateServer} clickedServerName={this.state.clickedServerName} getServers={this.props.getServers} servers={this.props.servers} history={this.props.history} clickedServerId={this.state.clickedServerId} deleteServer={this.props.deleteServer} closeServerSettings={this.closeServerSettings} />
+        } else if (this.state.layerName === "userSettings") {
+            
         }
 
         //handles user vs server page
