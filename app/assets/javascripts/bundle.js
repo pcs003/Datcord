@@ -126,7 +126,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "fetchServer": () => (/* binding */ fetchServer),
 /* harmony export */   "createServer": () => (/* binding */ createServer),
 /* harmony export */   "updateServer": () => (/* binding */ updateServer),
-/* harmony export */   "deleteServer": () => (/* binding */ deleteServer)
+/* harmony export */   "deleteServer": () => (/* binding */ deleteServer),
+/* harmony export */   "joinServer": () => (/* binding */ joinServer),
+/* harmony export */   "leaveServer": () => (/* binding */ leaveServer)
 /* harmony export */ });
 /* harmony import */ var _util_server_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/server_api_util */ "./frontend/util/server_api_util.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -206,6 +208,24 @@ var deleteServer = function deleteServer(serverId) {
   return function (dispatch) {
     return _util_server_api_util__WEBPACK_IMPORTED_MODULE_0__.deleteServer(serverId).then(function () {
       return dispatch(removeServer(serverId));
+    });
+  };
+};
+var joinServer = function joinServer(inviteCode) {
+  return function (dispatch) {
+    return _util_server_api_util__WEBPACK_IMPORTED_MODULE_0__.joinServer(inviteCode).then(function (server) {
+      return dispatch(receiveServer(server));
+    }, function (e) {
+      return dispatch(receiveServerErrors(e.responseJSON));
+    });
+  };
+};
+var leaveServer = function leaveServer(serverId) {
+  return function (dispatch) {
+    return _util_server_api_util__WEBPACK_IMPORTED_MODULE_0__.leaveServer(serverId).then(function (serverId) {
+      return dispatch(removeServer(serverId));
+    }, function (e) {
+      return dispatch(receiveServerErrors(e.responseJSON));
     });
   };
 };
@@ -301,13 +321,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _session_form_login_form_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./session_form/login_form_container */ "./frontend/components/session_form/login_form_container.js");
-/* harmony import */ var _session_form_signup_form_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./session_form/signup_form_container */ "./frontend/components/session_form/signup_form_container.js");
-/* harmony import */ var _mainpage_main_page_container__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./mainpage/main_page_container */ "./frontend/components/mainpage/main_page_container.js");
-/* harmony import */ var _util_route_util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util/route_util */ "./frontend/util/route_util.jsx");
-/* harmony import */ var _greeting_landing__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./greeting/landing */ "./frontend/components/greeting/landing.jsx");
-/* harmony import */ var _funstuff_whydatcord__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./funstuff/whydatcord */ "./frontend/components/funstuff/whydatcord.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _session_form_login_form_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./session_form/login_form_container */ "./frontend/components/session_form/login_form_container.js");
+/* harmony import */ var _session_form_signup_form_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./session_form/signup_form_container */ "./frontend/components/session_form/signup_form_container.js");
+/* harmony import */ var _mainpage_main_page_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mainpage/main_page_container */ "./frontend/components/mainpage/main_page_container.js");
+/* harmony import */ var _util_route_util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util/route_util */ "./frontend/util/route_util.jsx");
+/* harmony import */ var _greeting_landing__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./greeting/landing */ "./frontend/components/greeting/landing.jsx");
+/* harmony import */ var _funstuff_whydatcord__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./funstuff/whydatcord */ "./frontend/components/funstuff/whydatcord.jsx");
 
 
 
@@ -318,25 +338,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var App = function App() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Route, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
     exact: true,
     path: "/whydatcord",
-    component: _funstuff_whydatcord__WEBPACK_IMPORTED_MODULE_7__.default
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Route, {
+    component: _funstuff_whydatcord__WEBPACK_IMPORTED_MODULE_6__.default
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
     exact: true,
     path: "/",
-    component: _greeting_landing__WEBPACK_IMPORTED_MODULE_6__.default
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_5__.AuthRoute, {
+    component: _greeting_landing__WEBPACK_IMPORTED_MODULE_5__.default
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_4__.AuthRoute, {
     exact: true,
     path: "/login",
-    component: _session_form_login_form_container__WEBPACK_IMPORTED_MODULE_2__.default
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_5__.AuthRoute, {
+    component: _session_form_login_form_container__WEBPACK_IMPORTED_MODULE_1__.default
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_4__.AuthRoute, {
     exact: true,
     path: "/signup",
-    component: _session_form_signup_form_container__WEBPACK_IMPORTED_MODULE_3__.default
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_5__.ProtectedRoute, {
+    component: _session_form_signup_form_container__WEBPACK_IMPORTED_MODULE_2__.default
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_4__.ProtectedRoute, {
     path: "/channels/",
-    component: _mainpage_main_page_container__WEBPACK_IMPORTED_MODULE_4__.default
+    component: _mainpage_main_page_container__WEBPACK_IMPORTED_MODULE_3__.default
   })));
 };
 
@@ -855,6 +875,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ CreateServer)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _actions_server_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../actions/server_actions */ "./frontend/actions/server_actions.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -879,6 +900,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var CreateServer = /*#__PURE__*/function (_React$Component) {
   _inherits(CreateServer, _React$Component);
 
@@ -892,10 +914,13 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       screenNum: 1,
-      forward: true
+      forward: true,
+      serverName: ""
     };
     _this.forwardScreen = _this.forwardScreen.bind(_assertThisInitialized(_this));
     _this.backScreen = _this.backScreen.bind(_assertThisInitialized(_this));
+    _this.updateName = _this.updateName.bind(_assertThisInitialized(_this));
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -917,6 +942,37 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
       this.setState({
         screenNum: currScreen - 1,
         forward: false
+      });
+    }
+  }, {
+    key: "updateName",
+    value: function updateName(e) {
+      e.preventDefault();
+      this.setState({
+        serverName: e.target.value
+      });
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      console.log("here");
+      var serverState = {
+        name: this.state.serverName,
+        owner_id: this.props.currentUser.id
+      };
+      this.props.createServer(serverState).then(function (action) {
+        if (action.type === _actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.RECEIVE_SERVER) {
+          _this2.props.joinServer({
+            inviteCode: action.server.server.invite_code
+          });
+
+          _this2.props.closeCreateServerForm();
+
+          _this2.props.history.push("/channels/".concat(action.server.server.id));
+        }
       });
     }
   }, {
@@ -953,7 +1009,7 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
         className: "close-form",
         onClick: this.props.closeCreateServerForm
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
-        classNamewidth: "24",
+        width: "24",
         height: "24",
         viewBox: "0 0 24 24"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
@@ -1017,7 +1073,9 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
         className: "third-screen"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "screen-three-header"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Customize your server"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Give your new server a personality with a name and an icon. You can always change it later")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Customize your server"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Give your new server a personality with a name and an icon. You can always change it later")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+        onSubmit: this.handleSubmit
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "input-image-wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         width: "80",
@@ -1052,7 +1110,8 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
         htmlFor: "name"
       }, "SERVER NAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         name: "name",
-        type: "text"
+        type: "text",
+        onChange: this.updateName
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "By creating a server, you agree to discords ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", null, "Community Guidelines"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "back-create"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
@@ -1359,6 +1418,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _side_nav_side_nav__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../side_nav/side_nav */ "./frontend/components/mainpage/side_nav/side_nav.jsx");
 /* harmony import */ var _create_server__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./create_server */ "./frontend/components/mainpage/servers/create_server.jsx");
 /* harmony import */ var _current_user_info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./current_user_info */ "./frontend/components/mainpage/servers/current_user_info.jsx");
+/* harmony import */ var _server_settings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./server_settings */ "./frontend/components/mainpage/servers/server_settings.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1387,6 +1447,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Server = /*#__PURE__*/function (_React$Component) {
   _inherits(Server, _React$Component);
 
@@ -1403,10 +1464,15 @@ var Server = /*#__PURE__*/function (_React$Component) {
     _this.toggleDeafen = _this.toggleDeafen.bind(_assertThisInitialized(_this));
     _this.openCreateServerForm = _this.openCreateServerForm.bind(_assertThisInitialized(_this));
     _this.closeCreateServerForm = _this.closeCreateServerForm.bind(_assertThisInitialized(_this));
+    _this.openServerSettings = _this.openServerSettings.bind(_assertThisInitialized(_this));
+    _this.closeServerSettings = _this.closeServerSettings.bind(_assertThisInitialized(_this));
     _this.state = {
       muted: false,
       deafened: false,
-      createServerActive: false
+      createServerActive: false,
+      layerName: "",
+      clickedServerId: "",
+      clickedServerName: ""
     };
     return _this;
   }
@@ -1464,7 +1530,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
     value: function openCreateServerForm(e) {
       e.preventDefault();
       this.setState({
-        createServerActive: true
+        layerName: "createServer"
       });
     }
   }, {
@@ -1472,14 +1538,46 @@ var Server = /*#__PURE__*/function (_React$Component) {
     value: function closeCreateServerForm(e) {
       var _this2 = this;
 
-      e.preventDefault();
+      if (e) {
+        e.preventDefault();
+      }
+
       var wrapper = document.getElementById("create-server-modal-wrapper");
       var modal = document.getElementById("create-server-modal");
       modal.classList.add("transition-out");
       wrapper.classList.add("inactive");
       setTimeout(function () {
         _this2.setState({
-          createServerActive: false
+          layerName: ""
+        });
+      }, 100);
+    }
+  }, {
+    key: "openServerSettings",
+    value: function openServerSettings(e) {
+      e.preventDefault();
+      this.setState({
+        layerName: "serverSettings",
+        clickedServerId: e.target.id,
+        clickedServerName: this.props.servers.find(function (server) {
+          return server.id == e.target.id;
+        }).name
+      });
+    }
+  }, {
+    key: "closeServerSettings",
+    value: function closeServerSettings(e) {
+      var _this3 = this;
+
+      if (e) {
+        e.preventDefault();
+      }
+
+      var wrapper = document.getElementById("server-settings-modal-wrapper");
+      wrapper.classList.add("inactive");
+      setTimeout(function () {
+        _this3.setState({
+          layerName: ""
         });
       }, 100);
     }
@@ -1489,9 +1587,11 @@ var Server = /*#__PURE__*/function (_React$Component) {
       var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
       var currentServerName = currentServerName != "" ? currentServerName : "";
       var memberListElements = "";
+      var currentServerId = -1;
 
       if (this.props.server) {
         currentServerName = this.props.server.name;
+        currentServerId = this.props.server.id;
         memberListElements = this.props.server.members.sort(this.sortMembersByUsername).map(function (member, i) {
           var thisColor = colors[member.id % colors.length];
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -1508,22 +1608,37 @@ var Server = /*#__PURE__*/function (_React$Component) {
             alt: ""
           })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, member.username));
         });
-      } //this handles the create server form layer
+      } //this handles the layer selection
 
 
-      var createServerLayer = this.state.createServerActive ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_create_server__WEBPACK_IMPORTED_MODULE_3__.default, {
-        isActive: this.state.createServerActive,
-        closeCreateServerForm: this.closeCreateServerForm
-      }) : "";
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "outmost"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "discord-page"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_side_nav_side_nav__WEBPACK_IMPORTED_MODULE_2__.default, {
-        openCreateServerForm: this.openCreateServerForm,
-        servers: this.props.servers,
-        getServers: this.props.getServers
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      var currentLayer = "";
+
+      if (this.state.layerName === "createServer") {
+        currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_create_server__WEBPACK_IMPORTED_MODULE_3__.default, {
+          getServers: this.props.getServers,
+          servers: this.props.servers,
+          joinServer: this.props.joinServer,
+          currentUser: this.props.currentUser,
+          history: this.props.history,
+          isActive: this.state.layerName === "createServer",
+          closeCreateServerForm: this.closeCreateServerForm,
+          createServer: this.props.createServer
+        });
+      } else if (this.state.layerName === "serverSettings") {
+        currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_server_settings__WEBPACK_IMPORTED_MODULE_5__.default, {
+          updateServer: this.props.updateServer,
+          clickedServerName: this.state.clickedServerName,
+          getServers: this.props.getServers,
+          servers: this.props.servers,
+          history: this.props.history,
+          clickedServerId: this.state.clickedServerId,
+          deleteServer: this.props.deleteServer,
+          closeServerSettings: this.closeServerSettings
+        });
+      } //handles user vs server page
+
+
+      var serverPage = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-channel-nav"
@@ -1554,9 +1669,58 @@ var Server = /*#__PURE__*/function (_React$Component) {
         className: "user-list-item invis"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "user-list-pic"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null))))));
+      var userPage = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "server-container"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "server-channel-nav"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "server-name"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "channel-nav"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_current_user_info__WEBPACK_IMPORTED_MODULE_4__.default, {
+        muted: this.state.muted,
+        deafened: this.state.deafened,
+        currentUser: this.props.currentUser,
+        toggleDeafen: this.toggleDeafen,
+        toggleMute: this.toggleMute
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "right-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "info-navbar"
+      }, "This page is in progress, it will be the private messaging page"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "messages-users-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "messaging-div"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "server-members-nav"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        className: "logout",
+        onClick: this.props.logout
+      }, "Log Out"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        className: "members-header"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "user-list-item invis"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "user-list-pic"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null))))));
+      var currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "outmost"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "discord-page"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_side_nav_side_nav__WEBPACK_IMPORTED_MODULE_2__.default, {
+        history: this.props.history,
+        openServerSettings: this.openServerSettings,
+        leaveServer: this.props.leaveServer,
+        currentUser: this.props.currentUser,
+        currentServerId: currentServerId,
+        openCreateServerForm: this.openCreateServerForm,
+        servers: this.props.servers,
+        getServers: this.props.getServers
+      }), currentPage), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "layer-wrapper"
-      }, createServerLayer));
+      }, currentLayer));
     }
   }]);
 
@@ -1591,7 +1755,9 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     errors: state.errors.server,
     servers: Object.values(state.entities.servers),
-    server: state.entities.servers[ownProps.match.params.server_id - 1],
+    server: Object.values(state.entities.servers).find(function (server) {
+      return server.id == ownProps.match.params.server_id;
+    }),
     currentUser: state.entities.users[state.session.id]
   };
 };
@@ -1603,6 +1769,15 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     updateServer: function updateServer(server) {
       return dispatch((0,_actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.updateServer)(server));
+    },
+    deleteServer: function deleteServer(serverId) {
+      return dispatch((0,_actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.deleteServer)(serverId));
+    },
+    joinServer: function joinServer(inviteCode) {
+      return dispatch((0,_actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.joinServer)(inviteCode));
+    },
+    leaveServer: function leaveServer(serverId) {
+      return dispatch((0,_actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.leaveServer)(serverId));
     },
     getServers: function getServers() {
       return dispatch((0,_actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.fetchServers)());
@@ -1617,6 +1792,220 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_0__.connect)(mapStateToProps, mapDispatchToProps)(_server__WEBPACK_IMPORTED_MODULE_3__.default));
+
+/***/ }),
+
+/***/ "./frontend/components/mainpage/servers/server_settings.jsx":
+/*!******************************************************************!*\
+  !*** ./frontend/components/mainpage/servers/server_settings.jsx ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ServerSettings)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var ServerSettings = /*#__PURE__*/function (_React$Component) {
+  _inherits(ServerSettings, _React$Component);
+
+  var _super = _createSuper(ServerSettings);
+
+  function ServerSettings(props) {
+    var _this;
+
+    _classCallCheck(this, ServerSettings);
+
+    _this = _super.call(this, props);
+    _this.handleDeleteServer = _this.handleDeleteServer.bind(_assertThisInitialized(_this));
+    _this.updateName = _this.updateName.bind(_assertThisInitialized(_this));
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    var original = _this.props.clickedServerName;
+    _this.state = {
+      name: original,
+      originalName: original,
+      justloaded: true
+    };
+    return _this;
+  }
+
+  _createClass(ServerSettings, [{
+    key: "handleDeleteServer",
+    value: function handleDeleteServer(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      this.props.deleteServer(this.props.clickedServerId).then(function () {
+        _this2.props.closeServerSettings();
+
+        _this2.props.getServers();
+
+        _this2.props.history.push("/channels/@me");
+      });
+    }
+  }, {
+    key: "updateName",
+    value: function updateName(e) {
+      e.preventDefault();
+      this.setState({
+        name: e.target.value,
+        justLoaded: false
+      });
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      var _this3 = this;
+
+      e.preventDefault();
+      var thisServer = this.props.servers.find(function (server) {
+        return server.id == _this3.props.clickedServerId;
+      });
+      var updated = Object.assign({}, thisServer);
+      updated.name = this.state.name;
+      this.props.updateServer(updated).then(function () {
+        _this3.props.getServers();
+      });
+      this.setState({
+        originalName: updated.name
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var saveClass = "save-changes-container";
+
+      if (this.state.justLoaded === false) {
+        if (this.state.name === this.state.originalName) {
+          saveClass = "save-changes-container inactive";
+        } else {
+          saveClass = "save-changes-container active";
+        }
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "server-settings-modal-wrapper",
+        className: "server-settings-modal-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "sidebar"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "sidebar-content"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "TEST"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Overview"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Roles"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Emoji"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Moderation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Audit Log"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Integrations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Widget"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Server Template"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "COMMUNITY"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Enable Community"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        className: "server-boost"
+      }, "Server Boost Status"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "USER MANAGEMENT"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Members"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Invites"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Bans"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+        className: "delete-button",
+        onClick: this.handleDeleteServer
+      }, "Delete Server"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "content"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "close-form-container"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "close-form",
+        onClick: this.props.closeServerSettings
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        width: "24",
+        height: "24",
+        viewBox: "0 0 24 24"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#dcddde",
+        d: "M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "esc-text"
+      }, "ESC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "overview"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "SERVER OVERVIEW"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "update-server-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "image-update-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "left-side"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "upload-image-icon"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        type: "file",
+        accept: "image/jpg, image/png, image/jpeg"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "current-image"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "initial"
+      }, this.props.clickedServerName[0]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "message"
+      }, "CHANGE ICON")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Minimum Size: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "128x128"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "right-side"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "recommended"
+      }, "We recommend an image of at least 512x512 for the server"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "upload-button"
+      }, "Upload Image", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        type: "file",
+        accept: "image/jpg, image/png, image/jpeg"
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "name-update-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        htmlFor: "name"
+      }, "SERVER NAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        name: "name",
+        type: "text",
+        defaultValue: this.props.clickedServerName,
+        onChange: this.updateName
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "SERVER REGION"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "server-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "current-server"
+      }, "Heroku"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "change-server-button"
+      }, "Change"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: saveClass
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "warning"
+      }, "Careful \u2014 you have unsaved changes!"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "options"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "reset"
+      }, "Reset"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "save",
+        onClick: this.handleSubmit
+      }, "Save Changes")))));
+    }
+  }]);
+
+  return ServerSettings;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+
 
 /***/ }),
 
@@ -1670,6 +2059,18 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.abbreviate = _this.abbreviate.bind(_assertThisInitialized(_this));
+    _this.contextMenu = _this.contextMenu.bind(_assertThisInitialized(_this));
+    _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
+    _this.leaveServer = _this.leaveServer.bind(_assertThisInitialized(_this));
+    _this.state = {
+      contextMenuVisible: false,
+      cmX: "100px",
+      cmY: "100px",
+      clickedServer: {
+        id: "",
+        owner_id: ""
+      }
+    };
     return _this;
   }
 
@@ -1677,6 +2078,15 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.props.getServers();
+      document.addEventListener("click", this.handleClick);
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick(e) {
+      e.preventDefault();
+      this.setState({
+        contextMenuVisible: false
+      });
     }
   }, {
     key: "abbreviate",
@@ -1686,35 +2096,98 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       }).join("");
     }
   }, {
-    key: "render",
-    value: function render() {
+    key: "contextMenu",
+    value: function contextMenu(e) {
+      e.preventDefault();
+      this.setState({
+        contextMenuVisible: true,
+        cmX: e.pageX + "px",
+        cmY: e.pageY + "px",
+        clickedServer: this.props.servers.find(function (server) {
+          return server.id == e.target.id;
+        })
+      });
+    }
+  }, {
+    key: "leaveServer",
+    value: function leaveServer(e) {
       var _this2 = this;
 
+      e.preventDefault();
+      this.props.leaveServer({
+        serverId: this.state.clickedServer.id
+      }).then(function () {
+        _this2.props.history.push("/channels/@me");
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      //create all server icons
       var serverEles = null;
 
       if (this.props.servers != {}) {
         serverEles = this.props.servers.map(function (server, i) {
-          var serverLink = "/channels/".concat(i + 1);
+          var serverLink = "/channels/".concat(server.id);
+          var linkClass = server.id == _this3.props.currentServerId ? "selected" : "";
+          var indicatorClass = server.id == _this3.props.currentServerId ? "selected-indicator active" : "selected-indicator";
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
             key: i,
+            className: linkClass,
+            id: server.id,
+            onContextMenu: _this3.contextMenu,
             to: serverLink
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: indicatorClass
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            id: server.id,
             className: "nav-tab-frame"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", {
+            id: server.id,
             className: "nav-tab"
-          }, _this2.abbreviate(server.name))));
+          }, _this3.abbreviate(server.name))));
         });
-      }
+      } //handle context menu 
 
+
+      var contextMenuClass = this.state.contextMenuVisible ? "server-context-menu active" : "context-menu";
+      var contextMenuStyle = {
+        position: "absolute",
+        top: this.state.cmY,
+        left: this.state.cmX
+      };
+      var updateLeaveOption = this.props.currentUser.id == this.state.clickedServer.owner_id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "update-server-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        id: this.state.clickedServer.id,
+        onClick: this.props.openServerSettings
+      }, "Server Settings")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "leave-server-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        onClick: this.leaveServer
+      }, "Leave Server"));
+      var serverContextMenu = this.state.contextMenuVisible ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: contextMenuClass,
+        style: contextMenuStyle
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "mark-read-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Mark As Read")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "divider"
+      }), updateLeaveOption) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("nav", {
         className: "side-nav"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+        id: "@me",
+        to: '/channels/@me'
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "nav-tab-frame"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "nav-tab robot",
         src: window.whiteDatcordRobot,
         alt: ""
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "nav-divider"
       }), serverEles, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         onClick: this.props.openCreateServerForm,
@@ -1746,7 +2219,7 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         fill: "#43B581",
         d: "M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z"
-      }))));
+      }))), serverContextMenu);
     }
   }]);
 
@@ -1842,10 +2315,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ SessionForm)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _util_login_canvas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../util/login_canvas */ "./frontend/util/login_canvas.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _util_login_canvas__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/login_canvas */ "./frontend/util/login_canvas.js");
 /* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
+/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -1949,7 +2422,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         email: "demouser@datcord.com",
         password: "password123"
       }).then(function (action) {
-        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_4__.RECEIVE_CURRENT_USER) {
+        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.RECEIVE_CURRENT_USER) {
           _this3.props.history.push("/channels/1");
         }
       });
@@ -1984,7 +2457,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }
 
       this.props.processForm(formattedState).then(function (action) {
-        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_4__.RECEIVE_CURRENT_USER) {
+        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.RECEIVE_CURRENT_USER) {
           _this4.props.history.push("/channels/1");
         }
       });
@@ -2190,12 +2663,12 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       var subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
       var otherOption = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
         onClick: this.transitionOut,
         to: "/signup"
       }, "Register")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
         onClick: this.transitionOut,
         to: "/login"
       }, "Already have an account?"));
@@ -2221,7 +2694,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Log in with demo account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Click the barcode to log in with a demo account"))) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "login-signup-page"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_2__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_1__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
         href: "/"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "logo",
@@ -2786,7 +3259,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
 
 
 
@@ -2847,7 +3320,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "fetchServer": () => (/* binding */ fetchServer),
 /* harmony export */   "createServer": () => (/* binding */ createServer),
 /* harmony export */   "updateServer": () => (/* binding */ updateServer),
-/* harmony export */   "deleteServer": () => (/* binding */ deleteServer)
+/* harmony export */   "deleteServer": () => (/* binding */ deleteServer),
+/* harmony export */   "joinServer": () => (/* binding */ joinServer),
+/* harmony export */   "leaveServer": () => (/* binding */ leaveServer)
 /* harmony export */ });
 var fetchServers = function fetchServers() {
   return $.ajax({
@@ -2883,6 +3358,20 @@ var deleteServer = function deleteServer(serverId) {
   return $.ajax({
     method: "DELETE",
     url: "/api/servers/".concat(serverId)
+  });
+};
+var joinServer = function joinServer(inviteCode) {
+  return $.ajax({
+    method: 'POST',
+    url: 'api/servers/join',
+    data: inviteCode
+  });
+};
+var leaveServer = function leaveServer(serverId) {
+  return $.ajax({
+    method: 'DELETE',
+    url: 'api/servers',
+    data: serverId
   });
 };
 

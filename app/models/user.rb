@@ -15,7 +15,8 @@ class User < ApplicationRecord
     
     has_many :server_memberships,
         through: :server_member_connections,
-        source: :server
+        source: :server,
+        dependent: :destroy
 
 
     attr_reader :password

@@ -10,9 +10,46 @@
     height:100%;
     padding: 5px 0;
     margin: auto;
+    
+
+
+        
 
     a {
         text-decoration: none;
+        display: flex;
+        align-items: center;
+
+
+        .selected-indicator {
+            position:absolute;
+            width: 4px;
+            height: 40px;
+            background-color: white;
+            left: 0;
+            border-radius: 0 4px 4px 0;
+            transform: scaleY(0);
+            transition: 0.25s;
+        }
+
+        .selected-indicator.active {
+            transform: scaleY(1);
+            transition: 0.25s;
+        }
+
+        
+    }
+
+    a:hover {
+        .selected-indicator {
+            transform: scaleY(0.5);
+            transition: 0.25s;
+        }
+
+        .selected-indicator.active {
+            transform: scaleY(1);
+            transition: 0.25s;
+        }
     }
 
     .nav-divider {
@@ -38,7 +75,7 @@
         img.nav-tab.robot {
             padding-top: 5px;
             height: 48px;
-            width: 40px;
+            width: 48px;
             color: black;
         }
 
@@ -50,16 +87,121 @@
 
     }
 
+    a:hover {
+        .nav-tab-frame {
+            border-radius:16px;
+            background-color: rgb(114,137,218);
+            transition:0.25s;
+        }
+    }
+
     .nav-tab-frame:hover {
         border-radius:16px;
         background-color: rgb(114,137,218);
         transition:0.25s;
     }
 
+    a.selected {
+        .nav-tab-frame {
+            border-radius:16px;
+            background-color: rgb(114,137,218);
+            transition:0.25s;
+        }
+    }
+
     .nav-tab-frame.default:hover {
         background-color: #43B581;
         svg path {
             fill: white;
+        }
+    }
+
+    .server-context-menu {
+        min-width: 188px;
+        max-width: 320px;
+        height: auto;
+        background-color: #18191c;
+        z-index: 5;
+        border-radius: 4px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.24);
+        padding:8px;
+
+        .divider {
+            box-sizing: border-box;
+            margin: 4px;
+            border-bottom: 1px solid hsla(0,0%,100%,0.06);
+        }
+
+        .mark-read-div {
+            min-width: 172px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 2px;
+
+            span {
+                color: #b9bbbe;
+                font-size: 14px;
+                margin-left: 8px;
+            }
+        }
+
+        .mark-read-div:hover {
+            background-color: #4e5d94;
+            span {
+                color: white;
+                font-weight: 600;
+            }
+            
+        }
+
+        .update-server-div {
+            min-width: 172px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 2px;
+
+            span {
+                color: #b9bbbe;
+                font-size: 14px;
+                margin-left: 8px;
+            }
+        }
+
+        .update-server-div:hover {
+            background-color: #4e5d94;
+            span {
+                color: white;
+                font-weight: 600;
+            }
+            
+        }
+
+        .leave-server-div {
+            min-width: 172px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 2px;
+
+            span {
+                color: #F04747;
+                font-size: 14px;
+                margin-left: 8px;
+            }
+        }
+
+        .leave-server-div:hover {
+            background-color: #F04747;
+            span {
+                color: white;
+                font-weight: 600;
+            }
+            
         }
     }
 

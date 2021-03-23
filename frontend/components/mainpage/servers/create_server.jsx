@@ -1,4 +1,5 @@
 import React from 'react'
+import { RECEIVE_SERVER } from '../../../actions/server_actions'
 
 export default class CreateServer extends React.Component {
     constructor(props) {
@@ -6,11 +7,14 @@ export default class CreateServer extends React.Component {
         
         this.state = {
             screenNum: 1,
-            forward: true
+            forward: true,
+            serverName: ""
         }
 
         this.forwardScreen = this.forwardScreen.bind(this)
         this.backScreen = this.backScreen.bind(this)
+        this.updateName = this.updateName.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     forwardScreen(e) {
@@ -29,6 +33,30 @@ export default class CreateServer extends React.Component {
             screenNum: currScreen - 1,
             forward: false
         })
+    }
+
+    updateName(e) {
+        e.preventDefault();
+        this.setState({
+            serverName: e.target.value
+        })
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        console.log("here")
+        let serverState = {
+            name: this.state.serverName,
+            owner_id: this.props.currentUser.id
+        }
+
+        this.props.createServer(serverState).then((action) => {
+            if (action.type === RECEIVE_SERVER) {
+                this.props.joinServer({inviteCode: action.server.server.invite_code})
+                this.props.closeCreateServerForm();
+                this.props.history.push(`/channels/${action.server.server.id}`)
+            }
+        });
     }
 
     render() {
@@ -55,7 +83,7 @@ export default class CreateServer extends React.Component {
             <div id="create-server-modal-wrapper" className="create-server-modal-wrapper">
                 <div id="create-server-modal" className={createServerClass}>
                     <div className="close-form" onClick={this.props.closeCreateServerForm} >
-                        <svg classNamewidth="24" height="24" viewBox="0 0 24 24">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
                             <path fill="#c7ccd1" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path>    
                         </svg> 
                     </div>
@@ -110,7 +138,7 @@ export default class CreateServer extends React.Component {
                                 <h2>Customize your server</h2>
                                 <p>Give your new server a personality with a name and an icon. You can always change it later</p>
                             </div>
-                            <form>
+                            <form onSubmit={this.handleSubmit} >
                                 <div className="input-image-wrapper">
                                     <svg width="80" height="80" viewBox="0 0 80 80">
                                         <path fill="#4f5660" d="M54.8694 2.85498C53.8065 2.4291 52.721 2.04752 51.6153 1.71253L51.3254 2.66957L51.0354 3.62661C51.9783 3.91227 52.9057 4.23362 53.8161 4.58911C54.1311 3.98753 54.4832 3.40847 54.8694 2.85498ZM75.4109 26.1839C76.0125 25.8689 76.5915 25.5168 77.145 25.1306C77.5709 26.1935 77.9525 27.279 78.2875 28.3847L77.3304 28.6746L76.3734 28.9646C76.0877 28.0217 75.7664 27.0943 75.4109 26.1839ZM78.8148 43.8253L79.8102 43.9222C79.9357 42.6318 80 41.3234 80 40C80 38.6766 79.9357 37.3682 79.8102 36.0778L78.8148 36.1747L77.8195 36.2715C77.9389 37.4977 78 38.7414 78 40C78 41.2586 77.9389 42.5023 77.8195 43.7285L78.8148 43.8253ZM43.8253 1.18515L43.9222 0.189853C42.6318 0.0642679 41.3234 0 40 0C38.6766 0 37.3682 0.064268 36.0778 0.189853L36.1747 1.18515L36.2715 2.18045C37.4977 2.06112 38.7414 2 40 2C41.2586 2 42.5023 2.06112 43.7285 2.18045L43.8253 1.18515ZM28.6746 2.66957L28.3847 1.71253C25.8549 2.47897 23.4312 3.48925 21.1408 4.71604L21.6129 5.59756L22.0851 6.47907C24.2606 5.3138 26.5624 4.35439 28.9646 3.62661L28.6746 2.66957ZM15.2587 9.85105L14.6239 9.0784C12.5996 10.7416 10.7416 12.5996 9.0784 14.6239L9.85105 15.2587L10.6237 15.8935C12.2042 13.9699 13.9699 12.2042 15.8935 10.6237L15.2587 9.85105ZM5.59756 21.6129L4.71604 21.1408C3.48925 23.4312 2.47897 25.8549 1.71253 28.3847L2.66957 28.6746L3.62661 28.9646C4.35439 26.5624 5.3138 24.2607 6.47907 22.0851L5.59756 21.6129ZM0 40C0 38.6766 0.0642679 37.3682 0.189853 36.0778L1.18515 36.1747L2.18045 36.2715C2.06112 37.4977 2 38.7414 2 40C2 41.2586 2.06112 42.5023 2.18045 43.7285L1.18515 43.8253L0.189853 43.9222C0.064268 42.6318 0 41.3234 0 40ZM2.66957 51.3254L1.71253 51.6153C2.47897 54.1451 3.48926 56.5688 4.71604 58.8592L5.59756 58.3871L6.47907 57.9149C5.3138 55.7394 4.35439 53.4376 3.62661 51.0354L2.66957 51.3254ZM9.85105 64.7413L9.0784 65.3761C10.7416 67.4004 12.5996 69.2584 14.6239 70.9216L15.2587 70.1489L15.8935 69.3763C13.9699 67.7958 12.2042 66.0301 10.6237 64.1065L9.85105 64.7413ZM21.6129 74.4024L21.1408 75.284C23.4312 76.5107 25.8549 77.521 28.3847 78.2875L28.6746 77.3304L28.9646 76.3734C26.5624 75.6456 24.2607 74.6862 22.0851 73.5209L21.6129 74.4024ZM36.1747 78.8148L36.0778 79.8102C37.3682 79.9357 38.6766 80 40 80C41.3234 80 42.6318 79.9357 43.9222 79.8102L43.8253 78.8148L43.7285 77.8195C42.5023 77.9389 41.2586 78 40 78C38.7414 78 37.4977 77.9389 36.2715 77.8195L36.1747 78.8148ZM51.3254 77.3304L51.6153 78.2875C54.1451 77.521 56.5688 76.5107 58.8592 75.284L58.3871 74.4024L57.9149 73.5209C55.7394 74.6862 53.4376 75.6456 51.0354 76.3734L51.3254 77.3304ZM64.7413 70.1489L65.3761 70.9216C67.4004 69.2584 69.2584 67.4004 70.9216 65.3761L70.1489 64.7413L69.3763 64.1065C67.7958 66.0301 66.0301 67.7958 64.1065 69.3763L64.7413 70.1489ZM74.4024 58.3871L75.284 58.8592C76.5107 56.5688 77.521 54.1451 78.2875 51.6153L77.3304 51.3254L76.3734 51.0354C75.6456 53.4375 74.6862 55.7393 73.5209 57.9149L74.4024 58.3871Z"></path>
@@ -124,7 +152,7 @@ export default class CreateServer extends React.Component {
                                 </div>
                                 <div className="name-input-div">
                                     <label htmlFor="name">SERVER NAME</label>
-                                    <input name="name" type="text"/>
+                                    <input name="name" type="text" onChange={this.updateName} />
                                     <h3>By creating a server, you agree to discords <a>Community Guidelines</a></h3>
                                 </div>
                                 <div className="back-create">

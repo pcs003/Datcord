@@ -6,35 +6,108 @@ export default class SideNav extends React.Component {
         super(props)
 
         this.abbreviate = this.abbreviate.bind(this)
+        this.contextMenu = this.contextMenu.bind(this)
+        this.handleClick = this.handleClick.bind(this)
+        this.leaveServer = this.leaveServer.bind(this)
+
+        this.state = {
+            contextMenuVisible: false,
+            cmX: "100px",
+            cmY: "100px",
+            clickedServer: { id: "", owner_id: ""}
+        }
     }
 
     componentDidMount() {
         this.props.getServers()
+        document.addEventListener("click", this.handleClick)
+    }
+
+    handleClick(e){
+        e.preventDefault();
+        this.setState({
+            contextMenuVisible: false,
+        })
     }
 
     abbreviate(str) {
         return str.split(" ").map((word) => word.slice(0,1)).join("");
     }
 
+    contextMenu(e) {
+        e.preventDefault();
+        this.setState({
+            contextMenuVisible: true,
+            cmX: e.pageX + "px",
+            cmY: e.pageY + "px",
+            clickedServer: this.props.servers.find((server) => ( server.id == e.target.id))
+
+        })
+        
+    }
+
+    leaveServer(e) {
+        e.preventDefault();
+        this.props.leaveServer({serverId: this.state.clickedServer.id}).then(() => {
+            this.props.history.push(`/channels/@me`)
+        })
+    }
+
+
     render() {
+        //create all server icons
         let serverEles = null;
         if (this.props.servers != {}) {
             serverEles = this.props.servers.map((server, i) => {
-                let serverLink = `/channels/${i + 1}`
+                let serverLink = `/channels/${server.id}`
+                let linkClass = server.id == this.props.currentServerId ? "selected" : "";
+                let indicatorClass = server.id == this.props.currentServerId ? "selected-indicator active" : "selected-indicator"
                 return (
-                    <Link key={i} to={serverLink}>
-                        <div className="nav-tab-frame">
-                            <h3 className="nav-tab">{this.abbreviate(server.name)}</h3>
+                    <Link key={i} className={linkClass} id={server.id} onContextMenu={this.contextMenu} to={serverLink}>
+                        <div className={indicatorClass}></div>
+                        <div id={server.id} className="nav-tab-frame">
+                            <h3 id={server.id} className="nav-tab">{this.abbreviate(server.name)}</h3>
                         </div>
                     </Link>
                 )
             })
         }
+
+        //handle context menu 
+        let contextMenuClass = this.state.contextMenuVisible ? "server-context-menu active" : "context-menu"
+        let contextMenuStyle = {
+            position: "absolute", 
+            top: this.state.cmY, 
+            left: this.state.cmX, 
+            
+        }
+
+        let updateLeaveOption = this.props.currentUser.id == this.state.clickedServer.owner_id ? (
+            <div className="update-server-div">
+                <span id={this.state.clickedServer.id} onClick={this.props.openServerSettings}>Server Settings</span>
+            </div>
+        ) : (
+            <div className="leave-server-div">
+                <span onClick={this.leaveServer} >Leave Server</span>
+            </div>
+        );
+
+        let serverContextMenu = this.state.contextMenuVisible ? (
+            <div className={contextMenuClass} style={contextMenuStyle}>
+                <div className="mark-read-div">
+                    <span>Mark As Read</span>
+                </div>
+                <div className="divider"></div>
+                {updateLeaveOption}
+            </div>
+        ) : "";
         return (
             <nav className="side-nav">
-                <div className="nav-tab-frame">
-                    <img className="nav-tab robot" src={window.whiteDatcordRobot} alt=""/>
-                </div>
+                <Link id="@me" to={'/channels/@me'}>
+                    <div className="nav-tab-frame">
+                        <img className="nav-tab robot" src={window.whiteDatcordRobot} alt=""/>
+                    </div>
+                </Link>
                 <span className="nav-divider"></span>
                 {serverEles}
                 <div onClick={this.props.openCreateServerForm} className="nav-tab-frame default">
@@ -53,6 +126,7 @@ export default class SideNav extends React.Component {
                         <path fill="#43B581" d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z"></path>    
                     </svg> 
                 </div>
+                {serverContextMenu}
             </nav>
         )
     }
