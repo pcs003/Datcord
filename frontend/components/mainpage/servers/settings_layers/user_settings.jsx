@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default class UserSettings extends React.Component {
     constructor(props) {
@@ -43,7 +44,7 @@ export default class UserSettings extends React.Component {
                     <div className="sidebar-content">
                         <h3>USER SETTINGS</h3>
                         <h2>My Account</h2>
-                        <h2>Privacy & Safety</h2>
+                        {/* <h2>Privacy & Safety</h2>
                         <h2>Authorized Apps</h2>
                         <h2>Connections</h2>
                         <div className="divider"></div>
@@ -68,12 +69,12 @@ export default class UserSettings extends React.Component {
                         <h2>Overlay</h2>
                         <div className="divider"></div>
                         <h2>Change Log</h2>
-                        <h2>HypeSquad</h2>
+                        <h2>HypeSquad</h2> */}
                         <div className="divider"></div>
                         <h2 className="logout-button" onClick={this.props.logout}>Log Out</h2>
                         <div className="divider"></div>
                         <div className="personal-links">
-                            <a href="https://github.com/pcs003"><img src={window.githubLogo} alt=""/></a>
+                            <a href="https://github.com/pcs003" target="_blank" rel="noopener noreferrer"><img src={window.githubLogo} alt=""/></a>
                             <a href="https://www.linkedin.com/in/parth-shah-b6265763/"><img src={window.linkedInLogo} alt=""/></a>
                         </div>
                         <h5>Created by Parth Shah</h5>

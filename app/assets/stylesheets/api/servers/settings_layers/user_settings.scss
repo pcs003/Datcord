@@ -80,13 +80,13 @@
                 display: flex;
                 margin: 20px;
 
-                a {
-                    img {
-                        max-width: 20px;
-                        max-height: 20px;
-                        margin-right: 10px;
-                        cursor:pointer;
-                    }
+                img {
+                    min-width: 20px;
+                    min-height: 20px;
+                    max-width: 20px;
+                    max-height: 20px;
+                    margin-right: 10px;
+                    cursor:pointer;
                 }
                 
             }
@@ -115,7 +115,7 @@
         .close-form-container {
             position: absolute;
             top: 60px;
-            right: 172px;
+            left: 740px;
             display: flex;
             flex-direction: column;
 
@@ -157,7 +157,7 @@
         }
 
         .my-account-info {
-            width:70%;
+            width:660px;
             height: 330px;
             background-color: #2f3136;
             border-radius: 8px;

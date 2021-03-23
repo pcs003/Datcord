@@ -7,22 +7,40 @@ export default class ServerSettings extends React.Component {
         this.handleDeleteServer = this.handleDeleteServer.bind(this)
         this.updateName = this.updateName.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.openDeletePopup = this.openDeletePopup.bind(this)
+        this.closeDeletePopup = this.closeDeletePopup.bind(this)
+        this.updateDeletePopupText = this.updateDeletePopupText.bind(this)
 
         let original = this.props.clickedServerName;
         this.state = {
             name: original,
             originalName: original,
-            justloaded: true
+            justloaded: true,
+            deletePopupActive: false,
+            deletePopupText: "",
+            deleteFailed: false
         }
     }
 
     handleDeleteServer(e){
         e.preventDefault();
-        this.props.deleteServer(this.props.clickedServerId).then(()=> {
-            this.props.closeServerSettings();
-            this.props.getServers();
-            this.props.history.push(`/channels/@me`)
-        })
+        if (this.state.deletePopupText === this.state.originalName) {
+            this.setState({
+                deleteFailed: false
+            })
+            this.props.deleteServer(this.props.clickedServerId).then(()=> {
+                this.props.closeServerSettings();
+                this.props.getServers();
+                this.props.history.push(`/channels/@me`)
+            })
+        } else {
+            console.log(this.state.deletePopupText)
+            console.log(this.state.originalName)
+            this.setState({
+                deleteFailed: true
+            })
+        }
+        
     }
 
     updateName(e) {
@@ -47,6 +65,34 @@ export default class ServerSettings extends React.Component {
         })
     }
 
+    openDeletePopup(e) {
+        e.preventDefault();
+        this.setState({
+            deletePopupActive: true
+        })
+    }
+
+    closeDeletePopup(e) {
+        e.preventDefault();
+
+        let wrapper = document.getElementById("delete-server-popup-wrapper");
+
+        wrapper.classList.add("inactive");
+
+        setTimeout(() => {
+            this.setState({
+                deletePopupActive: false
+            })
+        }, 100);
+    }
+
+    updateDeletePopupText(e) {
+        e.preventDefault;
+        this.setState({
+            deletePopupText: e.target.value
+        })
+    }
+
     render() {
 
         let saveClass = "save-changes-container"
@@ -57,14 +103,34 @@ export default class ServerSettings extends React.Component {
                 saveClass = "save-changes-container active"
             }
         }
-        
+
+        let errorText = this.state.deleteFailed ? <h5 className="error">You didn't enter the server name correctly</h5> : ""
+
+        let deletePopup = this.state.deletePopupActive ? (
+            <div id="delete-server-popup-wrapper" className="delete-server-popup-wrapper">
+                <div className="delete-server-popup">
+                    <h2>DELETE '{this.props.clickedServerName.toUpperCase()}'</h2>
+                    <div className="warning">
+                        <p>Are you sure you want to delete <span>{this.props.clickedServerName}</span>? This acton cannot be undone.</p>
+                    </div>
+                    <h3>ENTER SERVER NAME</h3>
+                    <input type="text" onChange={this.updateDeletePopupText}/>
+                    {errorText}
+                    <div className="options">
+                        <h4 onClick={this.closeDeletePopup}>Cancel</h4>
+                        <button onClick={this.handleDeleteServer}>Delete Server</button>
+                    </div>
+                </div>
+            </div>
+        ) : ""
+
         return (
             <div id="server-settings-modal-wrapper" className="server-settings-modal-wrapper">
                 <div className="sidebar">
                     <div className="sidebar-content">
-                        <h3>TEST</h3>
+                        <h3>{this.props.clickedServerName.toUpperCase()}</h3>
                         <h2>Overview</h2>
-                        <h2>Roles</h2>
+                        {/* <h2>Roles</h2>
                         <h2>Emoji</h2>
                         <h2>Moderation</h2>
                         <h2>Audit Log</h2>
@@ -80,9 +146,9 @@ export default class ServerSettings extends React.Component {
                         <h3>USER MANAGEMENT</h3>
                         <h2>Members</h2>
                         <h2>Invites</h2>
-                        <h2>Bans</h2>
+                        <h2>Bans</h2> */}
                         <div className="divider"></div>
-                        <h2 className="delete-button" onClick={this.handleDeleteServer}>Delete Server</h2>
+                        <h2 className="delete-button" onClick={this.openDeletePopup}>Delete Server</h2>
                     </div>
                 </div>
                 <div className="content">
@@ -146,7 +212,7 @@ export default class ServerSettings extends React.Component {
                         </div>
                     </div>
                 </div>
-                
+                {deletePopup}
             </div>
         )
     }

@@ -23,6 +23,11 @@ export default class SideNav extends React.Component {
         document.addEventListener("click", this.handleClick)
     }
 
+    componentWillUnmount() {
+        this.props.getServers()
+        document.removeEventListener("click", this.handleClick)
+    }
+
     handleClick(e){
         e.preventDefault();
         this.setState({
@@ -61,7 +66,7 @@ export default class SideNav extends React.Component {
         if (this.props.servers != {}) {
             serverEles = this.props.servers.map((server, i) => {
                 let serverLink = `/channels/${server.id}`
-                let linkClass = server.id == this.props.currentServerId ? "selected" : "";
+                let linkClass = server.id == this.props.currentServerId ? "server-icon selected" : "server-icon";
                 let indicatorClass = server.id == this.props.currentServerId ? "selected-indicator active" : "selected-indicator"
                 return (
                     <Link key={i} className={linkClass} id={server.id} onContextMenu={this.contextMenu} to={serverLink}>
@@ -69,6 +74,7 @@ export default class SideNav extends React.Component {
                         <div id={server.id} className="nav-tab-frame">
                             <h3 id={server.id} className="nav-tab">{this.abbreviate(server.name)}</h3>
                         </div>
+                        <span className="server-name">{server.name}</span>
                     </Link>
                 )
             })
@@ -84,7 +90,7 @@ export default class SideNav extends React.Component {
         }
 
         let updateLeaveOption = this.props.currentUser.id == this.state.clickedServer.owner_id ? (
-            <div className="update-server-div" onClick={this.props.openServerSettings} >
+            <div id={this.state.clickedServer.id} className="update-server-div" onClick={this.props.openServerSettings} >
                 <span id={this.state.clickedServer.id} >Server Settings</span>
             </div>
         ) : (
@@ -103,7 +109,7 @@ export default class SideNav extends React.Component {
             </div>
         ) : "";
         return (
-            <nav className="side-nav">
+            <div className="side-nav">
                 <Link id="@me" to={'/channels/@me'}>
                     <div className="nav-tab-frame">
                         <img className="nav-tab robot" src={window.whiteDatcordRobot} alt=""/>
@@ -128,7 +134,7 @@ export default class SideNav extends React.Component {
                     </svg> 
                 </div>
                 {serverContextMenu}
-            </nav>
+            </div>
         )
     }
 }

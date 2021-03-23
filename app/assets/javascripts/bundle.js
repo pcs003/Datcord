@@ -357,6 +357,8 @@ var App = function App() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_5__.ProtectedRoute, {
     path: "/channels/",
     component: _mainpage_main_page_container__WEBPACK_IMPORTED_MODULE_4__.default
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Route, {
+    component: _greeting_landing__WEBPACK_IMPORTED_MODULE_6__.default
   })));
 };
 
@@ -1983,11 +1985,17 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
     _this.handleDeleteServer = _this.handleDeleteServer.bind(_assertThisInitialized(_this));
     _this.updateName = _this.updateName.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.openDeletePopup = _this.openDeletePopup.bind(_assertThisInitialized(_this));
+    _this.closeDeletePopup = _this.closeDeletePopup.bind(_assertThisInitialized(_this));
+    _this.updateDeletePopupText = _this.updateDeletePopupText.bind(_assertThisInitialized(_this));
     var original = _this.props.clickedServerName;
     _this.state = {
       name: original,
       originalName: original,
-      justloaded: true
+      justloaded: true,
+      deletePopupActive: false,
+      deletePopupText: "",
+      deleteFailed: false
     };
     return _this;
   }
@@ -1998,13 +2006,25 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       e.preventDefault();
-      this.props.deleteServer(this.props.clickedServerId).then(function () {
-        _this2.props.closeServerSettings();
 
-        _this2.props.getServers();
+      if (this.state.deletePopupText === this.state.originalName) {
+        this.setState({
+          deleteFailed: false
+        });
+        this.props.deleteServer(this.props.clickedServerId).then(function () {
+          _this2.props.closeServerSettings();
 
-        _this2.props.history.push("/channels/@me");
-      });
+          _this2.props.getServers();
+
+          _this2.props.history.push("/channels/@me");
+        });
+      } else {
+        console.log(this.state.deletePopupText);
+        console.log(this.state.originalName);
+        this.setState({
+          deleteFailed: true
+        });
+      }
     }
   }, {
     key: "updateName",
@@ -2034,6 +2054,36 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "openDeletePopup",
+    value: function openDeletePopup(e) {
+      e.preventDefault();
+      this.setState({
+        deletePopupActive: true
+      });
+    }
+  }, {
+    key: "closeDeletePopup",
+    value: function closeDeletePopup(e) {
+      var _this4 = this;
+
+      e.preventDefault();
+      var wrapper = document.getElementById("delete-server-popup-wrapper");
+      wrapper.classList.add("inactive");
+      setTimeout(function () {
+        _this4.setState({
+          deletePopupActive: false
+        });
+      }, 100);
+    }
+  }, {
+    key: "updateDeletePopupText",
+    value: function updateDeletePopupText(e) {
+      e.preventDefault;
+      this.setState({
+        deletePopupText: e.target.value
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var saveClass = "save-changes-container";
@@ -2046,6 +2096,26 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
         }
       }
 
+      var errorText = this.state.deleteFailed ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", {
+        className: "error"
+      }, "You didn't enter the server name correctly") : "";
+      var deletePopup = this.state.deletePopupActive ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "delete-server-popup-wrapper",
+        className: "delete-server-popup-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "delete-server-popup"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "DELETE '", this.props.clickedServerName.toUpperCase(), "'"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "warning"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Are you sure you want to delete ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, this.props.clickedServerName), "? This acton cannot be undone.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "ENTER SERVER NAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        type: "text",
+        onChange: this.updateDeletePopupText
+      }), errorText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "options"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h4", {
+        onClick: this.closeDeletePopup
+      }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        onClick: this.handleDeleteServer
+      }, "Delete Server")))) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "server-settings-modal-wrapper",
         className: "server-settings-modal-wrapper"
@@ -2053,19 +2123,11 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
         className: "sidebar"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "sidebar-content"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "TEST"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Overview"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Roles"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Emoji"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Moderation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Audit Log"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Integrations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Widget"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Server Template"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "divider"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "COMMUNITY"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Enable Community"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "divider"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
-        className: "server-boost"
-      }, "Server Boost Status"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "divider"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "USER MANAGEMENT"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Members"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Invites"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Bans"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, this.props.clickedServerName.toUpperCase()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Overview"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "divider"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
         className: "delete-button",
-        onClick: this.handleDeleteServer
+        onClick: this.openDeletePopup
       }, "Delete Server"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "content"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2136,7 +2198,7 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
       }, "Reset"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "save",
         onClick: this.handleSubmit
-      }, "Save Changes")))));
+      }, "Save Changes")))), deletePopup);
     }
   }]);
 
@@ -2159,6 +2221,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ UserSettings)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2180,6 +2243,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -2234,17 +2298,7 @@ var UserSettings = /*#__PURE__*/function (_React$Component) {
         className: "sidebar"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "sidebar-content"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "USER SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "My Account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Privacy & Safety"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Authorized Apps"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Connections"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "divider"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "BILLING SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
-        className: "nitro"
-      }, "Discord Nitro"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Server Boost"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Gift Inventory"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Billing"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "divider"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "APP SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Voice & Video"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Text & Images"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Appearance"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Notifications"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Keybinds"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Language"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Windows Settings"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Streamer Mode"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "divider"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "GAMING SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Game Activity"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Overlay"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "divider"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Change Log"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "HypeSquad"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "USER SETTINGS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "My Account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "divider"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
         className: "logout-button",
@@ -2254,7 +2308,9 @@ var UserSettings = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "personal-links"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
-        href: "https://github.com/pcs003"
+        href: "https://github.com/pcs003",
+        target: "_blank",
+        rel: "noopener noreferrer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         src: window.githubLogo,
         alt: ""
@@ -2393,6 +2449,12 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       document.addEventListener("click", this.handleClick);
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.props.getServers();
+      document.removeEventListener("click", this.handleClick);
+    }
+  }, {
     key: "handleClick",
     value: function handleClick(e) {
       e.preventDefault();
@@ -2445,7 +2507,7 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       if (this.props.servers != {}) {
         serverEles = this.props.servers.map(function (server, i) {
           var serverLink = "/channels/".concat(server.id);
-          var linkClass = server.id == _this3.props.currentServerId ? "selected" : "";
+          var linkClass = server.id == _this3.props.currentServerId ? "server-icon selected" : "server-icon";
           var indicatorClass = server.id == _this3.props.currentServerId ? "selected-indicator active" : "selected-indicator";
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
             key: i,
@@ -2461,7 +2523,9 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", {
             id: server.id,
             className: "nav-tab"
-          }, _this3.abbreviate(server.name))));
+          }, _this3.abbreviate(server.name))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+            className: "server-name"
+          }, server.name));
         });
       } //handle context menu 
 
@@ -2473,6 +2537,7 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
         left: this.state.cmX
       };
       var updateLeaveOption = this.props.currentUser.id == this.state.clickedServer.owner_id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: this.state.clickedServer.id,
         className: "update-server-div",
         onClick: this.props.openServerSettings
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
@@ -2489,7 +2554,7 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Mark As Read")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "divider"
       }), updateLeaveOption) : "";
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("nav", {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "side-nav"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
         id: "@me",
