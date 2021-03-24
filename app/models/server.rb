@@ -15,6 +15,11 @@ class Server < ApplicationRecord
         through: :member_connections,
         source: :member
 
+    has_many :channels,
+        foreign_key: :server_id,
+        class_name: :Channel,
+        dependent: :destroy
+
     
     after_initialize :ensure_invite_code
 

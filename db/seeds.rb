@@ -9,9 +9,11 @@
 User.destroy_all
 Server.destroy_all
 ServerMember.destroy_all
+Channel.destroy_all
 ApplicationRecord.connection.reset_pk_sequence!('users')
 ApplicationRecord.connection.reset_pk_sequence!('servers')
 ApplicationRecord.connection.reset_pk_sequence!('server_members')
+ApplicationRecord.connection.reset_pk_sequence!('channels')
 
 u1 = User.create!({email:"demouser@datcord.com", username: "DemoUser", password: "password123", birthdate: "1/1/2000"})
 u2 = User.create!({email:"testuser01@test.com", username: "John Cena", password: "password123", birthdate: "2/2/2002"})
@@ -50,3 +52,31 @@ sm12 = ServerMember.create!({member_id:2, server_id:5})
 sm13 = ServerMember.create!({member_id:5, server_id:5})
 sm14 = ServerMember.create!({member_id:7, server_id:5})
 sm19 = ServerMember.create!({member_id:6, server_id:5})
+
+c1 = Channel.create!({name:"Ruby", server_id:1, channel_type:"text"})
+c2 = Channel.create!({name:"Javascript", server_id:1, channel_type:"text"})
+c3 = Channel.create!({name:"CSS", server_id:1, channel_type:"text"})
+c4 = Channel.create!({name:"HTML", server_id:1, channel_type:"text"})
+c5 = Channel.create!({name:"Discussions", server_id:1, channel_type:"voice"})
+c6 = Channel.create!({name:"Interviews", server_id:1, channel_type:"voice"})
+
+c24 = Channel.create!({name:"General", server_id:2, channel_type:"text"})
+c7 = Channel.create!({name:"League", server_id:2, channel_type:"text"})
+c8 = Channel.create!({name:"Genshin", server_id:2, channel_type:"text"})
+c9 = Channel.create!({name:"Game Nights", server_id:2, channel_type:"voice"})
+c10 = Channel.create!({name:"CoD", server_id:2, channel_type:"text"})
+c11 = Channel.create!({name:"Comms", server_id:2, channel_type:"voice"})
+
+c12 = Channel.create!({name:"General", server_id:3, channel_type:"text"})
+c13 = Channel.create!({name:"Formats", server_id:3, channel_type:"text"})
+
+c14 = Channel.create!({name:"General", server_id:4, channel_type:"text"})
+c15 = Channel.create!({name:"Gigs", server_id:4, channel_type:"text"})
+c16 = Channel.create!({name:"Awards", server_id:4, channel_type:"text"})
+c17 = Channel.create!({name:"General", server_id:4, channel_type:"voice"})
+
+c18 = Channel.create!({name:"General", server_id:5, channel_type:"text"})
+c19 = Channel.create!({name:"Postgame Stats", server_id:5, channel_type:"text"})
+c20 = Channel.create!({name:"Game1", server_id:5, channel_type:"voice"})
+c21 = Channel.create!({name:"Game2", server_id:5, channel_type:"voice"})
+c22 = Channel.create!({name:"Game3", server_id:5, channel_type:"voice"})

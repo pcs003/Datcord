@@ -1,4 +1,3 @@
-
 export const fetchServers = () => (
     $.ajax({
         method: "GET",

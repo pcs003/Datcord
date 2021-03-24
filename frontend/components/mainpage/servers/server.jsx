@@ -5,6 +5,7 @@ import CreateServer from './create_server'
 import CurrentUserInfo from './current_user_info'
 import ServerSettings from './settings_layers/server_settings'
 import UserSettings from './settings_layers/user_settings'
+import ChannelIndexContainer from './channels/channel_index_container'
 
 export default class Server extends React.Component {
     constructor(props) {
@@ -19,6 +20,7 @@ export default class Server extends React.Component {
         this.closeServerSettings = this.closeServerSettings.bind(this)
         this.openUserSettings = this.openUserSettings.bind(this)
         this.closeUserSettings = this.closeUserSettings.bind(this)
+        this.setCurrentChannelInfo = this.setCurrentChannelInfo.bind(this)
 
         this.state = {
             muted: false,
@@ -26,10 +28,14 @@ export default class Server extends React.Component {
             createServerActive: false,
             layerName: "",
             clickedServerId: "",
-            clickedServerName: ""
+            clickedServerName: "",
+            currentChannelId: 1,
+            currentChannelName: "",
+            selectedChannelId: ""
         }
     }
     componentDidMount() {
+        this.props.getServers();
         this.props.getServer(this.props.match.params.server_id)
     }
 
@@ -143,10 +149,17 @@ export default class Server extends React.Component {
         }, 100);
     }
 
+    setCurrentChannelInfo(name, id) {
+        this.setState({
+            currentChannelName: name,
+            currentChannelId: id
+        })
+    }
+
     
     render() {
         let colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"]
-
+        let currentServer = this.props.servers[this.props.match.params.server_id]
         let currentServerName = currentServerName != "" ? currentServerName : "";
         let memberListElements = "";
         let currentServerId = -1;
@@ -185,13 +198,11 @@ export default class Server extends React.Component {
                     <div className="server-name">
                         <h2>{currentServerName}</h2>
                     </div>
-                    <div className="channel-nav">
-                        
-                    </div>
+                    <ChannelIndexContainer currentServer={currentServer} currentChannelId={this.state.currentChannelId} setCurrentChannelInfo={this.setCurrentChannelInfo} match={this.props.match}/>
                     <CurrentUserInfo openUserSettings={this.openUserSettings} muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
                 </div>
                 <div className="right-div">
-                    <InfoNavbar />
+                    <InfoNavbar currentChannelName={this.state.currentChannelName}/>
                     <div className="messages-users-div">
                         <div className="messaging-div"></div>
                         <div className="server-members-nav">
@@ -241,10 +252,11 @@ export default class Server extends React.Component {
         )
         let currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
 
+
         return (
             <div className="outmost">
                 <div className="discord-page">
-                    <SideNav history={this.props.history} openServerSettings={this.openServerSettings} leaveServer={this.props.leaveServer} currentUser={this.props.currentUser} currentServerId={currentServerId} openCreateServerForm={this.openCreateServerForm} servers={this.props.servers} getServers={this.props.getServers}/>
+                    <SideNav setCurrentChannelInfo={this.setCurrentChannelInfo} match={this.props.match} fetchChannels={this.props.fetchChannels} history={this.props.history} openServerSettings={this.openServerSettings} leaveServer={this.props.leaveServer} currentUser={this.props.currentUser} currentServerId={currentServerId} openCreateServerForm={this.openCreateServerForm} servers={this.props.servers} getServers={this.props.getServers}/>
                     
                     {currentPage}
                 </div>

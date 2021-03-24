@@ -9,6 +9,7 @@ export default class SideNav extends React.Component {
         this.contextMenu = this.contextMenu.bind(this)
         this.handleClick = this.handleClick.bind(this)
         this.leaveServer = this.leaveServer.bind(this)
+        this.handleServerClick = this.handleServerClick.bind(this)
 
         this.state = {
             contextMenuVisible: false,
@@ -59,6 +60,14 @@ export default class SideNav extends React.Component {
         })
     }
 
+    handleServerClick(e) {
+        e.preventDefault();   
+        this.props.history.push(`/channels/${e.target.id}`)
+        this.props.fetchChannels(e.target.id).then(action => {
+            this.props.setCurrentChannelInfo(Object.values(action.channels)[0].name, Object.values(action.channels)[0].id)
+            
+        })
+    }
 
     render() {
         //create all server icons
@@ -69,7 +78,7 @@ export default class SideNav extends React.Component {
                 let linkClass = server.id == this.props.currentServerId ? "server-icon selected" : "server-icon";
                 let indicatorClass = server.id == this.props.currentServerId ? "selected-indicator active" : "selected-indicator"
                 return (
-                    <Link key={i} className={linkClass} id={server.id} onContextMenu={this.contextMenu} to={serverLink}>
+                    <Link key={i} onClick={this.handleServerClick} className={linkClass} id={server.id} onContextMenu={this.contextMenu} to={serverLink}>
                         <div className={indicatorClass}></div>
                         <div id={server.id} className="nav-tab-frame">
                             <h3 id={server.id} className="nav-tab">{this.abbreviate(server.name)}</h3>

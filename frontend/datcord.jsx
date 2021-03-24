@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import configureStore from "./store/store";
 import Root from "./components/root";
-
-import { createServer, deleteServer, fetchServers, updateServer } from './actions/server_actions'
+import { createChannel, deleteChannel, fetchChannel, fetchChannels, updateChannel } from "./actions/channel_actions";
 
 document.addEventListener("DOMContentLoaded", () => {
     const root = document.getElementById("root");
@@ -20,10 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         store = configureStore();
     }
-    window.fetchServers = fetchServers;
-    window.createServer = createServer;
-    window.updateServer = updateServer;
-    window.deleteServer = deleteServer;
+
+    window.fetchChannel = fetchChannel;
+    window.fetchChannels = fetchChannels;
+    window.createChannel = createChannel;
+    window.updateChannel = updateChannel;
+    window.deleteChannel = deleteChannel;
+
     window.getState = store.getState;
     window.dispatch = store.dispatch;
     ReactDOM.render(<Root store={store}/>, root);

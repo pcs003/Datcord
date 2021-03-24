@@ -2,6 +2,7 @@ import { connect } from "react-redux"
 import { createServer, updateServer, fetchServers, fetchServer, joinServer, leaveServer, deleteServer } from "../../../actions/server_actions"
 import { logout } from "../../../actions/session_actions"
 import Server from "./server"
+import { fetchChannels } from '../../../actions/channel_actions'
 
 
 
@@ -26,7 +27,8 @@ const mapDispatchToProps = dispatch => {
         leaveServer: serverId => dispatch(leaveServer(serverId)),
         getServers: () => dispatch(fetchServers()),
         getServer: serverId => dispatch(fetchServer(serverId)),
-        logout: () => dispatch(logout())
+        logout: () => dispatch(logout()),
+        fetchChannels: serverId => dispatch(fetchChannels(serverId))
     }
 }
 

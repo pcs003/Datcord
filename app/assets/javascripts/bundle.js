@@ -103,6 +103,118 @@ function _setPrototypeOf(o, p) {
 
 /***/ }),
 
+/***/ "./frontend/actions/channel_actions.js":
+/*!*********************************************!*\
+  !*** ./frontend/actions/channel_actions.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RECEIVE_ALL_CHANNELS": () => (/* binding */ RECEIVE_ALL_CHANNELS),
+/* harmony export */   "RECEIVE_CHANNEL": () => (/* binding */ RECEIVE_CHANNEL),
+/* harmony export */   "REMOVE_CHANNEL": () => (/* binding */ REMOVE_CHANNEL),
+/* harmony export */   "RECEIVE_CHANNEL_ERRORS": () => (/* binding */ RECEIVE_CHANNEL_ERRORS),
+/* harmony export */   "CLEAR_CHANNEL_ERRORS": () => (/* binding */ CLEAR_CHANNEL_ERRORS),
+/* harmony export */   "receiveAllChannels": () => (/* binding */ receiveAllChannels),
+/* harmony export */   "receiveChannel": () => (/* binding */ receiveChannel),
+/* harmony export */   "removeChannel": () => (/* binding */ removeChannel),
+/* harmony export */   "receiveChannelErrors": () => (/* binding */ receiveChannelErrors),
+/* harmony export */   "clearChannelErrors": () => (/* binding */ clearChannelErrors),
+/* harmony export */   "fetchChannels": () => (/* binding */ fetchChannels),
+/* harmony export */   "fetchChannel": () => (/* binding */ fetchChannel),
+/* harmony export */   "createChannel": () => (/* binding */ createChannel),
+/* harmony export */   "updateChannel": () => (/* binding */ updateChannel),
+/* harmony export */   "deleteChannel": () => (/* binding */ deleteChannel)
+/* harmony export */ });
+/* harmony import */ var _util_channel_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/channel_api_util */ "./frontend/util/channel_api_util.js");
+
+var RECEIVE_ALL_CHANNELS = 'RECEIVE_ALL_CHANNELS';
+var RECEIVE_CHANNEL = 'RECEIVE_CHANNEL';
+var REMOVE_CHANNEL = 'REMOVE_CHANNEL';
+var RECEIVE_CHANNEL_ERRORS = 'RECEIVE_CHANNEL_ERRORS';
+var CLEAR_CHANNEL_ERRORS = 'CLEAR_CHANNEL_ERRORS';
+var receiveAllChannels = function receiveAllChannels(channels) {
+  return {
+    type: RECEIVE_ALL_CHANNELS,
+    channels: channels
+  };
+};
+var receiveChannel = function receiveChannel(channel) {
+  return {
+    type: RECEIVE_CHANNEL,
+    channel: channel
+  };
+};
+var removeChannel = function removeChannel(channelId) {
+  return {
+    type: REMOVE_CHANNEL,
+    channelId: channelId
+  };
+};
+var receiveChannelErrors = function receiveChannelErrors(errors) {
+  return {
+    type: RECEIVE_CHANNEL_ERRORS,
+    errors: errors
+  };
+};
+var clearChannelErrors = function clearChannelErrors() {
+  return {
+    type: CLEAR_CHANNEL_ERRORS
+  };
+};
+var fetchChannels = function fetchChannels(serverId) {
+  return function (dispatch) {
+    return _util_channel_api_util__WEBPACK_IMPORTED_MODULE_0__.fetchChannels(serverId).then(function (channels) {
+      return dispatch(receiveAllChannels(channels));
+    }, function (e) {
+      return dispatch(receiveChannelErrors(e.responseJSON));
+    });
+  };
+};
+var fetchChannel = function fetchChannel(channelId) {
+  return function (dispatch) {
+    return _util_channel_api_util__WEBPACK_IMPORTED_MODULE_0__.fetchChannel(channelId).then(function (channel) {
+      return dispatch(receiveChannel(channel));
+    }, function (e) {
+      return dispatch(receiveChannelErrors(e.responseJSON));
+    });
+  };
+};
+var createChannel = function createChannel(channel) {
+  return function (dispatch) {
+    return _util_channel_api_util__WEBPACK_IMPORTED_MODULE_0__.createChannel(channel).then(function (channel) {
+      console.log(channel);
+      return dispatch(receiveChannel(channel));
+    }, function (e) {
+      console.log(channel);
+      return dispatch(receiveChannelErrors(e.responseJSON));
+    });
+  };
+};
+var updateChannel = function updateChannel(channel) {
+  return function (dispatch) {
+    return _util_channel_api_util__WEBPACK_IMPORTED_MODULE_0__.updateChannel(channel).then(function (channel) {
+      return dispatch(receiveChannel(channel));
+    }, function (e) {
+      console.log(channel);
+      dispatch(receiveChannelErrors(e.responseJSON));
+    });
+  };
+};
+var deleteChannel = function deleteChannel(channelId) {
+  return function (dispatch) {
+    return _util_channel_api_util__WEBPACK_IMPORTED_MODULE_0__.deleteChannel(channelId).then(function () {
+      return dispatch(removeChannel(channelId));
+    }, function (e) {
+      return dispatch(receiveChannelErrors(e.responseJSON));
+    });
+  };
+};
+
+/***/ }),
+
 /***/ "./frontend/actions/server_actions.js":
 /*!********************************************!*\
   !*** ./frontend/actions/server_actions.js ***!
@@ -865,6 +977,272 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 /***/ }),
 
+/***/ "./frontend/components/mainpage/servers/channels/channel_index.jsx":
+/*!*************************************************************************!*\
+  !*** ./frontend/components/mainpage/servers/channels/channel_index.jsx ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ChannelIndex)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_popup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-popup */ "./node_modules/react-popup/dist/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var ChannelIndex = /*#__PURE__*/function (_React$Component) {
+  _inherits(ChannelIndex, _React$Component);
+
+  var _super = _createSuper(ChannelIndex);
+
+  function ChannelIndex(props) {
+    var _this;
+
+    _classCallCheck(this, ChannelIndex);
+
+    _this = _super.call(this, props);
+    _this.toggleTextChannelOpen = _this.toggleTextChannelOpen.bind(_assertThisInitialized(_this));
+    _this.toggleVoiceChannelOpen = _this.toggleVoiceChannelOpen.bind(_assertThisInitialized(_this));
+    _this.selectTextChannel = _this.selectTextChannel.bind(_assertThisInitialized(_this));
+    _this.selectVoiceChannel = _this.selectVoiceChannel.bind(_assertThisInitialized(_this));
+    _this.state = {
+      selectedTextChannelId: 1,
+      selectedVoiceChannelId: 1,
+      textChannelsOpen: true,
+      voiceChannelsOpen: true
+    };
+    return _this;
+  }
+
+  _createClass(ChannelIndex, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      console.log("hello");
+      this.props.fetchServers();
+      this.props.fetchChannels(this.props.match.params.server_id).then(function (action) {
+        _this2.setState({
+          selectedTextChannelId: Object.values(action.channels)[0].id
+        });
+
+        _this2.props.setCurrentChannelInfo(Object.values(action.channels)[0].name, Object.values(action.channels)[0].id);
+      });
+    }
+  }, {
+    key: "toggleTextChannelOpen",
+    value: function toggleTextChannelOpen(e) {
+      e.preventDefault();
+      var current = this.state.textChannelsOpen;
+      this.setState({
+        textChannelsOpen: !current
+      });
+    }
+  }, {
+    key: "toggleVoiceChannelOpen",
+    value: function toggleVoiceChannelOpen(e) {
+      e.preventDefault();
+      var current = this.state.voiceChannelsOpen;
+      this.setState({
+        voiceChannelsOpen: !current
+      });
+    }
+  }, {
+    key: "selectTextChannel",
+    value: function selectTextChannel(e) {
+      e.preventDefault(); // this.setState({
+      //     selectedTextChannelId: e.target.id
+      // })
+
+      var thisChannel = this.props.channels.find(function (channel) {
+        return channel.id == e.target.id;
+      });
+      this.props.setCurrentChannelInfo(thisChannel.name, thisChannel.id);
+    }
+  }, {
+    key: "selectVoiceChannel",
+    value: function selectVoiceChannel(e) {
+      e.preventDefault();
+      this.setState({
+        selectedVoiceChannelId: e.target.id
+      });
+      react_popup__WEBPACK_IMPORTED_MODULE_1__.default.alert("voice channels still under construction");
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var textChannels = [];
+      var voiceChannels = [];
+
+      if (this.props.channels) {
+        for (var i = 0; i < this.props.channels.length; i++) {
+          if (this.props.channels[i].channel_type === "text" && this.state.textChannelsOpen) {
+            var liClass = this.props.currentChannelId == this.props.channels[i].id ? "selected text" : "";
+            textChannels.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+              className: liClass,
+              id: this.props.channels[i].id,
+              onClick: this.selectTextChannel,
+              key: i
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+              id: this.props.channels[i].id,
+              width: "17",
+              height: "17",
+              viewBox: "0 0 20 20"
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+              fill: "#72767d",
+              d: "M5.88657 21C5.57547 21 5.3399 20.7189 5.39427 20.4126L6.00001 17H2.59511C2.28449 17 2.04905 16.7198 2.10259 16.4138L2.27759 15.4138C2.31946 15.1746 2.52722 15 2.77011 15H6.35001L7.41001 9H4.00511C3.69449 9 3.45905 8.71977 3.51259 8.41381L3.68759 7.41381C3.72946 7.17456 3.93722 7 4.18011 7H7.76001L8.39677 3.41262C8.43914 3.17391 8.64664 3 8.88907 3H9.87344C10.1845 3 10.4201 3.28107 10.3657 3.58738L9.76001 7H15.76L16.3968 3.41262C16.4391 3.17391 16.6466 3 16.8891 3H17.8734C18.1845 3 18.4201 3.28107 18.3657 3.58738L17.76 7H21.1649C21.4755 7 21.711 7.28023 21.6574 7.58619L21.4824 8.58619C21.4406 8.82544 21.2328 9 20.9899 9H17.41L16.35 15H19.7549C20.0655 15 20.301 15.2802 20.2474 15.5862L20.0724 16.5862C20.0306 16.8254 19.8228 17 19.5799 17H16L15.3632 20.5874C15.3209 20.8261 15.1134 21 14.8709 21H13.8866C13.5755 21 13.3399 20.7189 13.3943 20.4126L14 17H8.00001L7.36325 20.5874C7.32088 20.8261 7.11337 21 6.87094 21H5.88657ZM9.41045 9L8.35045 15H14.3504L15.4104 9H9.41045Z"
+            })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+              id: this.props.channels[i].id
+            }, this.props.channels[i].name)));
+          }
+
+          if (this.props.channels[i].channel_type === "voice" && this.state.voiceChannelsOpen) {
+            var _liClass = this.state.selectedVoiceChannelId == this.props.channels[i].id ? "selected voice" : "";
+
+            voiceChannels.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+              className: _liClass,
+              id: this.props.channels[i].id,
+              onClick: this.selectVoiceChannel,
+              key: i
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+              id: this.props.channels[i].id,
+              width: "18",
+              height: "18",
+              viewBox: "0 0 20 20"
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+              fill: "#72767d",
+              d: "M11.383 3.07904C11.009 2.92504 10.579 3.01004 10.293 3.29604L6 8.00204H3C2.45 8.00204 2 8.45304 2 9.00204V15.002C2 15.552 2.45 16.002 3 16.002H6L10.293 20.71C10.579 20.996 11.009 21.082 11.383 20.927C11.757 20.772 12 20.407 12 20.002V4.00204C12 3.59904 11.757 3.23204 11.383 3.07904ZM14 5.00195V7.00195C16.757 7.00195 19 9.24595 19 12.002C19 14.759 16.757 17.002 14 17.002V19.002C17.86 19.002 21 15.863 21 12.002C21 8.14295 17.86 5.00195 14 5.00195ZM14 9.00195C15.654 9.00195 17 10.349 17 12.002C17 13.657 15.654 15.002 14 15.002V13.002C14.551 13.002 15 12.553 15 12.002C15 11.451 14.551 11.002 14 11.002V9.00195Z"
+            })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+              id: this.props.channels[i].id
+            }, this.props.channels[i].name)));
+          }
+        }
+      }
+
+      var textArrowClass = this.state.textChannelsOpen ? "" : "closed";
+      var voiceArrowClass = this.state.voiceChannelsOpen ? "" : "closed";
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "channel-nav"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.toggleTextChannelOpen,
+        className: "channels-title text"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        className: textArrowClass,
+        width: "12",
+        height: "12",
+        viewBox: "0 0 24 24"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#8E9297",
+        d: "M16.59 8.59004L12 13.17L7.41 8.59004L6 10L12 16L18 10L16.59 8.59004Z"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "TEXT CHANNELS")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
+        className: "channels-list text"
+      }, textChannels), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.toggleVoiceChannelOpen,
+        className: "channels-title voice"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        className: voiceArrowClass,
+        width: "12",
+        height: "12",
+        viewBox: "0 0 24 24"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#8E9297",
+        d: "M16.59 8.59004L12 13.17L7.41 8.59004L6 10L12 16L18 10L16.59 8.59004Z"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "VOICE CHANNELS")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
+        className: "channels-list voice"
+      }, voiceChannels), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_popup__WEBPACK_IMPORTED_MODULE_1__.default, null));
+    }
+  }]);
+
+  return ChannelIndex;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+
+
+/***/ }),
+
+/***/ "./frontend/components/mainpage/servers/channels/channel_index_container.js":
+/*!**********************************************************************************!*\
+  !*** ./frontend/components/mainpage/servers/channels/channel_index_container.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _actions_channel_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../actions/channel_actions */ "./frontend/actions/channel_actions.js");
+/* harmony import */ var _channel_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./channel_index */ "./frontend/components/mainpage/servers/channels/channel_index.jsx");
+/* harmony import */ var _actions_server_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../actions/server_actions */ "./frontend/actions/server_actions.js");
+
+
+
+
+
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+  return {
+    errors: state.errors.channel,
+    channels: Object.values(state.entities.channels),
+    currentUser: state.entities.users[state.session.id],
+    server: Object.values(state.entities.servers).find(function (server) {
+      return server.id == ownProps.match.params.server_id;
+    })
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    createChannel: function createChannel(channel) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_1__.createChannel)(channel));
+    },
+    updateChannel: function updateChannel(channel) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_1__.updateChannel)(channel));
+    },
+    deleteChannel: function deleteChannel(channelId) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_1__.deleteChannel)(channelId));
+    },
+    fetchChannels: function fetchChannels(serverId) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_1__.fetchChannels)(serverId));
+    },
+    fetchChannel: function fetchChannel(channelId) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_1__.fetchChannel)(channelId));
+    },
+    fetchServers: function fetchServers() {
+      return dispatch((0,_actions_server_actions__WEBPACK_IMPORTED_MODULE_3__.fetchServers)());
+    }
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_0__.connect)(mapStateToProps, mapDispatchToProps)(_channel_index__WEBPACK_IMPORTED_MODULE_2__.default));
+
+/***/ }),
+
 /***/ "./frontend/components/mainpage/servers/create_server.jsx":
 /*!****************************************************************!*\
   !*** ./frontend/components/mainpage/servers/create_server.jsx ***!
@@ -1448,7 +1826,7 @@ var InfoNavbar = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         fill: "#72767d",
         d: "M5.88657 21C5.57547 21 5.3399 20.7189 5.39427 20.4126L6.00001 17H2.59511C2.28449 17 2.04905 16.7198 2.10259 16.4138L2.27759 15.4138C2.31946 15.1746 2.52722 15 2.77011 15H6.35001L7.41001 9H4.00511C3.69449 9 3.45905 8.71977 3.51259 8.41381L3.68759 7.41381C3.72946 7.17456 3.93722 7 4.18011 7H7.76001L8.39677 3.41262C8.43914 3.17391 8.64664 3 8.88907 3H9.87344C10.1845 3 10.4201 3.28107 10.3657 3.58738L9.76001 7H15.76L16.3968 3.41262C16.4391 3.17391 16.6466 3 16.8891 3H17.8734C18.1845 3 18.4201 3.28107 18.3657 3.58738L17.76 7H21.1649C21.4755 7 21.711 7.28023 21.6574 7.58619L21.4824 8.58619C21.4406 8.82544 21.2328 9 20.9899 9H17.41L16.35 15H19.7549C20.0655 15 20.301 15.2802 20.2474 15.5862L20.0724 16.5862C20.0306 16.8254 19.8228 17 19.5799 17H16L15.3632 20.5874C15.3209 20.8261 15.1134 21 14.8709 21H13.8866C13.5755 21 13.3399 20.7189 13.3943 20.4126L14 17H8.00001L7.36325 20.5874C7.32088 20.8261 7.11337 21 6.87094 21H5.88657ZM9.41045 9L8.35045 15H14.3504L15.4104 9H9.41045Z"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "general")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, this.props.currentChannelName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "other-navbar-items"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         width: "24",
@@ -1526,6 +1904,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _current_user_info__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./current_user_info */ "./frontend/components/mainpage/servers/current_user_info.jsx");
 /* harmony import */ var _settings_layers_server_settings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./settings_layers/server_settings */ "./frontend/components/mainpage/servers/settings_layers/server_settings.jsx");
 /* harmony import */ var _settings_layers_user_settings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./settings_layers/user_settings */ "./frontend/components/mainpage/servers/settings_layers/user_settings.jsx");
+/* harmony import */ var _channels_channel_index_container__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./channels/channel_index_container */ "./frontend/components/mainpage/servers/channels/channel_index_container.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1556,6 +1935,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Server = /*#__PURE__*/function (_React$Component) {
   _inherits(Server, _React$Component);
 
@@ -1576,13 +1956,17 @@ var Server = /*#__PURE__*/function (_React$Component) {
     _this.closeServerSettings = _this.closeServerSettings.bind(_assertThisInitialized(_this));
     _this.openUserSettings = _this.openUserSettings.bind(_assertThisInitialized(_this));
     _this.closeUserSettings = _this.closeUserSettings.bind(_assertThisInitialized(_this));
+    _this.setCurrentChannelInfo = _this.setCurrentChannelInfo.bind(_assertThisInitialized(_this));
     _this.state = {
       muted: false,
       deafened: false,
       createServerActive: false,
       layerName: "",
       clickedServerId: "",
-      clickedServerName: ""
+      clickedServerName: "",
+      currentChannelId: 1,
+      currentChannelName: "",
+      selectedChannelId: ""
     };
     return _this;
   }
@@ -1590,6 +1974,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
   _createClass(Server, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.props.getServers();
       this.props.getServer(this.props.match.params.server_id);
     }
   }, {
@@ -1717,9 +2102,18 @@ var Server = /*#__PURE__*/function (_React$Component) {
       }, 100);
     }
   }, {
+    key: "setCurrentChannelInfo",
+    value: function setCurrentChannelInfo(name, id) {
+      this.setState({
+        currentChannelName: name,
+        currentChannelId: id
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
+      var currentServer = this.props.servers[this.props.match.params.server_id];
       var currentServerName = currentServerName != "" ? currentServerName : "";
       var memberListElements = "";
       var currentServerId = -1;
@@ -1785,8 +2179,11 @@ var Server = /*#__PURE__*/function (_React$Component) {
         className: "server-channel-nav"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-name"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, currentServerName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "channel-nav"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, currentServerName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channels_channel_index_container__WEBPACK_IMPORTED_MODULE_7__.default, {
+        currentServer: currentServer,
+        currentChannelId: this.state.currentChannelId,
+        setCurrentChannelInfo: this.setCurrentChannelInfo,
+        match: this.props.match
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_current_user_info__WEBPACK_IMPORTED_MODULE_4__.default, {
         openUserSettings: this.openUserSettings,
         muted: this.state.muted,
@@ -1796,7 +2193,9 @@ var Server = /*#__PURE__*/function (_React$Component) {
         toggleMute: this.toggleMute
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "right-div"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_info_navbar__WEBPACK_IMPORTED_MODULE_1__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_info_navbar__WEBPACK_IMPORTED_MODULE_1__.default, {
+        currentChannelName: this.state.currentChannelName
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "messages-users-div"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "messaging-div"
@@ -1850,6 +2249,9 @@ var Server = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "discord-page"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_side_nav_side_nav__WEBPACK_IMPORTED_MODULE_2__.default, {
+        setCurrentChannelInfo: this.setCurrentChannelInfo,
+        match: this.props.match,
+        fetchChannels: this.props.fetchChannels,
         history: this.props.history,
         openServerSettings: this.openServerSettings,
         leaveServer: this.props.leaveServer,
@@ -1886,6 +2288,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_server_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../actions/server_actions */ "./frontend/actions/server_actions.js");
 /* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../actions/session_actions */ "./frontend/actions/session_actions.js");
 /* harmony import */ var _server__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./server */ "./frontend/components/mainpage/servers/server.jsx");
+/* harmony import */ var _actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../actions/channel_actions */ "./frontend/actions/channel_actions.js");
+
 
 
 
@@ -1927,6 +2331,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     logout: function logout() {
       return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.logout)());
+    },
+    fetchChannels: function fetchChannels(serverId) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.fetchChannels)(serverId));
     }
   };
 };
@@ -2430,6 +2837,7 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
     _this.contextMenu = _this.contextMenu.bind(_assertThisInitialized(_this));
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
     _this.leaveServer = _this.leaveServer.bind(_assertThisInitialized(_this));
+    _this.handleServerClick = _this.handleServerClick.bind(_assertThisInitialized(_this));
     _this.state = {
       contextMenuVisible: false,
       cmX: "100px",
@@ -2497,9 +2905,20 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "handleServerClick",
+    value: function handleServerClick(e) {
+      var _this3 = this;
+
+      e.preventDefault();
+      this.props.history.push("/channels/".concat(e.target.id));
+      this.props.fetchChannels(e.target.id).then(function (action) {
+        _this3.props.setCurrentChannelInfo(Object.values(action.channels)[0].name, Object.values(action.channels)[0].id);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       //create all server icons
       var serverEles = null;
@@ -2507,13 +2926,14 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
       if (this.props.servers != {}) {
         serverEles = this.props.servers.map(function (server, i) {
           var serverLink = "/channels/".concat(server.id);
-          var linkClass = server.id == _this3.props.currentServerId ? "server-icon selected" : "server-icon";
-          var indicatorClass = server.id == _this3.props.currentServerId ? "selected-indicator active" : "selected-indicator";
+          var linkClass = server.id == _this4.props.currentServerId ? "server-icon selected" : "server-icon";
+          var indicatorClass = server.id == _this4.props.currentServerId ? "selected-indicator active" : "selected-indicator";
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
             key: i,
+            onClick: _this4.handleServerClick,
             className: linkClass,
             id: server.id,
-            onContextMenu: _this3.contextMenu,
+            onContextMenu: _this4.contextMenu,
             to: serverLink
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: indicatorClass
@@ -2523,7 +2943,7 @@ var SideNav = /*#__PURE__*/function (_React$Component) {
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", {
             id: server.id,
             className: "nav-tab"
-          }, _this3.abbreviate(server.name))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+          }, _this4.abbreviate(server.name))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
             className: "server-name"
           }, server.name));
         });
@@ -3167,6 +3587,83 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 /***/ }),
 
+/***/ "./frontend/reducers/channel_errors_reducer.js":
+/*!*****************************************************!*\
+  !*** ./frontend/reducers/channel_errors_reducer.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_channel_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/channel_actions */ "./frontend/actions/channel_actions.js");
+
+
+var channelErrorsReducer = function channelErrorsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_channel_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_CHANNEL_ERRORS:
+      return action.errors;
+
+    case _actions_channel_actions__WEBPACK_IMPORTED_MODULE_0__.CLEAR_CHANNEL_ERRORS:
+      return [];
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (channelErrorsReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/channels_reducer.js":
+/*!***********************************************!*\
+  !*** ./frontend/reducers/channels_reducer.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_channel_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/channel_actions */ "./frontend/actions/channel_actions.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var channelsReducer = function channelsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_channel_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_ALL_CHANNELS:
+      return action.channels;
+
+    case _actions_channel_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_CHANNEL:
+      return Object.assign({}, state, _defineProperty({}, action.channel.id, action.channel));
+
+    case _actions_channel_actions__WEBPACK_IMPORTED_MODULE_0__.REMOVE_CHANNEL:
+      var nextState = Object.assign({}, state);
+      delete nextState[action.channelId];
+      return nextState;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (channelsReducer);
+
+/***/ }),
+
 /***/ "./frontend/reducers/entities_reducer.js":
 /*!***********************************************!*\
   !*** ./frontend/reducers/entities_reducer.js ***!
@@ -3178,15 +3675,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _servers_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./servers_reducer */ "./frontend/reducers/servers_reducer.js");
-/* harmony import */ var _users_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./users_reducer */ "./frontend/reducers/users_reducer.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _channels_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./channels_reducer */ "./frontend/reducers/channels_reducer.js");
+/* harmony import */ var _servers_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./servers_reducer */ "./frontend/reducers/servers_reducer.js");
+/* harmony import */ var _users_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./users_reducer */ "./frontend/reducers/users_reducer.js");
 
 
 
-var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
-  users: _users_reducer__WEBPACK_IMPORTED_MODULE_1__.default,
-  servers: _servers_reducer__WEBPACK_IMPORTED_MODULE_0__.default
+
+var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_0__.combineReducers)({
+  users: _users_reducer__WEBPACK_IMPORTED_MODULE_3__.default,
+  servers: _servers_reducer__WEBPACK_IMPORTED_MODULE_2__.default,
+  channels: _channels_reducer__WEBPACK_IMPORTED_MODULE_1__.default
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (entitiesReducer);
 
@@ -3203,15 +3703,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _server_errors_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./server_errors_reducer */ "./frontend/reducers/server_errors_reducer.js");
-/* harmony import */ var _session_errors_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./session_errors_reducer */ "./frontend/reducers/session_errors_reducer.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _channel_errors_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./channel_errors_reducer */ "./frontend/reducers/channel_errors_reducer.js");
+/* harmony import */ var _server_errors_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./server_errors_reducer */ "./frontend/reducers/server_errors_reducer.js");
+/* harmony import */ var _session_errors_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./session_errors_reducer */ "./frontend/reducers/session_errors_reducer.js");
 
 
 
-var errorsReducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
-  session: _session_errors_reducer__WEBPACK_IMPORTED_MODULE_1__.default,
-  server: _server_errors_reducer__WEBPACK_IMPORTED_MODULE_0__.default
+
+var errorsReducer = (0,redux__WEBPACK_IMPORTED_MODULE_0__.combineReducers)({
+  session: _session_errors_reducer__WEBPACK_IMPORTED_MODULE_3__.default,
+  server: _server_errors_reducer__WEBPACK_IMPORTED_MODULE_2__.default,
+  channel: _channel_errors_reducer__WEBPACK_IMPORTED_MODULE_1__.default
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (errorsReducer);
 
@@ -3462,6 +3965,71 @@ var configureStore = function configureStore() {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (configureStore);
+
+/***/ }),
+
+/***/ "./frontend/util/channel_api_util.js":
+/*!*******************************************!*\
+  !*** ./frontend/util/channel_api_util.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "fetchChannels": () => (/* binding */ fetchChannels),
+/* harmony export */   "fetchChannel": () => (/* binding */ fetchChannel),
+/* harmony export */   "createChannel": () => (/* binding */ createChannel),
+/* harmony export */   "updateChannel": () => (/* binding */ updateChannel),
+/* harmony export */   "deleteChannel": () => (/* binding */ deleteChannel)
+/* harmony export */ });
+var fetchChannels = function fetchChannels(serverId) {
+  return $.ajax({
+    url: '/api/channels',
+    data: {
+      serverId: serverId
+    }
+  });
+};
+var fetchChannel = function fetchChannel(channelId) {
+  return $.ajax({
+    url: "/api/channels/".concat(channelId)
+  });
+};
+var createChannel = function createChannel(_ref) {
+  var name = _ref.name,
+      serverId = _ref.serverId,
+      channelType = _ref.channelType;
+  return $.ajax({
+    url: '/api/channels',
+    method: 'POST',
+    data: {
+      channel: {
+        name: name,
+        server_id: serverId,
+        channel_type: channelType
+      }
+    }
+  });
+};
+var updateChannel = function updateChannel(channel) {
+  console.log({
+    channel: channel
+  });
+  return $.ajax({
+    url: "/api/channels/".concat(channel.id),
+    method: 'PATCH',
+    data: {
+      channel: channel
+    }
+  });
+};
+var deleteChannel = function deleteChannel(channelId) {
+  return $.ajax({
+    url: "/api/channels/".concat(channelId),
+    method: 'DELETE'
+  });
+};
 
 /***/ }),
 
@@ -3793,6 +4361,514 @@ var logout = function logout() {
     url: '/api/session'
   });
 };
+
+/***/ }),
+
+/***/ "./node_modules/events/events.js":
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+/***/ ((module) => {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+var R = typeof Reflect === 'object' ? Reflect : null
+var ReflectApply = R && typeof R.apply === 'function'
+  ? R.apply
+  : function ReflectApply(target, receiver, args) {
+    return Function.prototype.apply.call(target, receiver, args);
+  }
+
+var ReflectOwnKeys
+if (R && typeof R.ownKeys === 'function') {
+  ReflectOwnKeys = R.ownKeys
+} else if (Object.getOwnPropertySymbols) {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target)
+      .concat(Object.getOwnPropertySymbols(target));
+  };
+} else {
+  ReflectOwnKeys = function ReflectOwnKeys(target) {
+    return Object.getOwnPropertyNames(target);
+  };
+}
+
+function ProcessEmitWarning(warning) {
+  if (console && console.warn) console.warn(warning);
+}
+
+var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
+  return value !== value;
+}
+
+function EventEmitter() {
+  EventEmitter.init.call(this);
+}
+module.exports = EventEmitter;
+module.exports.once = once;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._eventsCount = 0;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+var defaultMaxListeners = 10;
+
+function checkListener(listener) {
+  if (typeof listener !== 'function') {
+    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+  }
+}
+
+Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+  enumerable: true,
+  get: function() {
+    return defaultMaxListeners;
+  },
+  set: function(arg) {
+    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
+      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
+    }
+    defaultMaxListeners = arg;
+  }
+});
+
+EventEmitter.init = function() {
+
+  if (this._events === undefined ||
+      this._events === Object.getPrototypeOf(this)._events) {
+    this._events = Object.create(null);
+    this._eventsCount = 0;
+  }
+
+  this._maxListeners = this._maxListeners || undefined;
+};
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
+    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
+  }
+  this._maxListeners = n;
+  return this;
+};
+
+function _getMaxListeners(that) {
+  if (that._maxListeners === undefined)
+    return EventEmitter.defaultMaxListeners;
+  return that._maxListeners;
+}
+
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return _getMaxListeners(this);
+};
+
+EventEmitter.prototype.emit = function emit(type) {
+  var args = [];
+  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+  var doError = (type === 'error');
+
+  var events = this._events;
+  if (events !== undefined)
+    doError = (doError && events.error === undefined);
+  else if (!doError)
+    return false;
+
+  // If there is no 'error' event listener then throw.
+  if (doError) {
+    var er;
+    if (args.length > 0)
+      er = args[0];
+    if (er instanceof Error) {
+      // Note: The comments on the `throw` lines are intentional, they show
+      // up in Node's output if this results in an unhandled exception.
+      throw er; // Unhandled 'error' event
+    }
+    // At least give some kind of context to the user
+    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
+    err.context = er;
+    throw err; // Unhandled 'error' event
+  }
+
+  var handler = events[type];
+
+  if (handler === undefined)
+    return false;
+
+  if (typeof handler === 'function') {
+    ReflectApply(handler, this, args);
+  } else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      ReflectApply(listeners[i], this, args);
+  }
+
+  return true;
+};
+
+function _addListener(target, type, listener, prepend) {
+  var m;
+  var events;
+  var existing;
+
+  checkListener(listener);
+
+  events = target._events;
+  if (events === undefined) {
+    events = target._events = Object.create(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener !== undefined) {
+      target.emit('newListener', type,
+                  listener.listener ? listener.listener : listener);
+
+      // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+      events = target._events;
+    }
+    existing = events[type];
+  }
+
+  if (existing === undefined) {
+    // Optimize the case of one listener. Don't need the extra array object.
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] =
+        prepend ? [listener, existing] : [existing, listener];
+      // If we've already got an array, just append.
+    } else if (prepend) {
+      existing.unshift(listener);
+    } else {
+      existing.push(listener);
+    }
+
+    // Check for listener leak
+    m = _getMaxListeners(target);
+    if (m > 0 && existing.length > m && !existing.warned) {
+      existing.warned = true;
+      // No error code for this since it is a Warning
+      // eslint-disable-next-line no-restricted-syntax
+      var w = new Error('Possible EventEmitter memory leak detected. ' +
+                          existing.length + ' ' + String(type) + ' listeners ' +
+                          'added. Use emitter.setMaxListeners() to ' +
+                          'increase limit');
+      w.name = 'MaxListenersExceededWarning';
+      w.emitter = target;
+      w.type = type;
+      w.count = existing.length;
+      ProcessEmitWarning(w);
+    }
+  }
+
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.prependListener =
+    function prependListener(type, listener) {
+      return _addListener(this, type, listener, true);
+    };
+
+function onceWrapper() {
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    if (arguments.length === 0)
+      return this.listener.call(this.target);
+    return this.listener.apply(this.target, arguments);
+  }
+}
+
+function _onceWrap(target, type, listener) {
+  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
+  var wrapped = onceWrapper.bind(state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
+
+EventEmitter.prototype.once = function once(type, listener) {
+  checkListener(listener);
+  this.on(type, _onceWrap(this, type, listener));
+  return this;
+};
+
+EventEmitter.prototype.prependOnceListener =
+    function prependOnceListener(type, listener) {
+      checkListener(listener);
+      this.prependListener(type, _onceWrap(this, type, listener));
+      return this;
+    };
+
+// Emits a 'removeListener' event if and only if the listener was removed.
+EventEmitter.prototype.removeListener =
+    function removeListener(type, listener) {
+      var list, events, position, i, originalListener;
+
+      checkListener(listener);
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      list = events[type];
+      if (list === undefined)
+        return this;
+
+      if (list === listener || list.listener === listener) {
+        if (--this._eventsCount === 0)
+          this._events = Object.create(null);
+        else {
+          delete events[type];
+          if (events.removeListener)
+            this.emit('removeListener', type, list.listener || listener);
+        }
+      } else if (typeof list !== 'function') {
+        position = -1;
+
+        for (i = list.length - 1; i >= 0; i--) {
+          if (list[i] === listener || list[i].listener === listener) {
+            originalListener = list[i].listener;
+            position = i;
+            break;
+          }
+        }
+
+        if (position < 0)
+          return this;
+
+        if (position === 0)
+          list.shift();
+        else {
+          spliceOne(list, position);
+        }
+
+        if (list.length === 1)
+          events[type] = list[0];
+
+        if (events.removeListener !== undefined)
+          this.emit('removeListener', type, originalListener || listener);
+      }
+
+      return this;
+    };
+
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+
+EventEmitter.prototype.removeAllListeners =
+    function removeAllListeners(type) {
+      var listeners, events, i;
+
+      events = this._events;
+      if (events === undefined)
+        return this;
+
+      // not listening for removeListener, no need to emit
+      if (events.removeListener === undefined) {
+        if (arguments.length === 0) {
+          this._events = Object.create(null);
+          this._eventsCount = 0;
+        } else if (events[type] !== undefined) {
+          if (--this._eventsCount === 0)
+            this._events = Object.create(null);
+          else
+            delete events[type];
+        }
+        return this;
+      }
+
+      // emit removeListener for all listeners on all events
+      if (arguments.length === 0) {
+        var keys = Object.keys(events);
+        var key;
+        for (i = 0; i < keys.length; ++i) {
+          key = keys[i];
+          if (key === 'removeListener') continue;
+          this.removeAllListeners(key);
+        }
+        this.removeAllListeners('removeListener');
+        this._events = Object.create(null);
+        this._eventsCount = 0;
+        return this;
+      }
+
+      listeners = events[type];
+
+      if (typeof listeners === 'function') {
+        this.removeListener(type, listeners);
+      } else if (listeners !== undefined) {
+        // LIFO order
+        for (i = listeners.length - 1; i >= 0; i--) {
+          this.removeListener(type, listeners[i]);
+        }
+      }
+
+      return this;
+    };
+
+function _listeners(target, type, unwrap) {
+  var events = target._events;
+
+  if (events === undefined)
+    return [];
+
+  var evlistener = events[type];
+  if (evlistener === undefined)
+    return [];
+
+  if (typeof evlistener === 'function')
+    return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+
+  return unwrap ?
+    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+}
+
+EventEmitter.prototype.listeners = function listeners(type) {
+  return _listeners(this, type, true);
+};
+
+EventEmitter.prototype.rawListeners = function rawListeners(type) {
+  return _listeners(this, type, false);
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
+};
+
+EventEmitter.prototype.listenerCount = listenerCount;
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events !== undefined) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener !== undefined) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
+}
+
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+};
+
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+  for (var i = 0; i < n; ++i)
+    copy[i] = arr[i];
+  return copy;
+}
+
+function spliceOne(list, index) {
+  for (; index + 1 < list.length; index++)
+    list[index] = list[index + 1];
+  list.pop();
+}
+
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+  return ret;
+}
+
+function once(emitter, name) {
+  return new Promise(function (resolve, reject) {
+    function errorListener(err) {
+      emitter.removeListener(name, resolver);
+      reject(err);
+    }
+
+    function resolver() {
+      if (typeof emitter.removeListener === 'function') {
+        emitter.removeListener('error', errorListener);
+      }
+      resolve([].slice.call(arguments));
+    };
+
+    eventTargetAgnosticAddListener(emitter, name, resolver, { once: true });
+    if (name !== 'error') {
+      addErrorHandlerIfEventEmitter(emitter, errorListener, { once: true });
+    }
+  });
+}
+
+function addErrorHandlerIfEventEmitter(emitter, handler, flags) {
+  if (typeof emitter.on === 'function') {
+    eventTargetAgnosticAddListener(emitter, 'error', handler, flags);
+  }
+}
+
+function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
+  if (typeof emitter.on === 'function') {
+    if (flags.once) {
+      emitter.once(name, listener);
+    } else {
+      emitter.on(name, listener);
+    }
+  } else if (typeof emitter.addEventListener === 'function') {
+    // EventTarget does not have `error` event semantics like Node
+    // EventEmitters, we do not listen for `error` events here.
+    emitter.addEventListener(name, function wrapListener(arg) {
+      // IE does not have builtin `{ once: true }` support so we
+      // have to do it manually.
+      if (flags.once) {
+        emitter.removeEventListener(name, wrapListener);
+      }
+      listener(arg);
+    });
+  } else {
+    throw new TypeError('The "emitter" argument must be of type EventEmitter. Received type ' + typeof emitter);
+  }
+}
+
 
 /***/ }),
 
@@ -4864,6 +5940,312 @@ module.exports = hoistNonReactStatics;
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/keymaster/keymaster.js":
+/*!*********************************************!*\
+  !*** ./node_modules/keymaster/keymaster.js ***!
+  \*********************************************/
+/***/ (function(module) {
+
+//     keymaster.js
+//     (c) 2011-2013 Thomas Fuchs
+//     keymaster.js may be freely distributed under the MIT license.
+
+;(function(global){
+  var k,
+    _handlers = {},
+    _mods = { 16: false, 18: false, 17: false, 91: false },
+    _scope = 'all',
+    // modifier keys
+    _MODIFIERS = {
+      '⇧': 16, shift: 16,
+      '⌥': 18, alt: 18, option: 18,
+      '⌃': 17, ctrl: 17, control: 17,
+      '⌘': 91, command: 91
+    },
+    // special keys
+    _MAP = {
+      backspace: 8, tab: 9, clear: 12,
+      enter: 13, 'return': 13,
+      esc: 27, escape: 27, space: 32,
+      left: 37, up: 38,
+      right: 39, down: 40,
+      del: 46, 'delete': 46,
+      home: 36, end: 35,
+      pageup: 33, pagedown: 34,
+      ',': 188, '.': 190, '/': 191,
+      '`': 192, '-': 189, '=': 187,
+      ';': 186, '\'': 222,
+      '[': 219, ']': 221, '\\': 220
+    },
+    code = function(x){
+      return _MAP[x] || x.toUpperCase().charCodeAt(0);
+    },
+    _downKeys = [];
+
+  for(k=1;k<20;k++) _MAP['f'+k] = 111+k;
+
+  // IE doesn't support Array#indexOf, so have a simple replacement
+  function index(array, item){
+    var i = array.length;
+    while(i--) if(array[i]===item) return i;
+    return -1;
+  }
+
+  // for comparing mods before unassignment
+  function compareArray(a1, a2) {
+    if (a1.length != a2.length) return false;
+    for (var i = 0; i < a1.length; i++) {
+        if (a1[i] !== a2[i]) return false;
+    }
+    return true;
+  }
+
+  var modifierMap = {
+      16:'shiftKey',
+      18:'altKey',
+      17:'ctrlKey',
+      91:'metaKey'
+  };
+  function updateModifierKey(event) {
+      for(k in _mods) _mods[k] = event[modifierMap[k]];
+  };
+
+  // handle keydown event
+  function dispatch(event) {
+    var key, handler, k, i, modifiersMatch, scope;
+    key = event.keyCode;
+
+    if (index(_downKeys, key) == -1) {
+        _downKeys.push(key);
+    }
+
+    // if a modifier key, set the key.<modifierkeyname> property to true and return
+    if(key == 93 || key == 224) key = 91; // right command on webkit, command on Gecko
+    if(key in _mods) {
+      _mods[key] = true;
+      // 'assignKey' from inside this closure is exported to window.key
+      for(k in _MODIFIERS) if(_MODIFIERS[k] == key) assignKey[k] = true;
+      return;
+    }
+    updateModifierKey(event);
+
+    // see if we need to ignore the keypress (filter() can can be overridden)
+    // by default ignore key presses if a select, textarea, or input is focused
+    if(!assignKey.filter.call(this, event)) return;
+
+    // abort if no potentially matching shortcuts found
+    if (!(key in _handlers)) return;
+
+    scope = getScope();
+
+    // for each potential shortcut
+    for (i = 0; i < _handlers[key].length; i++) {
+      handler = _handlers[key][i];
+
+      // see if it's in the current scope
+      if(handler.scope == scope || handler.scope == 'all'){
+        // check if modifiers match if any
+        modifiersMatch = handler.mods.length > 0;
+        for(k in _mods)
+          if((!_mods[k] && index(handler.mods, +k) > -1) ||
+            (_mods[k] && index(handler.mods, +k) == -1)) modifiersMatch = false;
+        // call the handler and stop the event if neccessary
+        if((handler.mods.length == 0 && !_mods[16] && !_mods[18] && !_mods[17] && !_mods[91]) || modifiersMatch){
+          if(handler.method(event, handler)===false){
+            if(event.preventDefault) event.preventDefault();
+              else event.returnValue = false;
+            if(event.stopPropagation) event.stopPropagation();
+            if(event.cancelBubble) event.cancelBubble = true;
+          }
+        }
+      }
+    }
+  };
+
+  // unset modifier keys on keyup
+  function clearModifier(event){
+    var key = event.keyCode, k,
+        i = index(_downKeys, key);
+
+    // remove key from _downKeys
+    if (i >= 0) {
+        _downKeys.splice(i, 1);
+    }
+
+    if(key == 93 || key == 224) key = 91;
+    if(key in _mods) {
+      _mods[key] = false;
+      for(k in _MODIFIERS) if(_MODIFIERS[k] == key) assignKey[k] = false;
+    }
+  };
+
+  function resetModifiers() {
+    for(k in _mods) _mods[k] = false;
+    for(k in _MODIFIERS) assignKey[k] = false;
+  };
+
+  // parse and assign shortcut
+  function assignKey(key, scope, method){
+    var keys, mods;
+    keys = getKeys(key);
+    if (method === undefined) {
+      method = scope;
+      scope = 'all';
+    }
+
+    // for each shortcut
+    for (var i = 0; i < keys.length; i++) {
+      // set modifier keys if any
+      mods = [];
+      key = keys[i].split('+');
+      if (key.length > 1){
+        mods = getMods(key);
+        key = [key[key.length-1]];
+      }
+      // convert to keycode and...
+      key = key[0]
+      key = code(key);
+      // ...store handler
+      if (!(key in _handlers)) _handlers[key] = [];
+      _handlers[key].push({ shortcut: keys[i], scope: scope, method: method, key: keys[i], mods: mods });
+    }
+  };
+
+  // unbind all handlers for given key in current scope
+  function unbindKey(key, scope) {
+    var multipleKeys, keys,
+      mods = [],
+      i, j, obj;
+
+    multipleKeys = getKeys(key);
+
+    for (j = 0; j < multipleKeys.length; j++) {
+      keys = multipleKeys[j].split('+');
+
+      if (keys.length > 1) {
+        mods = getMods(keys);
+        key = keys[keys.length - 1];
+      }
+
+      key = code(key);
+
+      if (scope === undefined) {
+        scope = getScope();
+      }
+      if (!_handlers[key]) {
+        return;
+      }
+      for (i = 0; i < _handlers[key].length; i++) {
+        obj = _handlers[key][i];
+        // only clear handlers if correct scope and mods match
+        if (obj.scope === scope && compareArray(obj.mods, mods)) {
+          _handlers[key][i] = {};
+        }
+      }
+    }
+  };
+
+  // Returns true if the key with code 'keyCode' is currently down
+  // Converts strings into key codes.
+  function isPressed(keyCode) {
+      if (typeof(keyCode)=='string') {
+        keyCode = code(keyCode);
+      }
+      return index(_downKeys, keyCode) != -1;
+  }
+
+  function getPressedKeyCodes() {
+      return _downKeys.slice(0);
+  }
+
+  function filter(event){
+    var tagName = (event.target || event.srcElement).tagName;
+    // ignore keypressed in any elements that support keyboard data input
+    return !(tagName == 'INPUT' || tagName == 'SELECT' || tagName == 'TEXTAREA');
+  }
+
+  // initialize key.<modifier> to false
+  for(k in _MODIFIERS) assignKey[k] = false;
+
+  // set current scope (default 'all')
+  function setScope(scope){ _scope = scope || 'all' };
+  function getScope(){ return _scope || 'all' };
+
+  // delete all handlers for a given scope
+  function deleteScope(scope){
+    var key, handlers, i;
+
+    for (key in _handlers) {
+      handlers = _handlers[key];
+      for (i = 0; i < handlers.length; ) {
+        if (handlers[i].scope === scope) handlers.splice(i, 1);
+        else i++;
+      }
+    }
+  };
+
+  // abstract key logic for assign and unassign
+  function getKeys(key) {
+    var keys;
+    key = key.replace(/\s/g, '');
+    keys = key.split(',');
+    if ((keys[keys.length - 1]) == '') {
+      keys[keys.length - 2] += ',';
+    }
+    return keys;
+  }
+
+  // abstract mods logic for assign and unassign
+  function getMods(key) {
+    var mods = key.slice(0, key.length - 1);
+    for (var mi = 0; mi < mods.length; mi++)
+    mods[mi] = _MODIFIERS[mods[mi]];
+    return mods;
+  }
+
+  // cross-browser events
+  function addEvent(object, event, method) {
+    if (object.addEventListener)
+      object.addEventListener(event, method, false);
+    else if(object.attachEvent)
+      object.attachEvent('on'+event, function(){ method(window.event) });
+  };
+
+  // set the handlers globally on document
+  addEvent(document, 'keydown', function(event) { dispatch(event) }); // Passing _scope to a callback to ensure it remains the same by execution. Fixes #48
+  addEvent(document, 'keyup', clearModifier);
+
+  // reset modifiers to false whenever the window is (re)focused.
+  addEvent(window, 'focus', resetModifiers);
+
+  // store previously defined key
+  var previousKey = global.key;
+
+  // restore previously defined key and return reference to our key object
+  function noConflict() {
+    var k = global.key;
+    global.key = previousKey;
+    return k;
+  }
+
+  // set window.key and window.key.set/get/deleteScope, and the default filter
+  global.key = assignKey;
+  global.key.setScope = setScope;
+  global.key.getScope = getScope;
+  global.key.deleteScope = deleteScope;
+  global.key.filter = filter;
+  global.key.isPressed = isPressed;
+  global.key.getPressedKeyCodes = getPressedKeyCodes;
+  global.key.noConflict = noConflict;
+  global.key.unbind = unbindKey;
+
+  if(true) module.exports = assignKey;
+
+})(this);
 
 
 /***/ }),
@@ -32884,6 +34266,1133 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/react-popup/dist/ActionButton.react.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/react-popup/dist/ActionButton.react.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var PopupAction =
+/*#__PURE__*/
+function (_React$Component) {
+  function PopupAction() {
+    _classCallCheck(this, PopupAction);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(PopupAction).apply(this, arguments));
+  }
+
+  _createClass(PopupAction, [{
+    key: "handleClick",
+    value: function handleClick() {
+      return this.props.onClick();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      var className = this.props.className;
+
+      if (this.props.url && this.props.url !== '#') {
+        return _react.default.createElement("a", {
+          href: this.props.url,
+          target: "_blank",
+          className: className
+        }, this.props.children);
+      }
+
+      return _react.default.createElement("button", {
+        onClick: function onClick() {
+          return _this.handleClick();
+        },
+        className: className
+      }, this.props.children);
+    }
+  }]);
+
+  _inherits(PopupAction, _React$Component);
+
+  return PopupAction;
+}(_react.default.Component);
+
+_defineProperty(PopupAction, "defaultProps", {
+  onClick: function onClick() {},
+  className: 'btn',
+  url: null
+});
+
+PopupAction.propTypes = {
+  onClick: _propTypes.default.func,
+  className: _propTypes.default.string,
+  children: _propTypes.default.node.isRequired,
+  url: _propTypes.default.string
+};
+var _default = PopupAction;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/Bem.js":
+/*!**********************************************!*\
+  !*** ./node_modules/react-popup/dist/Bem.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.element = exports.modifier = void 0;
+
+var element = function element(el, base) {
+  return "".concat(base, "__").concat(el);
+};
+
+exports.element = element;
+
+var modifier = function modifier(modifiers, base) {
+  if (!modifiers) {
+    return null;
+  }
+
+  var finalClass = [];
+  var classNames = modifiers.split(' ');
+  classNames.forEach(function (singleClass) {
+    finalClass.push("".concat(base, "--").concat(singleClass));
+  });
+  return finalClass.join(' ');
+};
+
+exports.modifier = modifier;
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/ButtonsSpace.react.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/react-popup/dist/ButtonsSpace.react.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _ActionButton = _interopRequireDefault(__webpack_require__(/*! ./ActionButton.react */ "./node_modules/react-popup/dist/ActionButton.react.js"));
+
+var _Bem = __webpack_require__(/*! ./Bem */ "./node_modules/react-popup/dist/Bem.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var PopupFooterButtons =
+/*#__PURE__*/
+function (_React$Component) {
+  function PopupFooterButtons() {
+    _classCallCheck(this, PopupFooterButtons);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(PopupFooterButtons).apply(this, arguments));
+  }
+
+  _createClass(PopupFooterButtons, [{
+    key: "onOk",
+    value: function onOk() {
+      return this.props.onOk();
+    }
+  }, {
+    key: "onClose",
+    value: function onClose() {
+      return this.props.onClose();
+    }
+  }, {
+    key: "buttonClick",
+    value: function buttonClick(action) {
+      return this.props.buttonClick(action);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      if (!this.props.buttons) {
+        return null;
+      }
+
+      var btns = [];
+      this.props.buttons.forEach(function (btn, i) {
+        var url = btn.url ? btn.url : null;
+        var key = i;
+
+        if (typeof btn === 'string') {
+          if (btn === 'ok') {
+            btns.push(_react.default.createElement(_ActionButton.default, {
+              className: "".concat(_this.props.btnClass, " ").concat(_this.props.btnClass, "--ok"),
+              key: key,
+              onClick: function onClick() {
+                return _this.onOk();
+              }
+            }, _this.props.defaultOk));
+          } else if (btn === 'cancel') {
+            btns.push(_react.default.createElement(_ActionButton.default, {
+              className: "".concat(_this.props.btnClass, " ").concat(_this.props.btnClass, "--cancel"),
+              key: key,
+              onClick: function onClick() {
+                return _this.onClose();
+              }
+            }, _this.props.defaultCancel));
+          }
+        } else if (_react.default.isValidElement(btn)) {
+          btns.push(btn);
+        } else {
+          var className = "".concat(_this.props.btnClass, " ").concat((0, _Bem.modifier)(btn.className, _this.props.btnClass));
+
+          var btnComponent = _react.default.createElement(_ActionButton.default, {
+            className: className,
+            key: key,
+            url: url,
+            onClick: function onClick() {
+              return _this.buttonClick(btn.action);
+            }
+          }, btn.text);
+
+          btns.push(btnComponent);
+        }
+      });
+      return _react.default.createElement("div", {
+        className: this.props.className
+      }, btns);
+    }
+  }]);
+
+  _inherits(PopupFooterButtons, _React$Component);
+
+  return PopupFooterButtons;
+}(_react.default.Component);
+
+exports.default = PopupFooterButtons;
+
+_defineProperty(PopupFooterButtons, "defaultProps", {
+  buttons: null,
+  className: null,
+  onOk: function onOk() {},
+  onClose: function onClose() {},
+  buttonClick: function buttonClick() {},
+  btnClass: null,
+  defaultOk: null,
+  defaultCancel: null
+});
+
+PopupFooterButtons.propTypes = {
+  buttons: _propTypes.default.arrayOf(_propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.object])),
+  className: _propTypes.default.string,
+  onOk: _propTypes.default.func,
+  onClose: _propTypes.default.func,
+  buttonClick: _propTypes.default.func,
+  btnClass: _propTypes.default.string,
+  defaultOk: _propTypes.default.string,
+  defaultCancel: _propTypes.default.string
+};
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/Constants.js":
+/*!****************************************************!*\
+  !*** ./node_modules/react-popup/dist/Constants.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+var _default = {
+  SHOW: 'SHOW',
+  CLOSE: 'CLOSE',
+  REFRESH: 'REFRESH'
+};
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/Footer.react.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/react-popup/dist/Footer.react.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _ButtonsSpace = _interopRequireDefault(__webpack_require__(/*! ./ButtonsSpace.react */ "./node_modules/react-popup/dist/ButtonsSpace.react.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PopupFooter = function PopupFooter(props) {
+  if (!props.buttons) {
+    return null;
+  }
+
+  return _react.default.createElement("footer", {
+    className: props.className
+  }, _react.default.createElement(_ButtonsSpace.default, {
+    buttonClick: props.buttonClick,
+    onOk: props.onOk,
+    onClose: props.onClose,
+    className: "".concat(props.className, "__left-space"),
+    btnClass: props.btnClass,
+    defaultOk: props.defaultOk,
+    defaultCancel: props.defaultCancel,
+    buttons: props.buttons.left
+  }), _react.default.createElement(_ButtonsSpace.default, {
+    buttonClick: props.buttonClick,
+    onOk: props.onOk,
+    onClose: props.onClose,
+    className: "".concat(props.className, "__right-space"),
+    btnClass: props.btnClass,
+    defaultOk: props.defaultOk,
+    defaultCancel: props.defaultCancel,
+    buttons: props.buttons.right
+  }));
+};
+
+PopupFooter.propTypes = {
+  buttons: _propTypes.default.shape({
+    left: _propTypes.default.arrayOf(_propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.object])),
+    right: _propTypes.default.arrayOf(_propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.object]))
+  }),
+  className: _propTypes.default.string,
+  btnClass: _propTypes.default.string,
+  onOk: _propTypes.default.func,
+  onClose: _propTypes.default.func,
+  buttonClick: _propTypes.default.func,
+  defaultOk: _propTypes.default.string,
+  defaultCancel: _propTypes.default.string
+};
+PopupFooter.defaultProps = {
+  buttons: null,
+  className: null,
+  btnClass: null,
+  defaultOk: null,
+  defaultCancel: null,
+  buttonClick: function buttonClick() {},
+  onOk: function onOk() {},
+  onClose: function onClose() {}
+};
+var _default = PopupFooter;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/Header.react.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/react-popup/dist/Header.react.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PopupHeader = function PopupHeader(props) {
+  if (!props.title) {
+    return null;
+  }
+
+  return _react.default.createElement("header", {
+    className: props.className
+  }, _react.default.createElement("h1", {
+    className: "".concat(props.className, "__title")
+  }, props.title));
+};
+
+PopupHeader.defaultProps = {
+  title: null,
+  className: null
+};
+PopupHeader.propTypes = {
+  title: _propTypes.default.string,
+  className: _propTypes.default.string
+};
+var _default = PopupHeader;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/Popup.react.js":
+/*!******************************************************!*\
+  !*** ./node_modules/react-popup/dist/Popup.react.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _keymaster = _interopRequireDefault(__webpack_require__(/*! keymaster */ "./node_modules/keymaster/keymaster.js"));
+
+var _Store = _interopRequireDefault(__webpack_require__(/*! ./Store */ "./node_modules/react-popup/dist/Store.js"));
+
+var _Header = _interopRequireDefault(__webpack_require__(/*! ./Header.react */ "./node_modules/react-popup/dist/Header.react.js"));
+
+var _Footer = _interopRequireDefault(__webpack_require__(/*! ./Footer.react */ "./node_modules/react-popup/dist/Footer.react.js"));
+
+var _Constants = _interopRequireDefault(__webpack_require__(/*! ./Constants */ "./node_modules/react-popup/dist/Constants.js"));
+
+var _Bem = __webpack_require__(/*! ./Bem */ "./node_modules/react-popup/dist/Bem.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var defaultKeyFilter = _keymaster.default.filter;
+var Store = new _Store.default();
+
+var handleClose = function handleClose() {
+  _keymaster.default.deleteScope('react-popup');
+
+  _keymaster.default.filter = defaultKeyFilter;
+  Store.close();
+};
+
+var initialState = {
+  id: null,
+  title: null,
+  buttons: null,
+  content: null,
+  visible: false,
+  className: null,
+  noOverlay: false,
+  position: false,
+  closeOnOutsideClick: true,
+  onClose: function onClose() {},
+  onOpen: function onOpen() {}
+};
+
+var Popup =
+/*#__PURE__*/
+function (_React$Component) {
+  _createClass(Popup, null, [{
+    key: "addShowListener",
+    value: function addShowListener(callback) {
+      Store.on(_Constants.default.SHOW, callback);
+    }
+  }, {
+    key: "removeShowListener",
+    value: function removeShowListener(callback) {
+      Store.removeListener(_Constants.default.SHOW, callback);
+    }
+  }, {
+    key: "addCloseListener",
+    value: function addCloseListener(callback) {
+      Store.on(_Constants.default.CLOSE, callback);
+    }
+  }, {
+    key: "removeCloseListener",
+    value: function removeCloseListener(callback) {
+      Store.removeListener(_Constants.default.CLOSE, callback);
+    }
+  }, {
+    key: "register",
+    value: function register(data) {
+      var id = Store.getId();
+      Store.popups[id] = Object.assign({}, initialState, data);
+      return id;
+    }
+  }, {
+    key: "queue",
+    value: function queue(id) {
+      if (!Object.prototype.hasOwnProperty.call(Store.popups, id)) {
+        return false;
+      }
+      /** Add popup to queue */
+
+
+      Store.queue.push(id);
+      /** Dispatch queue */
+
+      Store.dispatch();
+      return id;
+    }
+  }, {
+    key: "create",
+    value: function create(data, bringToFront) {
+      /** Register popup */
+      var id = this.register(data);
+      /** Queue popup */
+
+      if (bringToFront === true) {
+        var currentlyActive = Store.active;
+        Store.active = null;
+        this.queue(id);
+        this.queue(currentlyActive);
+        Store.dispatch();
+      } else {
+        this.queue(id);
+      }
+
+      return id;
+    }
+  }, {
+    key: "alert",
+    value: function alert(text, title, bringToFront) {
+      var data = {
+        title: title,
+        content: text,
+        buttons: {
+          right: ['ok']
+        }
+      };
+      return this.create(data, bringToFront);
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      Store.close();
+    }
+  }, {
+    key: "registerPlugin",
+    value: function registerPlugin(name, callback) {
+      Store.plugins[name] = callback.bind(this);
+    }
+  }, {
+    key: "plugins",
+    value: function plugins() {
+      return Store.plugins;
+    }
+  }, {
+    key: "refreshPosition",
+    value: function refreshPosition(position) {
+      return Store.refreshPosition(position);
+    }
+  }, {
+    key: "clearQueue",
+    value: function clearQueue() {
+      return Store.clearQueue();
+    }
+  }]);
+
+  function Popup(props) {
+    var _this;
+
+    _classCallCheck(this, Popup);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Popup).call(this, props));
+    initialState.closeOnOutsideClick = _this.props.closeOnOutsideClick;
+    _this.state = initialState;
+    _this.bound = {
+      onShow: _this.onShow.bind(_assertThisInitialized(_assertThisInitialized(_this))),
+      onClose: _this.onClose.bind(_assertThisInitialized(_assertThisInitialized(_this))),
+      onRefresh: _this.onRefresh.bind(_assertThisInitialized(_assertThisInitialized(_this))),
+      containerClick: _this.containerClick.bind(_assertThisInitialized(_assertThisInitialized(_this))),
+      handleButtonClick: _this.handleButtonClick.bind(_assertThisInitialized(_assertThisInitialized(_this)))
+    };
+    _this.boxRef = null;
+    _this.defaultKeyBindings = {
+      ok: _this.props.defaultOkKey,
+      cancel: _this.props.defaultCancelKey
+    };
+    return _this;
+  }
+
+  _createClass(Popup, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      Store.on(_Constants.default.SHOW, this.bound.onShow);
+      Store.on(_Constants.default.CLOSE, this.bound.onClose);
+      Store.on(_Constants.default.REFRESH, this.bound.onRefresh);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      if (this.boxRef) {
+        this.boxRef.focus();
+      }
+
+      this.setPosition(this.state.position);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      Store.removeListener(_Constants.default.SHOW, this.bound.onShow);
+      Store.removeListener(_Constants.default.CLOSE, this.bound.onClose);
+      Store.removeListener(_Constants.default.REFRESH, this.bound.onRefresh);
+
+      _keymaster.default.deleteScope('react-popup');
+
+      _keymaster.default.filter = defaultKeyFilter;
+    }
+    /**
+     * Refresh popup position
+     * @param position
+     * @private
+     */
+
+  }, {
+    key: "onRefresh",
+    value: function onRefresh(position) {
+      this.setPosition(position);
+    }
+    /**
+     * On popup close
+     * @private
+     */
+
+  }, {
+    key: "onClose",
+    value: function onClose() {
+      _keymaster.default.deleteScope('react-popup');
+
+      _keymaster.default.filter = defaultKeyFilter;
+      this.state.onClose(this.state.id, this.state.title);
+      this.setState(initialState);
+    }
+    /**
+     * On popup show
+     * @private
+     */
+
+  }, {
+    key: "onShow",
+    value: function onShow(id) {
+      var _this2 = this;
+
+      _keymaster.default.deleteScope('react-popup');
+
+      _keymaster.default.filter = function () {
+        return true;
+      };
+
+      var popup = Store.activePopup();
+
+      if (popup.buttons && !Object.prototype.hasOwnProperty.call(popup.buttons, 'left')) {
+        popup.buttons.left = [];
+      }
+
+      if (popup.buttons && !Object.prototype.hasOwnProperty.call(popup.buttons, 'right')) {
+        popup.buttons.right = [];
+      }
+
+      this.setState({
+        id: id,
+        title: popup.title,
+        content: popup.content,
+        buttons: popup.buttons,
+        visible: true,
+        className: popup.className,
+        noOverlay: popup.noOverlay,
+        position: popup.position,
+        closeOnOutsideClick: popup.closeOnOutsideClick,
+        onClose: popup.onClose,
+        onOpen: popup.onOpen
+      }, function () {
+        _keymaster.default.setScope('react-popup');
+
+        _this2.state.onOpen(_this2.state.id, _this2.state.title);
+
+        if (_this2.props.escToClose) {
+          (0, _keymaster.default)('esc', 'react-popup', _this2.handleKeyEvent.bind(_this2, 'cancel', _this2.state.id));
+        }
+
+        if (_this2.state.buttons) {
+          if (_this2.state.buttons.left.length) {
+            _this2.state.buttons.left.forEach(function (button) {
+              return _this2.bindKeyEvents(button);
+            });
+          }
+
+          if (_this2.state.buttons.right.length) {
+            _this2.state.buttons.right.forEach(function (button) {
+              return _this2.bindKeyEvents(button);
+            });
+          }
+        }
+      });
+    }
+  }, {
+    key: "setPosition",
+    value: function setPosition(position) {
+      var box = this.boxRef;
+      var boxPosition = position;
+
+      if (!box) {
+        return;
+      }
+
+      if (!boxPosition) {
+        boxPosition = this.state.position;
+      }
+
+      if (!boxPosition) {
+        box.style.opacity = 1;
+        box.style.top = null;
+        box.style.left = null;
+        box.style.margin = null;
+        return;
+      }
+
+      if (typeof boxPosition === 'function') {
+        boxPosition.call(null, box);
+        return;
+      }
+
+      box.style.top = "".concat(parseInt(boxPosition.y, 10), "px");
+      box.style.left = "".concat(parseInt(boxPosition.x, 10), "px");
+      box.style.margin = 0;
+      box.style.opacity = 1;
+    }
+    /**
+     * Handle container click
+     * @param e
+     * @private
+     */
+
+  }, {
+    key: "containerClick",
+    value: function containerClick() {
+      if (this.state.closeOnOutsideClick) {
+        handleClose();
+      }
+    }
+  }, {
+    key: "bindKeyEvents",
+    value: function bindKeyEvents(button) {
+      var code = null;
+
+      if (typeof button === 'string') {
+        code = this.defaultKeyBindings[button];
+      } else if (Object.prototype.hasOwnProperty.call(button, 'key')) {
+        code = button.key;
+      }
+
+      if (this.props.escToClose && code === 'esc') {
+        return;
+      }
+
+      if (code) {
+        (0, _keymaster.default)(code, 'react-popup', this.handleKeyEvent.bind(this, button, this.state.id));
+      }
+    }
+  }, {
+    key: "handleKeyEvent",
+    value: function handleKeyEvent(button, id, e) {
+      var excludeTags = ['INPUT', 'TEXTAREA', 'BUTTON'];
+
+      if (this.state.id !== id || button.key === 'enter' && excludeTags.indexOf(e.target.tagName) >= 0) {
+        return true;
+      }
+
+      if (typeof button === 'string') {
+        handleClose();
+      } else if (Object.prototype.hasOwnProperty.call(button, 'action')) {
+        this.handleButtonClick(button.action);
+      }
+
+      return false;
+    }
+    /**
+     * Handle button clicks
+     * @param action
+     * @returns {*}
+     * @private
+     */
+
+  }, {
+    key: "handleButtonClick",
+    value: function handleButtonClick(action) {
+      if (typeof action === 'function') {
+        return action.call(this, Store);
+      }
+
+      return null;
+    }
+  }, {
+    key: "className",
+    value: function className(_className) {
+      return (0, _Bem.element)(_className, this.props.className);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var className = this.props.className;
+      var box = null;
+      var overlayStyle = {};
+
+      if (this.state.visible) {
+        var closeBtn = null;
+        className += " ".concat(this.props.className, "--visible");
+
+        if (this.props.closeBtn) {
+          closeBtn = _react.default.createElement("button", {
+            onClick: handleClose,
+            className: "".concat(this.props.className, "__close")
+          }, this.props.closeHtml);
+        }
+
+        var boxClass = this.className('box');
+
+        if (this.state.className) {
+          boxClass += " ".concat((0, _Bem.modifier)(this.state.className, boxClass));
+        }
+
+        box = _react.default.createElement("article", {
+          role: "dialog",
+          tabIndex: "-1",
+          ref: function ref(el) {
+            _this3.boxRef = el;
+          },
+          style: {
+            opacity: 0,
+            outline: 'none'
+          },
+          className: boxClass
+        }, closeBtn, _react.default.createElement(_Header.default, {
+          title: this.state.title,
+          className: this.className('box__header')
+        }), _react.default.createElement("div", {
+          className: this.className('box__body')
+        }, this.state.content), _react.default.createElement(_Footer.default, {
+          className: this.className('box__footer'),
+          btnClass: this.props.btnClass,
+          buttonClick: this.bound.handleButtonClick,
+          onClose: handleClose,
+          onOk: handleClose,
+          defaultOk: this.props.defaultOk,
+          defaultCancel: this.props.defaultCancel,
+          buttons: this.state.buttons
+        }));
+      }
+
+      if (this.state.noOverlay) {
+        overlayStyle.background = 'transparent';
+      }
+
+      return _react.default.createElement("div", {
+        className: className
+      }, _react.default.createElement("div", {
+        role: "presentation",
+        onClick: this.bound.containerClick,
+        className: this.className('overlay'),
+        style: overlayStyle
+      }), box);
+    }
+  }]);
+
+  _inherits(Popup, _React$Component);
+
+  return Popup;
+}(_react.default.Component);
+
+_defineProperty(Popup, "defaultProps", {
+  className: 'mm-popup',
+  btnClass: 'mm-popup__btn',
+  closeBtn: true,
+  closeHtml: null,
+  defaultOk: 'Ok',
+  defaultOkKey: 'enter',
+  defaultCancel: 'Cancel',
+  defaultCancelKey: 'esc',
+  closeOnOutsideClick: true,
+  escToClose: true,
+  onClose: function onClose() {},
+  onOpen: function onOpen() {}
+});
+
+Popup.propTypes = {
+  className: _propTypes.default.string,
+  btnClass: _propTypes.default.string,
+  closeBtn: _propTypes.default.bool,
+  closeHtml: _propTypes.default.node,
+  defaultOk: _propTypes.default.string,
+  defaultOkKey: _propTypes.default.string,
+  defaultCancel: _propTypes.default.string,
+  defaultCancelKey: _propTypes.default.string,
+  closeOnOutsideClick: _propTypes.default.bool,
+  escToClose: _propTypes.default.bool,
+  onClose: _propTypes.default.func,
+  onOpen: _propTypes.default.func
+};
+var _default = Popup;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/Store.js":
+/*!************************************************!*\
+  !*** ./node_modules/react-popup/dist/Store.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _events = __webpack_require__(/*! events */ "./node_modules/events/events.js");
+
+var _Constants = _interopRequireDefault(__webpack_require__(/*! ./Constants */ "./node_modules/react-popup/dist/Constants.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
+
+var PopupStore =
+/*#__PURE__*/
+function (_EventEmitter) {
+  function PopupStore(props) {
+    var _this;
+
+    _classCallCheck(this, PopupStore);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(PopupStore).call(this, props));
+    _this.id = 1;
+    _this.popups = {};
+    _this.queue = [];
+    _this.active = null;
+    _this.plugins = {};
+    return _this;
+  }
+  /**
+   * Get popup ID
+   */
+
+
+  _createClass(PopupStore, [{
+    key: "getId",
+    value: function getId() {
+      return "id_".concat(this.id++);
+    }
+    /**
+     * Get active popup
+     * @returns {*}
+     */
+
+  }, {
+    key: "activePopup",
+    value: function activePopup() {
+      return this.popups[this.active];
+    }
+    /**
+     * Close current popup
+     */
+
+  }, {
+    key: "close",
+    value: function close() {
+      if (!this.active) {
+        return false;
+      }
+
+      var id = this.active;
+      this.active = null;
+      this.emit(_Constants.default.CLOSE, id);
+      this.dispatch();
+      this.value = null;
+      return id;
+    }
+    /**
+     * Dispatch next popup in queue
+     */
+
+  }, {
+    key: "dispatch",
+    value: function dispatch() {
+      if (this.active || this.queue.length < 1) {
+        return false;
+      }
+
+      var id = this.queue.shift();
+      /** Set active */
+
+      this.active = id;
+      this.emit(_Constants.default.SHOW, id);
+      return true;
+    }
+    /**
+     * Refresh popup position
+     * @param position
+     */
+
+  }, {
+    key: "refreshPosition",
+    value: function refreshPosition(position) {
+      this.emit(_Constants.default.REFRESH, position);
+    }
+    /**
+     * Clear queue
+     */
+
+  }, {
+    key: "clearQueue",
+    value: function clearQueue() {
+      this.queue = [];
+    }
+  }]);
+
+  _inherits(PopupStore, _EventEmitter);
+
+  return PopupStore;
+}(_events.EventEmitter);
+
+exports.default = PopupStore;
+
+/***/ }),
+
+/***/ "./node_modules/react-popup/dist/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/react-popup/dist/index.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "default", ({
+  enumerable: true,
+  get: function get() {
+    return _Popup.default;
+  }
+}));
+
+var _Popup = _interopRequireDefault(__webpack_require__(/*! ./Popup.react */ "./node_modules/react-popup/dist/Popup.react.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+
 /***/ "./node_modules/react-redux/es/components/Context.js":
 /*!***********************************************************!*\
   !*** ./node_modules/react-redux/es/components/Context.js ***!
@@ -40424,7 +42933,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store/store */ "./frontend/store/store.js");
 /* harmony import */ var _components_root__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/root */ "./frontend/components/root.jsx");
-/* harmony import */ var _actions_server_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./actions/server_actions */ "./frontend/actions/server_actions.js");
+/* harmony import */ var _actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./actions/channel_actions */ "./frontend/actions/channel_actions.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -40451,10 +42960,11 @@ document.addEventListener("DOMContentLoaded", function () {
     store = (0,_store_store__WEBPACK_IMPORTED_MODULE_2__.default)();
   }
 
-  window.fetchServers = _actions_server_actions__WEBPACK_IMPORTED_MODULE_4__.fetchServers;
-  window.createServer = _actions_server_actions__WEBPACK_IMPORTED_MODULE_4__.createServer;
-  window.updateServer = _actions_server_actions__WEBPACK_IMPORTED_MODULE_4__.updateServer;
-  window.deleteServer = _actions_server_actions__WEBPACK_IMPORTED_MODULE_4__.deleteServer;
+  window.fetchChannel = _actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.fetchChannel;
+  window.fetchChannels = _actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.fetchChannels;
+  window.createChannel = _actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.createChannel;
+  window.updateChannel = _actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.updateChannel;
+  window.deleteChannel = _actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.deleteChannel;
   window.getState = store.getState;
   window.dispatch = store.dispatch;
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_root__WEBPACK_IMPORTED_MODULE_3__.default, {

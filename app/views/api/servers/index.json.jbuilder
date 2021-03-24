@@ -8,4 +8,12 @@ json.array! @servers do |server|
         json.id member.id
         json.username member.username
     end
+
+    json.channels do
+        server.channels.each do |channel|
+            json.set! channel.id do
+                json.extract! channel, :id, :name
+            end
+        end
+    end
 end
