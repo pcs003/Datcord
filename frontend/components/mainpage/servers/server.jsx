@@ -6,6 +6,8 @@ import CurrentUserInfo from './current_user_info'
 import ServerSettings from './settings_layers/server_settings'
 import UserSettings from './settings_layers/user_settings'
 import ChannelIndexContainer from './channels/channel_index_container'
+import CreateChannel from './channels/create_channel'
+import DeleteChannel from './channels/delete_channel'
 
 export default class Server extends React.Component {
     constructor(props) {
@@ -21,6 +23,11 @@ export default class Server extends React.Component {
         this.openUserSettings = this.openUserSettings.bind(this)
         this.closeUserSettings = this.closeUserSettings.bind(this)
         this.setCurrentChannelInfo = this.setCurrentChannelInfo.bind(this)
+        this.openCreateChannelForm = this.openCreateChannelForm.bind(this)
+        this.closeCreateChannelForm = this.closeCreateChannelForm.bind(this)
+        this.openDeleteChannelForm = this.openDeleteChannelForm.bind(this)
+        this.closeDeleteChannelForm = this.closeDeleteChannelForm.bind(this)
+        this.setClickedChannelId = this.setClickedChannelId.bind(this)
 
         this.state = {
             muted: false,
@@ -31,7 +38,7 @@ export default class Server extends React.Component {
             clickedServerName: "",
             currentChannelId: 1,
             currentChannelName: "",
-            selectedChannelId: ""
+            clickedChannelId: 1
         }
     }
     componentDidMount() {
@@ -126,6 +133,8 @@ export default class Server extends React.Component {
         }, 100);
     }
 
+    
+
     openUserSettings(e) {
         e.preventDefault();
         this.setState({
@@ -156,10 +165,68 @@ export default class Server extends React.Component {
         })
     }
 
+    openCreateChannelForm(e) {
+        e.preventDefault();
+        e.preventDefault();
+        this.setState({
+            layerName: "createChannel"
+        })
+    }
+
+    closeCreateChannelForm(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        
+        let wrapper = document.getElementById("create-channel-modal-wrapper");
+        let modal = document.getElementById("create-channel-modal");
+
+        modal.classList.add("transition-out");
+        wrapper.classList.add("inactive")
+
+        setTimeout(() => {
+            this.setState({
+                layerName: ""
+            })
+        }, 100);
+    }
+
+    openDeleteChannelForm(e) {
+        e.preventDefault();
+        console.log("here")
+        this.setState({
+            layerName: "deleteChannel"
+        })
+    }
+
+    closeDeleteChannelForm(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        
+        let wrapper = document.getElementById("delete-channel-modal-wrapper");
+        let modal = document.getElementById("delete-channel-modal");
+
+        modal.classList.add("transition-out");
+        wrapper.classList.add("inactive")
+
+        setTimeout(() => {
+            this.setState({
+                layerName: ""
+            })
+        }, 100);
+    }
+
+    setClickedChannelId(num) {
+        this.setState({
+            clickedChannelId: num
+        })
+    }
+
     
     render() {
         let colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"]
-        let currentServer = this.props.servers[this.props.match.params.server_id]
+        let currentServer = this.props.servers[this.props.match.params.server_id - 1]
         let currentServerName = currentServerName != "" ? currentServerName : "";
         let memberListElements = "";
         let currentServerId = -1;
@@ -189,6 +256,10 @@ export default class Server extends React.Component {
             currentLayer = <ServerSettings updateServer={this.props.updateServer} clickedServerName={this.state.clickedServerName} getServers={this.props.getServers} servers={this.props.servers} history={this.props.history} clickedServerId={this.state.clickedServerId} deleteServer={this.props.deleteServer} closeServerSettings={this.closeServerSettings} />
         } else if (this.state.layerName === "userSettings") {
             currentLayer = <UserSettings closeUserSettings={this.closeUserSettings} logout={this.props.logout} currentUser={this.props.currentUser}/>
+        } else if (this.state.layerName === "createChannel") {
+            currentLayer = <CreateChannel history={this.props.history} fetchChannels={this.props.fetchChannels} createChannel={this.props.createChannel} match={this.props.match} closeForm={this.closeCreateChannelForm} />
+        } else if (this.state.layerName === "deleteChannel") {
+            currentLayer = <DeleteChannel fetchChannels={this.props.fetchChannels} clickedChannelId={this.state.clickedChannelId} deleteChannel={this.props.deleteChannel} closeForm={this.closeDeleteChannelForm}/>
         }
 
         //handles user vs server page
@@ -198,7 +269,7 @@ export default class Server extends React.Component {
                     <div className="server-name">
                         <h2>{currentServerName}</h2>
                     </div>
-                    <ChannelIndexContainer currentServer={currentServer} currentChannelId={this.state.currentChannelId} setCurrentChannelInfo={this.setCurrentChannelInfo} match={this.props.match}/>
+                    <ChannelIndexContainer setClickedChannelId={this.setClickedChannelId} openDeleteChannelForm={this.openDeleteChannelForm} openCreateChannelForm={this.openCreateChannelForm} currentServer={currentServer} currentChannelId={this.state.currentChannelId} setCurrentChannelInfo={this.setCurrentChannelInfo} match={this.props.match}/>
                     <CurrentUserInfo openUserSettings={this.openUserSettings} muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
                 </div>
                 <div className="right-div">
@@ -237,7 +308,6 @@ export default class Server extends React.Component {
                     <div className="messages-users-div">
                         <div className="messaging-div"></div>
                         <div className="server-members-nav">
-                            <button className="logout" onClick={this.props.logout}>Log Out</button>
                             <h2 className="members-header"></h2>
                             
                             <div className="user-list-item invis">

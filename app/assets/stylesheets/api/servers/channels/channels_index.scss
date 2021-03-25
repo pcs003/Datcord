@@ -29,6 +29,17 @@
             font-weight: 700;
             margin-left: 2px;
         }
+
+        svg.create-button {
+            position: absolute;
+            right: 18px;
+        }
+
+        svg.create-button:hover {
+            polygon {
+                fill:white;
+            }
+        }
     }
 
     .channels-title:hover {
@@ -98,4 +109,101 @@
             }
         }
     }
+
+    .channel-context-menu {
+        display: none;
+        min-width: 188px;
+        max-width: 320px;
+        height: auto;
+        background-color: #18191c;
+        z-index: 5;
+        border-radius: 4px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.24);
+        padding:8px;
+
+
+        .divider {
+            box-sizing: border-box;
+            margin: 4px;
+            border-bottom: 1px solid hsla(0,0%,100%,0.06);
+        }
+
+        .mark-read-div {
+            min-width: 172px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 2px;
+
+            span {
+                color: #b9bbbe;
+                font-size: 14px;
+                margin-left: 8px;
+            }
+        }
+
+        .mark-read-div:hover {
+            background-color: #4e5d94;
+            span {
+                color: white;
+                font-weight: 600;
+            }
+            
+        }
+
+        .edit-channel-div {
+            min-width: 172px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 2px;
+
+            span {
+                color: #b9bbbe;
+                font-size: 14px;
+                margin-left: 8px;
+            }
+        }
+
+        .edit-channel-div:hover {
+            background-color: #4e5d94;
+            span {
+                color: white;
+                font-weight: 600;
+            }
+            
+        }
+
+        .delete-channel-div {
+            min-width: 172px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 2px;
+
+            span {
+                color: #F04747;
+                font-size: 14px;
+                margin-left: 8px;
+            }
+        }
+
+        .delete-channel-div:hover {
+            background-color: #F04747;
+            span {
+                color: white;
+                font-weight: 600;
+            }
+            
+        }
+    }
+
+    .channel-context-menu.active {
+        display: flex;
+        flex-direction: column;
+    }
+    
 }
