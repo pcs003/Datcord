@@ -1,0 +1,228 @@
+.channel-settings-modal-wrapper {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+  animation-name: appear;
+  animation-duration: 0.3s;
+  animation-iteration-count: 1;
+}
+.channel-settings-modal-wrapper .sidebar {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1 0 218px;
+  box-sizing: border-box;
+  background-color: #2f3136;
+  z-index: 10;
+}
+.channel-settings-modal-wrapper .sidebar .sidebar-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 218px;
+  margin: 60px 6px 60px 20px;
+  height: 600px;
+}
+.channel-settings-modal-wrapper .sidebar .sidebar-content h3 {
+  color: #8E9297;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 8px 20px;
+}
+.channel-settings-modal-wrapper .sidebar .sidebar-content h2 {
+  color: #B9BBBE;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 20px 8px 10px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.channel-settings-modal-wrapper .sidebar .sidebar-content h2.delete-button {
+  color: #f04747;
+}
+.channel-settings-modal-wrapper .sidebar .sidebar-content .divider {
+  margin: 8px 20px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+.channel-settings-modal-wrapper .sidebar .sidebar-content h2:hover {
+  background-color: rgba(79, 84, 92, 0.16);
+}
+.channel-settings-modal-wrapper .sidebar .sidebar-content h2.delete-button:hover {
+  background-color: rgba(240, 71, 71, 0.1);
+}
+.channel-settings-modal-wrapper .content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 800px;
+  box-sizing: border-box;
+  align-items: flex-start;
+  background-color: #36393f;
+  z-index: 10;
+}
+.channel-settings-modal-wrapper .content .close-form-container {
+  position: absolute;
+  top: 60px;
+  left: 740px;
+  display: flex;
+  flex-direction: column;
+}
+.channel-settings-modal-wrapper .content .close-form-container .close-form {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  border: 2px solid #72767d;
+  display: flex;
+  cursor: pointer;
+}
+.channel-settings-modal-wrapper .content .close-form-container .close-form svg {
+  margin: auto;
+  width: 18px;
+  height: 18px;
+}
+.channel-settings-modal-wrapper .content .close-form-container .esc-text {
+  color: #72767d;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 8px auto;
+}
+.channel-settings-modal-wrapper .content .close-form-container .close-form:hover {
+  background-color: rgba(114, 118, 125, 0.3);
+}
+.channel-settings-modal-wrapper .content .overview {
+  margin-top: 60px;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  width: 660px;
+}
+.channel-settings-modal-wrapper .content .overview h1 {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+}
+.channel-settings-modal-wrapper .content .save-changes-container {
+  position: absolute;
+  bottom: -120px;
+  left: 20px;
+  width: 700px;
+  height: 52px;
+  background-color: rgba(32, 34, 37, 0.9);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  z-index: 14;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.channel-settings-modal-wrapper .content .save-changes-container .warning {
+  margin-left: 16px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+.channel-settings-modal-wrapper .content .save-changes-container .options {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.channel-settings-modal-wrapper .content .save-changes-container .options .reset {
+  width: 60px;
+  height: 23px;
+  color: white;
+  font-size: 14px;
+  padding-top: 9px;
+  cursor: pointer;
+}
+.channel-settings-modal-wrapper .content .save-changes-container .options .reset:hover {
+  text-decoration: underline;
+}
+.channel-settings-modal-wrapper .content .save-changes-container .options .save {
+  width: 97px;
+  height: 23px;
+  padding-top: 9px;
+  padding-left: 15px;
+  border-radius: 3px;
+  background-color: #43b581;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.17s;
+}
+.channel-settings-modal-wrapper .content .save-changes-container .options .save:hover {
+  background-color: #3ca374;
+  transition: 0.17s;
+}
+.channel-settings-modal-wrapper .content .save-changes-container.active {
+  bottom: 20px;
+  animation-name: slideIn;
+  animation-duration: 0.4s;
+  animation-iteration-count: 1;
+}
+.channel-settings-modal-wrapper .content .save-changes-container.inactive {
+  animation-name: slideOutChannelDelete;
+  animation-duration: 0.8s;
+  animation-iteration-count: 1;
+}
+@keyframes slideIn {
+  0% {
+    transform: translateY(140px);
+  }
+  98% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes slideOut {
+  0% {
+    transform: translateY(-140px);
+  }
+  50% {
+    transform: translateY(-180px);
+  }
+  98% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.channel-settings-modal-wrapper.inactive {
+  animation-name: disappear;
+  animation-duration: 0.3s;
+  animation-iteration-count: 1;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: scale(1.2, 1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+@keyframes disappear {
+  0% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2, 1.2);
+  }
+}

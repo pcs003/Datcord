@@ -161,7 +161,7 @@ export default class ChannelIndex extends React.Component {
         if (this.props.currentServer && this.props.currentUser.id == this.props.currentServer.owner_id ) {
             channelOptions = (
                 <div>
-                    <div id={this.state.clickedChannel.id} className="edit-channel-div" >
+                    <div id={this.state.clickedChannel.id} className="edit-channel-div" onClick={this.props.openChannelSettings}>
                         <span id={this.state.clickedChannel.id} >Edit Channel</span>
                     </div>
                     <div className="divider"></div>
