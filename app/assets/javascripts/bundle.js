@@ -2954,6 +2954,7 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
     _this.openDeletePopup = _this.openDeletePopup.bind(_assertThisInitialized(_this));
     _this.closeDeletePopup = _this.closeDeletePopup.bind(_assertThisInitialized(_this));
     _this.updateDeletePopupText = _this.updateDeletePopupText.bind(_assertThisInitialized(_this));
+    _this.resetName = _this.resetName.bind(_assertThisInitialized(_this));
     var original = _this.props.clickedServerName;
     _this.state = {
       name: original,
@@ -3000,6 +3001,15 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
         name: e.target.value,
         justLoaded: false
       });
+    }
+  }, {
+    key: "resetName",
+    value: function resetName(e) {
+      e.preventDefault();
+      this.setState({
+        name: this.state.originalName
+      });
+      document.getElementById("update-server-name-input").value = this.state.originalName;
     }
   }, {
     key: "handleSubmit",
@@ -3143,6 +3153,7 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
         htmlFor: "name"
       }, "SERVER NAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "update-server-name-input",
         name: "name",
         type: "text",
         defaultValue: this.props.clickedServerName,
@@ -3160,7 +3171,8 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
       }, "Careful \u2014 you have unsaved changes!"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "options"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "reset"
+        className: "reset",
+        onClick: this.resetName
       }, "Reset"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "save",
         onClick: this.handleSubmit

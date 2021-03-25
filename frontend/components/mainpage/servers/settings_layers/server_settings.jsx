@@ -10,6 +10,7 @@ export default class ServerSettings extends React.Component {
         this.openDeletePopup = this.openDeletePopup.bind(this)
         this.closeDeletePopup = this.closeDeletePopup.bind(this)
         this.updateDeletePopupText = this.updateDeletePopupText.bind(this)
+        this.resetName = this.resetName.bind(this)
 
         let original = this.props.clickedServerName;
         this.state = {
@@ -49,6 +50,14 @@ export default class ServerSettings extends React.Component {
             name: e.target.value,
             justLoaded: false
         })
+    }
+
+    resetName(e) {
+        e.preventDefault();
+        this.setState({
+            name: this.state.originalName,
+        })
+        document.getElementById("update-server-name-input").value = this.state.originalName;
     }
 
     handleSubmit(e) {
@@ -185,7 +194,7 @@ export default class ServerSettings extends React.Component {
                             </div>
                             <div className="name-update-wrapper">
                                 <label htmlFor="name">SERVER NAME</label>
-                                <input name="name" type="text" defaultValue={this.props.clickedServerName} onChange={this.updateName}/>
+                                <input id="update-server-name-input" name="name" type="text" defaultValue={this.props.clickedServerName} onChange={this.updateName}/>
                                 <label>SERVER REGION</label>
                                 <div className="server-div">
                                     <div className="current-server">
@@ -203,7 +212,7 @@ export default class ServerSettings extends React.Component {
                             Careful &mdash; you have unsaved changes!
                         </div>
                         <div className="options">
-                            <div className="reset">
+                            <div className="reset" onClick={this.resetName}>
                                 Reset
                             </div>
                             <div className="save" onClick={this.handleSubmit}>
