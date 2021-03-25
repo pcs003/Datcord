@@ -8,6 +8,7 @@ import UserSettings from './settings_layers/user_settings'
 import ChannelIndexContainer from './channels/channel_index_container'
 import CreateChannel from './channels/create_channel'
 import DeleteChannel from './channels/delete_channel'
+import { AuthRoute, ProtectedRoute } from '../../../util/route_util';
 
 export default class Server extends React.Component {
     constructor(props) {
@@ -193,7 +194,7 @@ export default class Server extends React.Component {
 
     openDeleteChannelForm(e) {
         e.preventDefault();
-        console.log("here")
+
         this.setState({
             layerName: "deleteChannel"
         })
@@ -255,13 +256,13 @@ export default class Server extends React.Component {
         if (this.state.layerName === "createServer"){
             currentLayer = <CreateServer createChannel={this.props.createChannel} fetchChannels={this.props.fetchChannels} getServers={this.props.getServers} servers={this.props.servers} joinServer={this.props.joinServer} currentUser={this.props.currentUser} history={this.props.history} isActive={this.state.layerName === "createServer"} closeCreateServerForm={this.closeCreateServerForm} createServer={this.props.createServer} /> ;
         } else if (this.state.layerName === "serverSettings") {
-            currentLayer = <ServerSettings updateServer={this.props.updateServer} clickedServerName={this.state.clickedServerName} getServers={this.props.getServers} servers={this.props.servers} history={this.props.history} clickedServerId={this.state.clickedServerId} deleteServer={this.props.deleteServer} closeServerSettings={this.closeServerSettings} />
+            currentLayer = <ServerSettings currentUser={this.props.currentUser} updateServer={this.props.updateServer} clickedServerName={this.state.clickedServerName} getServers={this.props.getServers} servers={this.props.servers} history={this.props.history} clickedServerId={this.state.clickedServerId} deleteServer={this.props.deleteServer} closeServerSettings={this.closeServerSettings} />
         } else if (this.state.layerName === "userSettings") {
             currentLayer = <UserSettings closeUserSettings={this.closeUserSettings} logout={this.props.logout} currentUser={this.props.currentUser}/>
         } else if (this.state.layerName === "createChannel") {
-            currentLayer = <CreateChannel history={this.props.history} fetchChannels={this.props.fetchChannels} createChannel={this.props.createChannel} match={this.props.match} closeForm={this.closeCreateChannelForm} />
+            currentLayer = <CreateChannel currentServer={currentServer} history={this.props.history} fetchChannels={this.props.fetchChannels} createChannel={this.props.createChannel} match={this.props.match} closeForm={this.closeCreateChannelForm} />
         } else if (this.state.layerName === "deleteChannel") {
-            currentLayer = <DeleteChannel fetchChannels={this.props.fetchChannels} clickedChannelId={this.state.clickedChannelId} deleteChannel={this.props.deleteChannel} closeForm={this.closeDeleteChannelForm}/>
+            currentLayer = <DeleteChannel currentServer={currentServer} history={this.props.history} fetchChannels={this.props.fetchChannels} clickedChannelId={this.state.clickedChannelId} deleteChannel={this.props.deleteChannel} closeForm={this.closeDeleteChannelForm}/>
         }
 
         //handles user vs server page
@@ -271,13 +272,16 @@ export default class Server extends React.Component {
                     <div className="server-name">
                         <h2>{currentServerName}</h2>
                     </div>
-                    <ChannelIndexContainer setClickedChannelId={this.setClickedChannelId} openDeleteChannelForm={this.openDeleteChannelForm} openCreateChannelForm={this.openCreateChannelForm} currentServer={currentServer} currentChannelId={this.state.currentChannelId} setCurrentChannelInfo={this.setCurrentChannelInfo} match={this.props.match}/>
+                    <ChannelIndexContainer setClickedChannelId={this.setClickedChannelId} openDeleteChannelForm={this.openDeleteChannelForm} openCreateChannelForm={this.openCreateChannelForm} currentServer={currentServer} currentChannelId={this.state.currentChannelId} setCurrentChannelInfo={this.setCurrentChannelInfo} history={this.props.history} match={this.props.match} />
+                    {/* <ProtectedRoute path="/channels/:server_id/:channel_id" render={(props) => <ChannelIndexContainer {...props} setClickedChannelId={this.setClickedChannelId} openDeleteChannelForm={this.openDeleteChannelForm} openCreateChannelForm={this.openCreateChannelForm} currentServer={currentServer} currentChannelId={this.state.currentChannelId} setCurrentChannelInfo={this.setCurrentChannelInfo} history={this.props.history} match={this.props.match} />}/> */}
                     <CurrentUserInfo openUserSettings={this.openUserSettings} muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
                 </div>
                 <div className="right-div">
                     <InfoNavbar currentChannelName={this.state.currentChannelName}/>
                     <div className="messages-users-div">
-                        <div className="messaging-div"></div>
+                        <div className="messaging-div">
+                            
+                        </div>
                         <div className="server-members-nav">
                             <h2 className="members-header">MEMBERS&mdash;{memberListElements.length}</h2>
                             {memberListElements}
@@ -322,6 +326,7 @@ export default class Server extends React.Component {
                 </div>
             </div>
         )
+
         let currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
 
 

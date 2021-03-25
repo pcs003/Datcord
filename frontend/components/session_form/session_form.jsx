@@ -68,7 +68,7 @@ export default class SessionForm extends React.Component {
             password: "password123"
         }).then((action) => {
             if (action.type === RECEIVE_CURRENT_USER) {
-                this.props.history.push("/channels/1")
+                this.props.history.push(`/channels/@me/${action.currentUser.id}`)
             }
         });
     }
@@ -80,7 +80,7 @@ export default class SessionForm extends React.Component {
         this.props.clearErrors();
 
         let formattedState = {};
-        console.log(this.props.errors)
+
         if (this.state.day === '' || this.state.month === '' || this.state.year === '') {
             return;
         }
@@ -101,7 +101,7 @@ export default class SessionForm extends React.Component {
         
         this.props.processForm(formattedState).then((action) => {
             if (action.type === RECEIVE_CURRENT_USER) {
-                this.props.history.push("/channels/1")
+                this.props.history.push(`/channels/@me/${action.currentUser.id}`)
             }
         });
         

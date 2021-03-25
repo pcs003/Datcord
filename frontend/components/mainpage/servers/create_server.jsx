@@ -90,7 +90,7 @@ export default class CreateServer extends React.Component {
                 this.props.joinServer({inviteCode:iCode}).done((action) =>{
                     this.props.closeCreateServerForm();
                     this.props.getServers();
-                    this.props.history.push(`/channels/${action.server.server.id}`)
+                    this.props.history.push(`/channels/${action.server.server.id}/${Object.values(action.server.server.channels)[0].id}`)
                 }).fail(()=> {
                     this.setState({
                         joinError: "- The invite is invalid or has expired"
@@ -113,12 +113,21 @@ export default class CreateServer extends React.Component {
 
         this.props.createServer(serverState).then((action) => {
             if (action.type === RECEIVE_SERVER) {
+
                 this.props.joinServer({inviteCode: action.server.server.invite_code})
-                this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"text"})
-                this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"voice"})
-                this.props.fetchChannels(action.server.server.id);
+                let thisServerId = action.server.server.id;
+
+                this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"text"}).then(() => {
+                    this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"voice"}).then(()=> {
+                        this.props.fetchChannels(action.server.server.id).then(action2 => {
+                            console.log(Object.values(action2.channels))
+                            let thisChannelId = Object.values(action2.channels)[0].id
+                            this.props.history.push(`/channels/${thisServerId}/${thisChannelId}`)
+                        })
+                    })
+                })
+                
                 this.props.closeCreateServerForm();
-                this.props.history.push(`/channels/${action.server.server.id}`)
             }
         });
     }

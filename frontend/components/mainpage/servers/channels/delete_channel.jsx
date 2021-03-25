@@ -26,7 +26,13 @@ export default class DeleteChannel extends React.Component {
     handleDeleteChannel(e){
         e.preventDefault();
         this.props.deleteChannel(this.props.clickedChannelId).then(action => {
-            this.props.fetchChannels();
+            this.props.fetchChannels(this.props.currentServer.id).then(action => {
+                if(action.channels === {}) {
+                    this.props.history.push(`/channels/${this.props.currentServer.id}/0`)
+                } else {
+                    this.props.history.push(`/channels/${this.props.currentServer.id}/${Object.values(action.channels)[0].id}`)
+                }
+            });
             this.props.closeForm();
         })
     }

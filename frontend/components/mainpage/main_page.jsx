@@ -22,8 +22,8 @@ export default class MainPage extends React.Component {
         
         return (
             <div>
-                <ProtectedRoute path="/channels/:server_id" component={ServerContainer} />
-                
+                <ProtectedRoute path="/channels/:server_id/:channel_id" component={ServerContainer} />
+                {/* <ProtectedRoute exact path="/channels/@me" component={ServerContainer} /> */}
             </div>
         )
         

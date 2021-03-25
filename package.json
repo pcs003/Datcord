@@ -6,6 +6,7 @@
     "@babel/preset-env": "^7.13.10",
     "@babel/preset-react": "^7.12.13",
     "babel-loader": "^8.2.2",
+    "http": "0.0.1-security",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-popup": "^0.10.0",
@@ -15,7 +16,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "webpack": "^5.26.0",
-    "webpack-cli": "^4.5.0"
+    "webpack-cli": "^4.5.0",
+    "websocket": "^1.0.33"
   },
   "description": "This README would normally document whatever steps are necessary to get the application up and running.",
   "version": "1.0.0",

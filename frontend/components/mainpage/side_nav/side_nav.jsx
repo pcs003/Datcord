@@ -62,10 +62,10 @@ export default class SideNav extends React.Component {
 
     handleServerClick(e) {
         e.preventDefault();   
-        this.props.history.push(`/channels/${e.target.id}`)
+        
         this.props.fetchChannels(e.target.id).then(action => {
             this.props.setCurrentChannelInfo(Object.values(action.channels)[0].name, Object.values(action.channels)[0].id)
-            
+            this.props.history.push(`/channels/${e.target.id}/${Object.values(action.channels)[0].id}`)
         })
     }
 
@@ -119,7 +119,7 @@ export default class SideNav extends React.Component {
         ) : "";
         return (
             <div className="side-nav">
-                <Link id="@me" to={'/channels/@me'}>
+                <Link id="@me" to={`/channels/@me/${this.props.currentUser.id}`}>
                     <div className="nav-tab-frame">
                         <img className="nav-tab robot" src={window.whiteDatcordRobot} alt=""/>
                     </div>

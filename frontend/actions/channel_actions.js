@@ -62,7 +62,6 @@ export const updateChannel = channel => dispatch => (
     ChannelApiUtil.updateChannel(channel).then( channel => (
         dispatch(receiveChannel(channel))
     ), (e) => {
-        console.log(channel)
         dispatch(receiveChannelErrors(e.responseJSON))
     })
 )

@@ -31,7 +31,7 @@ export default class ServerSettings extends React.Component {
             this.props.deleteServer(this.props.clickedServerId).then(()=> {
                 this.props.closeServerSettings();
                 this.props.getServers();
-                this.props.history.push(`/channels/@me`)
+                this.props.history.push(`/channels/@me/${this.props.currentUser.id}`)
             })
         } else {
             console.log(this.state.deletePopupText)

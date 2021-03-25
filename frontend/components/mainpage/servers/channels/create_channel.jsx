@@ -52,9 +52,13 @@ export default class CreateChannel extends React.Component {
         this.props.createChannel(formattedState).then((action) => {
             if (action.type === RECEIVE_CHANNEL) {
                 console.log(action.channel)
-                this.props.fetchChannels();
+                let thisServer = this.props.currentServer || {id:1}
+                let thisChannelId = action.channel.id;
+                this.props.fetchChannels(thisServer.id).then(() => {
+                    this.props.history.push(`/channels/${thisServer.id}/${thisChannelId}`)
+                });
                 this.props.closeForm();
-                // this.props.history.push(`/channels/${action.channel.id}`)
+                
             }
         });
     }
