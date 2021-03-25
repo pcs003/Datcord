@@ -56,7 +56,9 @@ export default class SideNav extends React.Component {
         e.preventDefault();
         this.props.leaveServer({serverId: this.state.clickedServer.id}).then(() => {
             this.props.getServers();
-            this.props.history.push(`/channels/@me`)
+            if (this.props.match.params.server_id == this.state.clickedServer.id) {
+                this.props.history.push(`/channels/@me/${this.props.currentUser.id}`)
+            }
         })
     }
 
@@ -66,7 +68,10 @@ export default class SideNav extends React.Component {
         this.props.fetchChannels(e.target.id).then(action => {
             this.props.setCurrentChannelInfo(Object.values(action.channels)[0].name, Object.values(action.channels)[0].id)
             this.props.history.push(`/channels/${e.target.id}/${Object.values(action.channels)[0].id}`)
+            this.props.fetchChannelMessages(Object.values(action.channels)[0].id)
         })
+
+        
     }
 
     render() {

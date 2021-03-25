@@ -10,6 +10,7 @@ import CreateChannel from './channels/create_channel'
 import DeleteChannel from './channels/delete_channel'
 import { AuthRoute, ProtectedRoute } from '../../../util/route_util';
 import ChannelSettings from './channels/channel_settings'
+import ChannelMessagesContainer from './channel_messages/channel_messages_container'
 
 export default class Server extends React.Component {
     constructor(props) {
@@ -48,6 +49,7 @@ export default class Server extends React.Component {
     componentDidMount() {
         this.props.getServers();
         this.props.getServer(this.props.match.params.server_id)
+        this.props.fetchChannelMessages(this.props.match.params.channel_id)
     }
 
     sortMembersByUsername(a, b) {
@@ -311,7 +313,7 @@ export default class Server extends React.Component {
                     <InfoNavbar currentChannelName={this.state.currentChannelName}/>
                     <div className="messages-users-div">
                         <div className="messaging-div">
-                            
+                            <ChannelMessagesContainer currentChannelName={this.state.currentChannelName} match={this.props.match}/>
                         </div>
                         <div className="server-members-nav">
                             <h2 className="members-header">MEMBERS&mdash;{memberListElements.length}</h2>
@@ -364,7 +366,7 @@ export default class Server extends React.Component {
         return (
             <div className="outmost">
                 <div className="discord-page">
-                    <SideNav setCurrentChannelInfo={this.setCurrentChannelInfo} match={this.props.match} fetchChannels={this.props.fetchChannels} history={this.props.history} openServerSettings={this.openServerSettings} leaveServer={this.props.leaveServer} currentUser={this.props.currentUser} currentServerId={currentServerId} openCreateServerForm={this.openCreateServerForm} servers={this.props.servers} getServers={this.props.getServers}/>
+                    <SideNav fetchChannelMessages={this.props.fetchChannelMessages} setCurrentChannelInfo={this.setCurrentChannelInfo} match={this.props.match} fetchChannels={this.props.fetchChannels} history={this.props.history} openServerSettings={this.openServerSettings} leaveServer={this.props.leaveServer} currentUser={this.props.currentUser} currentServerId={currentServerId} openCreateServerForm={this.openCreateServerForm} servers={this.props.servers} getServers={this.props.getServers}/>
                     
                     {currentPage}
                 </div>

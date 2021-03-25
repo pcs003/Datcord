@@ -257,6 +257,7 @@
                     position: absolute;
                     top: -30px;
                     left: 33px;
+                    min-width: Calc(100% - 100px);
 
                     h2 {
                         color: white;

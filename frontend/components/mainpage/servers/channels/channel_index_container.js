@@ -2,6 +2,7 @@ import { connect } from "react-redux"
 import { createChannel, updateChannel, deleteChannel, fetchChannel, fetchChannels } from "../../../../actions/channel_actions"
 import ChannelIndex from './channel_index'
 import { fetchServers } from "../../../../actions/server_actions"
+import { fetchChannelMessages } from "../../../../actions/channel_message_actions"
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -24,7 +25,8 @@ const mapDispatchToProps = dispatch => {
         deleteChannel: channelId => dispatch(deleteChannel(channelId)),
         fetchChannels: serverId => dispatch(fetchChannels(serverId)),
         fetchChannel: channelId => dispatch(fetchChannel(channelId)),
-        fetchServers: () => dispatch(fetchServers())
+        fetchServers: () => dispatch(fetchServers()),
+        fetchMessages: channelId => dispatch(fetchChannelMessages(channelId))
     }
 }
 

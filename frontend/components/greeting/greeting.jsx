@@ -7,12 +7,14 @@ const Greeting = ({currentUser, logout}) => {
             <Link to="/login">Login</Link>
         </nav>
     )
-    const greeting = () => (
-        <nav className="greeting-logout">
-            {/* <button className="logout-button" onClick={logout}>Log Out</button> */}
-            <Link to="/channels/1">Open Datcord</Link>
-        </nav>
-    )
+    const greeting = () => {
+        let thisLink = `/channels/@me/${currentUser.id}`
+        return (
+            <nav className="greeting-logout">
+                <Link to={thisLink}>Open Datcord</Link>
+            </nav>
+        )
+    }
 
     return currentUser? greeting() : links();
 }

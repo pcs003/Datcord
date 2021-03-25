@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import configureStore from "./store/store";
 import Root from "./components/root";
-import { createChannel, deleteChannel, fetchChannel, fetchChannels, updateChannel } from "./actions/channel_actions";
 
 document.addEventListener("DOMContentLoaded", () => {
     const root = document.getElementById("root");
@@ -19,12 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         store = configureStore();
     }
-
-    window.fetchChannel = fetchChannel;
-    window.fetchChannels = fetchChannels;
-    window.createChannel = createChannel;
-    window.updateChannel = updateChannel;
-    window.deleteChannel = deleteChannel;
 
     window.getState = store.getState;
     window.dispatch = store.dispatch;

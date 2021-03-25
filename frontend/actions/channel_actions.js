@@ -50,10 +50,8 @@ export const fetchChannel = channelId => dispatch => (
 
 export const createChannel = channel => dispatch => (
     ChannelApiUtil.createChannel(channel).then( channel => {
-        console.log(channel);
         return dispatch(receiveChannel(channel));
     }, (e) => {
-        console.log(channel);
         return dispatch(receiveChannelErrors(e.responseJSON))
     })
 )

@@ -25,6 +25,7 @@ export default class ChannelIndex extends React.Component {
     }
 
     componentDidMount() {
+        this.props.fetchMessages(this.props.match.params.server_id);
 
         this.props.fetchServers()
         this.props.fetchChannels(this.props.match.params.server_id).then(action => {
@@ -55,13 +56,13 @@ export default class ChannelIndex extends React.Component {
 
     selectTextChannel(e) {
         e.preventDefault();
-        // this.setState({
-        //     selectedTextChannelId: e.target.id
-        // })
+
         let thisChannel = this.props.channels.find(channel => channel.id == e.target.id);
         this.props.setCurrentChannelInfo(thisChannel.name, thisChannel.id)
+
         let currServer = this.props.currentServer || {id:1};
         this.props.history.push(`/channels/${currServer.id}/${e.target.id}`)
+        this.props.fetchMessages(e.target.id);
     }
 
     selectVoiceChannel(e) {
@@ -138,7 +139,6 @@ export default class ChannelIndex extends React.Component {
         // handles owner options
         let channelCreateButton = "";
         if (this.props.currentServer) {
-
             if (this.props.currentServer.owner_id == this.props.currentUser.id) {
                 channelCreateButton = (
                     <svg className="create-button" onClick={this.props.openCreateChannelForm} width="18" height="18" viewBox="0 0 18 18">
