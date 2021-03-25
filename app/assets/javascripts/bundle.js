@@ -585,7 +585,7 @@ var Greeting = function Greeting(_ref) {
       className: "greeting-logout"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
       to: "/channels/1"
-    }, "Open Discord"));
+    }, "Open Datcord"));
   };
 
   return currentUser ? greeting() : links();
@@ -1597,7 +1597,6 @@ var DeleteChannel = /*#__PURE__*/function (_React$Component) {
     key: "handleClick",
     value: function handleClick(e) {
       e.preventDefault();
-      console.log(e.target);
 
       if (e.target.id == "delete-channel-modal-wrapper") {
         this.props.closeForm();
@@ -1814,6 +1813,20 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
           _this3.props.joinServer({
             inviteCode: action.server.server.invite_code
           });
+
+          _this3.props.createChannel({
+            name: "General",
+            serverId: action.server.server.id,
+            channelType: "text"
+          });
+
+          _this3.props.createChannel({
+            name: "General",
+            serverId: action.server.server.id,
+            channelType: "voice"
+          });
+
+          _this3.props.fetchChannels(action.server.server.id);
 
           _this3.props.closeCreateServerForm();
 
@@ -2584,8 +2597,12 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this7 = this;
+
       var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
-      var currentServer = this.props.servers[this.props.match.params.server_id - 1];
+      var currentServer = this.props.servers.find(function (server) {
+        return _this7.props.match.params.server_id == server.id;
+      });
       var currentServerName = currentServerName != "" ? currentServerName : "";
       var memberListElements = "";
       var currentServerId = -1;
@@ -2616,6 +2633,8 @@ var Server = /*#__PURE__*/function (_React$Component) {
 
       if (this.state.layerName === "createServer") {
         currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_create_server__WEBPACK_IMPORTED_MODULE_3__.default, {
+          createChannel: this.props.createChannel,
+          fetchChannels: this.props.fetchChannels,
           getServers: this.props.getServers,
           servers: this.props.servers,
           joinServer: this.props.joinServer,

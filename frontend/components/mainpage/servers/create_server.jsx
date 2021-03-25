@@ -114,6 +114,9 @@ export default class CreateServer extends React.Component {
         this.props.createServer(serverState).then((action) => {
             if (action.type === RECEIVE_SERVER) {
                 this.props.joinServer({inviteCode: action.server.server.invite_code})
+                this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"text"})
+                this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"voice"})
+                this.props.fetchChannels(action.server.server.id);
                 this.props.closeCreateServerForm();
                 this.props.history.push(`/channels/${action.server.server.id}`)
             }

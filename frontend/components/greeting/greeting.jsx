@@ -10,7 +10,7 @@ const Greeting = ({currentUser, logout}) => {
     const greeting = () => (
         <nav className="greeting-logout">
             {/* <button className="logout-button" onClick={logout}>Log Out</button> */}
-            <Link to="/channels/1">Open Discord</Link>
+            <Link to="/channels/1">Open Datcord</Link>
         </nav>
     )
 

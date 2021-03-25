@@ -136,6 +136,7 @@ export default class ChannelIndex extends React.Component {
         // handles owner options
         let channelCreateButton = "";
         if (this.props.currentServer) {
+            
             if (this.props.currentServer.owner_id == this.props.currentUser.id) {
                 channelCreateButton = (
                     <svg className="create-button" onClick={this.props.openCreateChannelForm} width="18" height="18" viewBox="0 0 18 18">

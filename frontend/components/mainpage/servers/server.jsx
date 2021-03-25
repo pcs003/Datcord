@@ -226,7 +226,9 @@ export default class Server extends React.Component {
     
     render() {
         let colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"]
-        let currentServer = this.props.servers[this.props.match.params.server_id - 1]
+        let currentServer = this.props.servers.find(server =>{
+            return this.props.match.params.server_id == server.id
+        })
         let currentServerName = currentServerName != "" ? currentServerName : "";
         let memberListElements = "";
         let currentServerId = -1;
@@ -251,7 +253,7 @@ export default class Server extends React.Component {
         //this handles the layer selection
         let currentLayer = ""
         if (this.state.layerName === "createServer"){
-            currentLayer = <CreateServer getServers={this.props.getServers} servers={this.props.servers} joinServer={this.props.joinServer} currentUser={this.props.currentUser} history={this.props.history} isActive={this.state.layerName === "createServer"} closeCreateServerForm={this.closeCreateServerForm} createServer={this.props.createServer} /> ;
+            currentLayer = <CreateServer createChannel={this.props.createChannel} fetchChannels={this.props.fetchChannels} getServers={this.props.getServers} servers={this.props.servers} joinServer={this.props.joinServer} currentUser={this.props.currentUser} history={this.props.history} isActive={this.state.layerName === "createServer"} closeCreateServerForm={this.closeCreateServerForm} createServer={this.props.createServer} /> ;
         } else if (this.state.layerName === "serverSettings") {
             currentLayer = <ServerSettings updateServer={this.props.updateServer} clickedServerName={this.state.clickedServerName} getServers={this.props.getServers} servers={this.props.servers} history={this.props.history} clickedServerId={this.state.clickedServerId} deleteServer={this.props.deleteServer} closeServerSettings={this.closeServerSettings} />
         } else if (this.state.layerName === "userSettings") {

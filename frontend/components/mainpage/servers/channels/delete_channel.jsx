@@ -18,7 +18,6 @@ export default class DeleteChannel extends React.Component {
 
     handleClick(e) {
         e.preventDefault();
-        console.log(e.target)
         if (e.target.id == "delete-channel-modal-wrapper") {
             this.props.closeForm();
         }
