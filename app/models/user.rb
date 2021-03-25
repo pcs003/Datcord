@@ -21,6 +21,10 @@ class User < ApplicationRecord
         through: :server_member_connections,
         source: :server,
         dependent: :destroy
+    
+    has_many :channel_messages,
+        foreign_key: :author_id,
+        class_name: :ChannelMessage
 
 
     attr_reader :password

@@ -10,10 +10,12 @@ User.destroy_all
 Server.destroy_all
 ServerMember.destroy_all
 Channel.destroy_all
+ChannelMessage.destroy_all
 ApplicationRecord.connection.reset_pk_sequence!('users')
 ApplicationRecord.connection.reset_pk_sequence!('servers')
 ApplicationRecord.connection.reset_pk_sequence!('server_members')
 ApplicationRecord.connection.reset_pk_sequence!('channels')
+ApplicationRecord.connection.reset_pk_sequence!('channel_messages')
 
 u1 = User.create!({email:"demouser@datcord.com", username: "DemoUser", password: "password123", birthdate: "1/1/2000"})
 u2 = User.create!({email:"testuser01@test.com", username: "John Cena", password: "password123", birthdate: "2/2/2002"})
@@ -80,3 +82,6 @@ c19 = Channel.create!({name:"Postgame Stats", server_id:5, channel_type:"text"})
 c20 = Channel.create!({name:"Game1", server_id:5, channel_type:"voice"})
 c21 = Channel.create!({name:"Game2", server_id:5, channel_type:"voice"})
 c22 = Channel.create!({name:"Game3", server_id:5, channel_type:"voice"})
+
+cm1 = ChannelMessage.create!({body:"Rails Magic", author_id:1, channel_id:1})
+cm2 = ChannelMessage.create!({body:"snake case >>>", author_id:1, channel_id:1})
