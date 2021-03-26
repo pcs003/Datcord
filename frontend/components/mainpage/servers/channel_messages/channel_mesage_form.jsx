@@ -30,6 +30,7 @@ export default class ChannelMessageForm extends React.Component {
         });
         this.setState({ body: "" });
         document.getElementById("chat-input").value = ""
+        
         this.props.getChannelMessages(this.props.match.params.channel_id).then((action) => {
             console.log(action.channelMessages)
         })

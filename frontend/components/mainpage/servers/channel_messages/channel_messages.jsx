@@ -22,7 +22,6 @@ export default class ChannelMessages extends React.Component {
             {
                 received: data => {
                     this.getResponseMessage(data)
-                    this.getChannelMessages(channelId)
                 },
                 speak: function(data) {
                     return this.perform("speak", data)
@@ -40,7 +39,9 @@ export default class ChannelMessages extends React.Component {
         if (this.props.currentUser.id !== data.message.author_id) {
 
             this.props.createChannelMessage(data)
+            // this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id)
         }
+        
     }
 
     render() {

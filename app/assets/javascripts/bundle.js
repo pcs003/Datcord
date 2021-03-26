@@ -1247,8 +1247,6 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
       }, {
         received: function received(data) {
           _this2.getResponseMessage(data);
-
-          _this2.getChannelMessages(channelId);
         },
         speak: function speak(data) {
           return this.perform("speak", data);
@@ -1263,7 +1261,7 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
     key: "getResponseMessage",
     value: function getResponseMessage(data) {
       if (this.props.currentUser.id !== data.message.author_id) {
-        this.props.createChannelMessage(data);
+        this.props.createChannelMessage(data); // this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id)
       }
     }
   }, {
