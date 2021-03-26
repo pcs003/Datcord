@@ -1075,10 +1075,10 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 /***/ }),
 
-/***/ "./frontend/components/mainpage/servers/channel_messages/channel_mesage_form.jsx":
-/*!***************************************************************************************!*\
-  !*** ./frontend/components/mainpage/servers/channel_messages/channel_mesage_form.jsx ***!
-  \***************************************************************************************/
+/***/ "./frontend/components/mainpage/servers/channel_messages/channel_message_form.jsx":
+/*!****************************************************************************************!*\
+  !*** ./frontend/components/mainpage/servers/channel_messages/channel_message_form.jsx ***!
+  \****************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1087,6 +1087,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ ChannelMessageForm)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_popup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-popup */ "./node_modules/react-popup/dist/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1111,6 +1112,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var ChannelMessageForm = /*#__PURE__*/function (_React$Component) {
   _inherits(ChannelMessageForm, _React$Component);
 
@@ -1127,6 +1129,7 @@ var ChannelMessageForm = /*#__PURE__*/function (_React$Component) {
     };
     _this.updateBody = _this.updateBody.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.unfinished = _this.unfinished.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -1137,37 +1140,82 @@ var ChannelMessageForm = /*#__PURE__*/function (_React$Component) {
       this.setState({
         body: e.target.value
       });
-      console.log(e.target.value);
+    }
+  }, {
+    key: "unfinished",
+    value: function unfinished(e) {
+      e.preventDefault();
+      react_popup__WEBPACK_IMPORTED_MODULE_1__.default.alert("Functionality not yet added");
     }
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
-      e.preventDefault();
-      console.log("IN THE HANDLE SUBMIT");
-      App.cable.subscriptions.subscriptions[0].speak({
-        body: this.state.body,
-        authorId: this.props.currentUser.id,
-        channelId: this.props.match.params.channel_id
-      });
-      this.setState({
-        body: ""
-      });
-      document.getElementById("chat-input").value = "";
-      this.props.getChannelMessages(this.props.match.params.channel_id).then(function (action) {
-        console.log(action.channelMessages);
-      });
+      var _this2 = this;
+
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        console.log("IN THE HANDLE SUBMIT");
+        App.cable.subscriptions.subscriptions[0].speak({
+          body: this.state.body,
+          authorId: this.props.currentUser.id,
+          channelId: this.props.match.params.channel_id
+        });
+        this.setState({
+          body: ""
+        });
+        document.getElementById("chat-input").value = "";
+        setTimeout(function () {
+          _this2.props.getChannelMessages(_this2.props.match.params.channel_id).then(function (action) {
+            console.log(action.channelMessages);
+          });
+        }, 0);
+      }
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      var placeholder = "Message #".concat(this.props.currentChannel.name);
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "message-input-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        onClick: this.unfinished,
+        className: "add-file",
+        width: "24",
+        height: "24",
+        viewBox: "0 0 24 24"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#b9bbbe",
+        d: "M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "chat-input",
         type: "text",
         onChange: this.updateBody,
-        placeholder: "Type message here"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-        onClick: this.handleSubmit
-      }, "Submit"));
+        onKeyDown: this.handleSubmit,
+        placeholder: placeholder,
+        autoComplete: "off"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        onClick: this.unfinished,
+        className: "",
+        width: "24",
+        height: "24",
+        viewBox: "0 0 24 24"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#b9bbbe",
+        d: "M16.886 7.999H20C21.104 7.999 22 8.896 22 9.999V11.999H2V9.999C2 8.896 2.897 7.999 4 7.999H7.114C6.663 7.764 6.236 7.477 5.879 7.121C4.709 5.951 4.709 4.048 5.879 2.879C7.012 1.746 8.986 1.746 10.121 2.877C11.758 4.514 11.979 7.595 11.998 7.941C11.9991 7.9525 11.9966 7.96279 11.9941 7.97304C11.992 7.98151 11.99 7.98995 11.99 7.999H12.01C12.01 7.98986 12.0079 7.98134 12.0058 7.97287C12.0034 7.96282 12.0009 7.95286 12.002 7.942C12.022 7.596 12.242 4.515 13.879 2.878C15.014 1.745 16.986 1.746 18.121 2.877C19.29 4.049 19.29 5.952 18.121 7.121C17.764 7.477 17.337 7.764 16.886 7.999ZM7.293 5.707C6.903 5.316 6.903 4.682 7.293 4.292C7.481 4.103 7.732 4 8 4C8.268 4 8.519 4.103 8.707 4.292C9.297 4.882 9.641 5.94 9.825 6.822C8.945 6.639 7.879 6.293 7.293 5.707ZM14.174 6.824C14.359 5.941 14.702 4.883 15.293 4.293C15.481 4.103 15.732 4 16 4C16.268 4 16.519 4.103 16.706 4.291C17.096 4.682 17.097 5.316 16.707 5.707C16.116 6.298 15.057 6.642 14.174 6.824ZM3 13.999V19.999C3 21.102 3.897 21.999 5 21.999H11V13.999H3ZM13 13.999V21.999H19C20.104 21.999 21 21.102 21 19.999V13.999H13Z"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        onClick: this.unfinished,
+        className: "",
+        width: "24",
+        height: "24",
+        viewBox: "0 0 24 24"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#b9bbbe",
+        d: "M2 2C0.895431 2 0 2.89543 0 4V20C0 21.1046 0.89543 22 2 22H22C23.1046 22 24 21.1046 24 20V4C24 2.89543 23.1046 2 22 2H2ZM9.76445 11.448V15.48C8.90045 16.044 7.88045 16.356 6.74045 16.356C4.11245 16.356 2.66045 14.628 2.66045 12.072C2.66045 9.504 4.23245 7.764 6.78845 7.764C7.80845 7.764 8.66045 8.004 9.32045 8.376L9.04445 10.164C8.42045 9.768 7.68845 9.456 6.83645 9.456C5.40845 9.456 4.71245 10.512 4.71245 12.06C4.71245 13.62 5.43245 14.712 6.86045 14.712C7.31645 14.712 7.64045 14.616 7.97645 14.448V12.972H6.42845V11.448H9.76445ZM11.5481 7.92H13.6001V16.2H11.5481V7.92ZM20.4724 7.92V9.636H17.5564V11.328H19.8604V13.044H17.5564V16.2H15.5164V7.92H20.4724Z"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        onClick: this.unfinished,
+        src: window.grayDatcordRobot,
+        alt: ""
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_popup__WEBPACK_IMPORTED_MODULE_1__.default, null));
     }
   }]);
 
@@ -1190,7 +1238,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ ChannelMessages)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _channel_mesage_form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./channel_mesage_form */ "./frontend/components/mainpage/servers/channel_messages/channel_mesage_form.jsx");
+/* harmony import */ var _channel_message_form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./channel_message_form */ "./frontend/components/mainpage/servers/channel_messages/channel_message_form.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1269,18 +1317,69 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
-      var messageListItems = this.props.channelMessages.map(function (message) {
+      var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
+      var thisServer = this.props.servers.find(function (server) {
+        return _this3.props.match.params.server_id == server.id;
+      });
+      var serverMembers = [];
+
+      if (thisServer) {
+        serverMembers = thisServer.members;
+        console.log(serverMembers);
+      }
+
+      var messageListItems = this.props.channelMessages.map(function (message, i) {
+        var author = serverMembers.find(function (member) {
+          return member.id == message.author_id;
+        });
+        var thisColor = "";
+        var authorName = "";
+
+        if (author) {
+          authorName = author.username;
+          thisColor = colors[author.id % colors.length];
+        }
+
+        if (i >= 1) {
+          if (_this3.props.channelMessages[i - 1].author_id === message.author_id) {
+            console.log("repeat");
+            return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+              className: "repeat",
+              key: message.id
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "message-info"
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              ref: _this3.bottom
+            }));
+          }
+        }
+
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
           key: message.id
-        }, message.body, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "current-user-pic",
+          style: {
+            backgroundColor: "".concat(thisColor)
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+          className: "default-profile-pic",
+          src: window.whiteDatcordRobot,
+          alt: ""
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "message-info"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, authorName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           ref: _this3.bottom
         }));
       });
+      var thisChannel = this.props.currentChannel || {
+        name: ""
+      };
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "messages-wrapper"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Welcome to ", this.props.currentChannelName, "'s messages"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "messages-display"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, messageListItems)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channel_mesage_form__WEBPACK_IMPORTED_MODULE_1__.default, {
+        className: "messaging-div"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "all-messages-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, messageListItems)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channel_message_form__WEBPACK_IMPORTED_MODULE_1__.default, {
+        currentChannel: thisChannel,
         getChannelMessages: this.props.getChannelMessages,
         currentUser: this.props.currentUser,
         match: this.props.match
@@ -1308,7 +1407,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../actions/channel_message_actions */ "./frontend/actions/channel_message_actions.js");
-/* harmony import */ var _channel_messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./channel_messages */ "./frontend/components/mainpage/servers/channel_messages/channel_messages.jsx");
+/* harmony import */ var _actions_server_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../actions/server_actions */ "./frontend/actions/server_actions.js");
+/* harmony import */ var _channel_messages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./channel_messages */ "./frontend/components/mainpage/servers/channel_messages/channel_messages.jsx");
+
 
 
 
@@ -1325,7 +1426,7 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     currentUser: state.entities.users[state.session.id],
     users: state.entities.users,
-    currentServer: currentServer,
+    server: currentServer,
     channels: state.entities.channels,
     errors: state.errors.channelMessage,
     channelMessages: Object.values(state.entities.channelMessages).filter(function (message) {
@@ -1352,7 +1453,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_0__.connect)(mapStateToProps, mapDispatchToProps)(_channel_messages__WEBPACK_IMPORTED_MODULE_2__.default));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_0__.connect)(mapStateToProps, mapDispatchToProps)(_channel_messages__WEBPACK_IMPORTED_MODULE_3__.default));
 
 /***/ }),
 
@@ -1411,6 +1512,7 @@ var ChannelIndex = /*#__PURE__*/function (_React$Component) {
     _this.selectVoiceChannel = _this.selectVoiceChannel.bind(_assertThisInitialized(_this));
     _this.contextMenu = _this.contextMenu.bind(_assertThisInitialized(_this));
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
+    _this.clickSettingsIcon = _this.clickSettingsIcon.bind(_assertThisInitialized(_this));
     _this.state = {
       selectedTextChannelId: 1,
       selectedVoiceChannelId: 1,
@@ -1463,16 +1565,17 @@ var ChannelIndex = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "selectTextChannel",
     value: function selectTextChannel(e) {
-      e.preventDefault();
+      e.preventDefault(); // if (e.target.)
+
       var thisChannel = this.props.channels.find(function (channel) {
-        return channel.id == e.target.id;
+        return channel.id == e.currentTarget.id;
       });
       this.props.setCurrentChannelInfo(thisChannel.name, thisChannel.id);
       var currServer = this.props.currentServer || {
         id: 1
       };
-      this.props.history.push("/channels/".concat(currServer.id, "/").concat(e.target.id));
-      this.props.fetchMessages(e.target.id);
+      this.props.history.push("/channels/".concat(currServer.id, "/").concat(e.currentTarget.id));
+      this.props.fetchMessages(e.currentTarget.id);
     }
   }, {
     key: "selectVoiceChannel",
@@ -1511,6 +1614,14 @@ var ChannelIndex = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "clickSettingsIcon",
+    value: function clickSettingsIcon(e) {
+      e.preventDefault();
+      console.log("CLICKED");
+      this.props.setClickedChannelId(e.currentTarget.id);
+      this.props.openChannelSettings();
+    }
+  }, {
     key: "render",
     value: function render() {
       var textChannels = [];
@@ -1536,7 +1647,17 @@ var ChannelIndex = /*#__PURE__*/function (_React$Component) {
               d: "M5.88657 21C5.57547 21 5.3399 20.7189 5.39427 20.4126L6.00001 17H2.59511C2.28449 17 2.04905 16.7198 2.10259 16.4138L2.27759 15.4138C2.31946 15.1746 2.52722 15 2.77011 15H6.35001L7.41001 9H4.00511C3.69449 9 3.45905 8.71977 3.51259 8.41381L3.68759 7.41381C3.72946 7.17456 3.93722 7 4.18011 7H7.76001L8.39677 3.41262C8.43914 3.17391 8.64664 3 8.88907 3H9.87344C10.1845 3 10.4201 3.28107 10.3657 3.58738L9.76001 7H15.76L16.3968 3.41262C16.4391 3.17391 16.6466 3 16.8891 3H17.8734C18.1845 3 18.4201 3.28107 18.3657 3.58738L17.76 7H21.1649C21.4755 7 21.711 7.28023 21.6574 7.58619L21.4824 8.58619C21.4406 8.82544 21.2328 9 20.9899 9H17.41L16.35 15H19.7549C20.0655 15 20.301 15.2802 20.2474 15.5862L20.0724 16.5862C20.0306 16.8254 19.8228 17 19.5799 17H16L15.3632 20.5874C15.3209 20.8261 15.1134 21 14.8709 21H13.8866C13.5755 21 13.3399 20.7189 13.3943 20.4126L14 17H8.00001L7.36325 20.5874C7.32088 20.8261 7.11337 21 6.87094 21H5.88657ZM9.41045 9L8.35045 15H14.3504L15.4104 9H9.41045Z"
             })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
               id: this.props.channels[i].id
-            }, this.props.channels[i].name)));
+            }, this.props.channels[i].name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+              onClick: this.clickSettingsIcon,
+              className: "settings-icon",
+              id: this.props.channels[i].id,
+              width: "20",
+              height: "20",
+              viewBox: "0 0 20 20"
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+              fill: "#B9BBBE",
+              d: "M14 7V9C14 9 12.5867 9 12.5733 9.00667C12.42 9.58667 12.1733 10.1267 11.84 10.6067L12.74 11.5067L11.4933 12.7533L10.5933 11.8533C10.1133 12.1867 9.57334 12.44 8.99334 12.5867V14H6.99334V12.58C6.41334 12.4333 5.87334 12.18 5.39334 11.8467L4.49333 12.7467L3.24667 11.5L4.14667 10.6C3.81333 10.1267 3.56 9.58 3.41333 9H2V7H3.41333C3.56 6.42 3.81333 5.88 4.14667 5.4L3.24667 4.5L4.5 3.24667L5.4 4.14667C5.87334 3.81333 6.42 3.56 7 3.41333V2H9V3.41333C9.58 3.56667 10.12 3.81333 10.6 4.14667L11.5067 3.25333L12.7533 4.5L11.8533 5.4C12.1867 5.87334 12.44 6.42 12.5867 7H14ZM8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z"
+            }))));
           }
 
           if (this.props.channels[i].channel_type === "voice" && this.state.voiceChannelsOpen) {
@@ -1775,7 +1896,6 @@ var ChannelSettings = /*#__PURE__*/function (_React$Component) {
     var thisChannel = Object.values(_this.props.currentServer.channels).find(function (channel) {
       return channel.id == _this.props.clickedChannelId;
     });
-    console.log(thisChannel);
     _this.state = {
       name: thisChannel.name,
       originalName: thisChannel.name,
@@ -1838,10 +1958,8 @@ var ChannelSettings = /*#__PURE__*/function (_React$Component) {
 
       if (this.state.justLoaded === false) {
         if (this.state.name === this.state.originalName) {
-          console.log("here");
           saveClass = "save-changes-container inactive";
         } else {
-          console.log("here2");
           saveClass = "save-changes-container active";
         }
       }
@@ -1856,7 +1974,8 @@ var ChannelSettings = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "CHANNEL NAME"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Overview"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "divider"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
-        className: "delete-button"
+        className: "delete-button",
+        onClick: this.props.openDeleteChannelForm
       }, "Delete Channel"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "content"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2817,6 +2936,9 @@ var InfoNavbar = /*#__PURE__*/function (_React$Component) {
   _createClass(InfoNavbar, [{
     key: "render",
     value: function render() {
+      var thisChannel = this.props.currentChannel || {
+        name: ""
+      };
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "info-navbar"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2828,7 +2950,7 @@ var InfoNavbar = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         fill: "#72767d",
         d: "M5.88657 21C5.57547 21 5.3399 20.7189 5.39427 20.4126L6.00001 17H2.59511C2.28449 17 2.04905 16.7198 2.10259 16.4138L2.27759 15.4138C2.31946 15.1746 2.52722 15 2.77011 15H6.35001L7.41001 9H4.00511C3.69449 9 3.45905 8.71977 3.51259 8.41381L3.68759 7.41381C3.72946 7.17456 3.93722 7 4.18011 7H7.76001L8.39677 3.41262C8.43914 3.17391 8.64664 3 8.88907 3H9.87344C10.1845 3 10.4201 3.28107 10.3657 3.58738L9.76001 7H15.76L16.3968 3.41262C16.4391 3.17391 16.6466 3 16.8891 3H17.8734C18.1845 3 18.4201 3.28107 18.3657 3.58738L17.76 7H21.1649C21.4755 7 21.711 7.28023 21.6574 7.58619L21.4824 8.58619C21.4406 8.82544 21.2328 9 20.9899 9H17.41L16.35 15H19.7549C20.0655 15 20.301 15.2802 20.2474 15.5862L20.0724 16.5862C20.0306 16.8254 19.8228 17 19.5799 17H16L15.3632 20.5874C15.3209 20.8261 15.1134 21 14.8709 21H13.8866C13.5755 21 13.3399 20.7189 13.3943 20.4126L14 17H8.00001L7.36325 20.5874C7.32088 20.8261 7.11337 21 6.87094 21H5.88657ZM9.41045 9L8.35045 15H14.3504L15.4104 9H9.41045Z"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, this.props.currentChannelName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, thisChannel.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "other-navbar-items"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         width: "24",
@@ -2995,6 +3117,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
     value: function componentDidMount() {
       this.props.getServers();
       this.props.getServer(this.props.match.params.server_id);
+      this.props.fetchChannels(this.props.match.params.server_id);
       this.props.fetchChannelMessages(this.props.match.params.channel_id);
     }
   }, {
@@ -3194,7 +3317,10 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "openChannelSettings",
     value: function openChannelSettings(e) {
-      e.preventDefault();
+      if (e) {
+        e.preventDefault();
+      }
+
       this.setState({
         layerName: "channelSettings" // clickedServerId: e.target.id,
         // clickedServerName: this.props.servers.find(server => server.id == e.target.id).name
@@ -3226,6 +3352,9 @@ var Server = /*#__PURE__*/function (_React$Component) {
       var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
       var currentServer = this.props.servers.find(function (server) {
         return _this8.props.match.params.server_id == server.id;
+      });
+      var currentChannel = this.props.channels.find(function (channel) {
+        return channel.id == _this8.props.match.params.channel_id;
       });
       var currentServerName = currentServerName != "" ? currentServerName : "";
       var memberListElements = "";
@@ -3306,6 +3435,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
         });
       } else if (this.state.layerName === "channelSettings") {
         currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channels_channel_settings__WEBPACK_IMPORTED_MODULE_11__.default, {
+          openDeleteChannelForm: this.openDeleteChannelForm,
           currentServer: currentServer,
           fetchChannels: this.props.fetchChannels,
           updateChannel: this.props.updateChannel,
@@ -3341,15 +3471,15 @@ var Server = /*#__PURE__*/function (_React$Component) {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "right-div"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_info_navbar__WEBPACK_IMPORTED_MODULE_1__.default, {
-        currentChannelName: this.state.currentChannelName
+        currentChannel: currentChannel
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "messages-users-div"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "messaging-div"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channel_messages_channel_messages_container__WEBPACK_IMPORTED_MODULE_12__.default, {
-        currentChannelName: this.state.currentChannelName,
+        servers: this.props.servers,
+        currentServer: currentServer,
+        currentChannel: currentChannel,
         match: this.props.match
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-members-nav"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
         className: "members-header"
@@ -3448,6 +3578,7 @@ __webpack_require__.r(__webpack_exports__);
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     errors: state.errors.server,
+    channels: Object.values(state.entities.channels),
     servers: Object.values(state.entities.servers),
     server: Object.values(state.entities.servers).find(function (server) {
       return server.id == ownProps.match.params.server_id;

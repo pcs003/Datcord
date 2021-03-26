@@ -9,7 +9,7 @@ export default class ChannelSettings extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
 
         let thisChannel = Object.values(this.props.currentServer.channels).find(channel => channel.id == this.props.clickedChannelId);
-        console.log(thisChannel)
+
         this.state = {
             name: thisChannel.name,
             originalName: thisChannel.name,
@@ -64,10 +64,8 @@ export default class ChannelSettings extends React.Component {
         let saveClass = "save-changes-container"
         if (this.state.justLoaded === false) {
             if (this.state.name === this.state.originalName ) {
-                console.log("here")
                 saveClass = "save-changes-container inactive"
             } else {
-                console.log("here2")
                 saveClass = "save-changes-container active"
             }
         }
@@ -79,7 +77,7 @@ export default class ChannelSettings extends React.Component {
                         <h3>CHANNEL NAME</h3>
                         <h2>Overview</h2>
                         <div className="divider"></div>
-                        <h2 className="delete-button">Delete Channel</h2>
+                        <h2 className="delete-button" onClick={this.props.openDeleteChannelForm}>Delete Channel</h2>
                     </div>
                 </div>
                 <div className="content">

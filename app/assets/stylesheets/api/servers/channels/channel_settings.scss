@@ -127,6 +127,32 @@
                 font-weight: 600;
                 color: white;
             }
+
+            .change-name-wrapper {
+                display: flex;
+                flex-direction: column;
+
+                h2 {
+                    color: #8E9297;
+                    font-size: 12px;
+                    margin-bottom: 8px;
+                }
+
+                input[type=text] {
+                    background-color: rgba(0,0,0,0.1);
+                    border: 1px solid rgba(0,0,0,0.3);
+                    color: #dcddde;
+                    font-size: 16px;
+                    border-radius: 3px;
+                    padding-left: 10px;
+                    height: 40px;
+                }
+
+                input[type=text]:focus {
+                    border-color: #7289da;
+                    outline: none;
+                }
+            }
         }
 
         .save-changes-container {

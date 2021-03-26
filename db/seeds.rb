@@ -85,3 +85,13 @@ c22 = Channel.create!({name:"Game3", server_id:5, channel_type:"voice"})
 
 cm1 = ChannelMessage.create!({body:"Rails Magic", author_id:1, channel_id:1})
 cm2 = ChannelMessage.create!({body:"snake case >>>", author_id:1, channel_id:1})
+cm3 = ChannelMessage.create!({body:"I'm better than you at programming :)", author_id:4, channel_id:1})
+cm4 = ChannelMessage.create!({body:":(", author_id:1, channel_id:1})
+cm5 = ChannelMessage.create!({body:"Can someone explain react websockets to me", author_id:1, channel_id:2})
+cm6 = ChannelMessage.create!({body:"No", author_id:4, channel_id:2})
+
+cm7 = ChannelMessage.create!({body:"I play League", author_id:5, channel_id:8})
+cm8 = ChannelMessage.create!({body:"same", author_id:7, channel_id:8})
+
+
+

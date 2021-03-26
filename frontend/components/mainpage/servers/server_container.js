@@ -10,6 +10,7 @@ import { fetchChannelMessages } from "../../../actions/channel_message_actions"
 const mapStateToProps = (state, ownProps) => {
     return {
         errors: state.errors.server,
+        channels: Object.values(state.entities.channels),
         servers: Object.values(state.entities.servers),
         server: Object.values(state.entities.servers).find(server => {
             return server.id == ownProps.match.params.server_id

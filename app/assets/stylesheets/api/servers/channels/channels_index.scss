@@ -40,6 +40,7 @@
                 fill:white;
             }
         }
+
     }
 
     .channels-title:hover {
@@ -69,6 +70,7 @@
             margin-left: 6px;
             cursor:pointer;
             border-radius: 4px;
+            position:relative;
 
             svg {
                 margin-top: -8px;
@@ -79,12 +81,22 @@
                 color: #8E9297;
 
             }
+
+            svg.settings-icon {
+                position: absolute;
+                right: 4px;
+                top: 16px;
+                display: none;
+            }
         }
 
         li.selected.text {
             background-color: rgba(79,84,92,0.32);
             span {
                 color: white;
+            }
+            svg.settings-icon {
+                display: block;
             }
         }
 
@@ -99,6 +111,10 @@
 
             span {
                 color: #dcddde;
+            }
+
+            svg.settings-icon {
+                display: block;
             }
         }
 

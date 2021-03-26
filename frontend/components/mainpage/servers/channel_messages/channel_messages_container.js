@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { createChannelMessage, deleteChannelMessage, fetchChannelMessages, updateChannelMessage } from '../../../../actions/channel_message_actions';
+import { fetchServers } from '../../../../actions/server_actions';
 import ChannelMessages from './channel_messages'
 
 const mapStateToProps = (state, ownProps) => {
@@ -14,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         currentUser: state.entities.users[state.session.id],
         users: state.entities.users,
-        currentServer: currentServer,
+        server: currentServer,
         channels: state.entities.channels,
         errors: state.errors.channelMessage,
         channelMessages: Object.values(state.entities.channelMessages).filter(message => {
