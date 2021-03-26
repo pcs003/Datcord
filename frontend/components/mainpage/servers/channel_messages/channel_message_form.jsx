@@ -31,6 +31,19 @@ export default class ChannelMessageForm extends React.Component {
         if (e.keyCode === 13) {
             e.preventDefault();
             console.log("IN THE HANDLE SUBMIT")
+            
+
+            this.props.createChannelMessage({message:{
+                body: this.state.body,
+                author_id: this.props.currentUser.id,
+                channel_id: this.props.match.params.channel_id
+            }}).then(() => {
+                this.props.getChannelMessages(this.props.match.params.channel_id).then((action) => {
+                    console.log(action.channelMessages)
+                })
+            })
+
+
             App.cable.subscriptions.subscriptions[0].speak({ 
                 body: this.state.body,
                 authorId: this.props.currentUser.id,
@@ -39,11 +52,9 @@ export default class ChannelMessageForm extends React.Component {
             this.setState({ body: "" });
             document.getElementById("chat-input").value = ""
 
-            setTimeout(() => {
-                this.props.getChannelMessages(this.props.match.params.channel_id).then((action) => {
-                    console.log(action.channelMessages)
-                })
-            }, 0)
+            
+            
+
         }
     }
     

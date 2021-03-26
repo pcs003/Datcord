@@ -241,7 +241,7 @@ __webpack_require__.r(__webpack_exports__);
 var RECEIVE_ALL_CHANNEL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
 var RECEIVE_CHANNEL_MESSAGE = 'RECEIVE_MESSAGE';
 var REMOVE_CHANNEL_MESSAGE = 'REMOVE_MESSAGE';
-var RECEIVE_CHANNEL_MESSAGE_ERRORS = 'RECEIVE_MESSAGE_ERRORS';
+var RECEIVE_CHANNEL_MESSAGE_ERRORS = 'RECEIVE_CHANNEL_MESSAGE_ERRORS';
 var CLEAR_CHANNEL_MESSAGE_ERRORS = 'CLEAR_MESSAGE_ERRORS';
 var receiveAllChannelMessages = function receiveAllChannelMessages(channelMessages) {
   return {
@@ -284,7 +284,6 @@ var fetchChannelMessages = function fetchChannelMessages(channelId) {
 var createChannelMessage = function createChannelMessage(channelMessage) {
   return function (dispatch) {
     return _util_channel_messages_api_util__WEBPACK_IMPORTED_MODULE_0__.createChannelMessage(channelMessage).then(function (channelMessage) {
-      console.log("in actions");
       return dispatch(receiveChannelMessage(channelMessage));
     }, function (e) {
       return dispatch(receiveChannelMessageErrors(e.responseJSON));
@@ -1155,6 +1154,17 @@ var ChannelMessageForm = /*#__PURE__*/function (_React$Component) {
       if (e.keyCode === 13) {
         e.preventDefault();
         console.log("IN THE HANDLE SUBMIT");
+        this.props.createChannelMessage({
+          message: {
+            body: this.state.body,
+            author_id: this.props.currentUser.id,
+            channel_id: this.props.match.params.channel_id
+          }
+        }).then(function () {
+          _this2.props.getChannelMessages(_this2.props.match.params.channel_id).then(function (action) {
+            console.log(action.channelMessages);
+          });
+        });
         App.cable.subscriptions.subscriptions[0].speak({
           body: this.state.body,
           authorId: this.props.currentUser.id,
@@ -1164,11 +1174,6 @@ var ChannelMessageForm = /*#__PURE__*/function (_React$Component) {
           body: ""
         });
         document.getElementById("chat-input").value = "";
-        setTimeout(function () {
-          _this2.props.getChannelMessages(_this2.props.match.params.channel_id).then(function (action) {
-            console.log(action.channelMessages);
-          });
-        }, 0);
       }
     }
   }, {
@@ -1294,6 +1299,7 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
         channelId: channelId
       }, {
         received: function received(data) {
+          // this.getResponseMessage(data)
           _this2.getResponseMessage(data);
         },
         speak: function speak(data) {
@@ -1309,8 +1315,12 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
     key: "getResponseMessage",
     value: function getResponseMessage(data) {
       if (this.props.currentUser.id !== data.message.author_id) {
-        this.props.createChannelMessage(data); // this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id)
+        this.props.receiveChannelMessage({
+          message: data
+        });
       }
+
+      this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id);
     }
   }, {
     key: "render",
@@ -1379,6 +1389,7 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "all-messages-wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, messageListItems)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channel_message_form__WEBPACK_IMPORTED_MODULE_1__.default, {
+        createChannelMessage: this.props.createChannelMessage,
         currentChannel: thisChannel,
         getChannelMessages: this.props.getChannelMessages,
         currentUser: this.props.currentUser,
@@ -1441,7 +1452,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
       return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_1__.fetchChannelMessages)(channelId));
     },
     createChannelMessage: function createChannelMessage(channelMessage) {
-      console.log("creating message");
       return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_1__.createChannelMessage)(channelMessage));
     },
     updateChannelMessage: function updateChannelMessage(channelMessage) {
@@ -1449,6 +1459,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     deleteChannelMessage: function deleteChannelMessage(channelMessageId) {
       return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_1__.deleteChannelMessage)(channelMessageId));
+    },
+    receiveChannelMessage: function receiveChannelMessage(channelMessage) {
+      return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_1__.receiveChannelMessage)(channelMessage));
     }
   };
 };
@@ -5492,7 +5505,6 @@ var fetchChannelMessages = function fetchChannelMessages(channelId) {
   });
 };
 var createChannelMessage = function createChannelMessage(message) {
-  console.log("in util");
   return $.ajax({
     url: '/api/channel_messages',
     method: 'POST',

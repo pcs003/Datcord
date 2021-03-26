@@ -1,6 +1,6 @@
 .messaging-div {
     height:100%;
-    width: Calc(100% - 240px);
+    width: Calc(100vw - 240px);
     background-color: rgb(54,57,63);
 
     display: flex;
@@ -10,16 +10,19 @@
 
     .all-messages-wrapper {
         width: 100%;
-        height: Calc(100% - 70px);
-        overflow: hidden;
+        min-height: Calc(100% - 50px);
+        max-height: Calc(100% - 50px);
+        position: absolute;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         align-items: baseline;
 
         ul {
+            min-height: 100%;
+            width: Calc(100% - 32px);
             padding: 0 16px 16px 16px;
-
+            overflow: scroll;
             li {
                 display: flex;
                 margin: 24px 0 0 0;
@@ -58,12 +61,16 @@
                 margin-left: 60px;
             }
         }
+
+        ul::-webkit-scrollbar {
+            display: none;
+        }
     }
 
 
     .message-input-div {
         position: absolute;
-        bottom:20px;
+        bottom:2vh;
         left: 2%;
         width:96%;
         height: 50px;

@@ -7,7 +7,6 @@ export const fetchChannelMessages = (channelId) => (
 )
 
 export const createChannelMessage = (message) => {
-    console.log("in util")
     return $.ajax ({
         url: '/api/channel_messages',
         method: 'POST',
