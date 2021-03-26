@@ -3629,58 +3629,18 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     fetchChannels: function fetchChannels(serverId) {
       return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.fetchChannels)(serverId));
     },
-    createChannel: function (_createChannel) {
-      function createChannel(_x) {
-        return _createChannel.apply(this, arguments);
-      }
-
-      createChannel.toString = function () {
-        return _createChannel.toString();
-      };
-
-      return createChannel;
-    }(function (channel) {
-      return dispatch(createChannel(channel));
-    }),
-    deleteChannel: function (_deleteChannel) {
-      function deleteChannel(_x2) {
-        return _deleteChannel.apply(this, arguments);
-      }
-
-      deleteChannel.toString = function () {
-        return _deleteChannel.toString();
-      };
-
-      return deleteChannel;
-    }(function (channelId) {
-      return dispatch(deleteChannel(channelId));
-    }),
-    updateChannel: function (_updateChannel) {
-      function updateChannel(_x3) {
-        return _updateChannel.apply(this, arguments);
-      }
-
-      updateChannel.toString = function () {
-        return _updateChannel.toString();
-      };
-
-      return updateChannel;
-    }(function (channel) {
-      return dispatch(updateChannel(channel));
-    }),
-    fetchChannel: function (_fetchChannel) {
-      function fetchChannel(_x4) {
-        return _fetchChannel.apply(this, arguments);
-      }
-
-      fetchChannel.toString = function () {
-        return _fetchChannel.toString();
-      };
-
-      return fetchChannel;
-    }(function (channelId) {
-      return dispatch(fetchChannel(channelId));
-    }),
+    createChannel: function createChannel(channel) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.createChannel)(channel));
+    },
+    deleteChannel: function deleteChannel(channelId) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.deleteChannel)(channelId));
+    },
+    updateChannel: function updateChannel(channel) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.updateChannel)(channel));
+    },
+    fetchChannel: function fetchChannel(channelId) {
+      return dispatch((0,_actions_channel_actions__WEBPACK_IMPORTED_MODULE_4__.fetchChannel)(channelId));
+    },
     fetchChannelMessages: function fetchChannelMessages(channelId) {
       return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_5__.fetchChannelMessages)(channelId));
     }

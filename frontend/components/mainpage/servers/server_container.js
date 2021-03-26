@@ -2,7 +2,7 @@ import { connect } from "react-redux"
 import { createServer, updateServer, fetchServers, fetchServer, joinServer, leaveServer, deleteServer } from "../../../actions/server_actions"
 import { logout } from "../../../actions/session_actions"
 import Server from "./server"
-import { fetchChannels } from '../../../actions/channel_actions'
+import { createChannel, deleteChannel, fetchChannel, fetchChannels, updateChannel } from '../../../actions/channel_actions'
 import { fetchChannelMessages } from "../../../actions/channel_message_actions"
 
 
