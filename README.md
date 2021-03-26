@@ -9,6 +9,9 @@
 * [Technologies](#Technologies)
 * [Features](#Features)
     * [UserAuth](#UserAuth)
+    * [Servers](#Servers)
+    * [Channels](#Channels)
+    * [LiveChat](#LiveChat)
 
 ## Background
 Datcord is a full stack web application inspired by the website Discord. The website allows users to create an account and sign in. As an account holder, users can open the discord app, join/leave servers, and send and receive messages live in server channels. If a user is the creator of a server, they can edit the server name, add/remove/edit channels, and delete the server. If a user does not want to sign up for an account, they can use the demo login and explore the discord app. 
@@ -33,5 +36,5 @@ This site was built on a Ruby on Rails framework for the backend with active rec
 ### Channels
 
 
-### Live Chat
+### LiveChat
 
