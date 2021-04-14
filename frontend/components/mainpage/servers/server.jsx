@@ -35,6 +35,8 @@ export default class Server extends React.Component {
         this.openChannelSettings = this.openChannelSettings.bind(this) 
         this.closeChannelSettings = this.closeChannelSettings.bind(this)
 
+        this.getResponseMessage = this.getResponseMessage.bind(this)
+
         this.state = {
             muted: false,
             deafened: false,
@@ -52,6 +54,22 @@ export default class Server extends React.Component {
         this.props.getServer(this.props.match.params.server_id)
         this.props.fetchChannels(this.props.match.params.server_id)
         this.props.fetchChannelMessages(this.props.match.params.channel_id)
+
+        let channelId = this.props.channels[this.props.match.params.channel_id];
+
+        App.cable.subscriptions.create(
+            { channel: "ChannelMessagesChannel", channelId: channelId},
+            {
+                received: data => {
+                    console.log("here")
+                    // this.getResponseMessage(data)
+                    this.getResponseMessage(data)
+                },
+                speak: function(data) {
+                    return this.perform("speak", data)
+                }
+            }
+        )
     }
 
     sortMembersByUsername(a, b) {
@@ -258,6 +276,19 @@ export default class Server extends React.Component {
                 layerName: ""
             })
         }, 100);
+    }
+
+    getResponseMessage(data) {
+        if (this.props.currentUser.id !== data.message.author_id) {
+
+            this.props.receiveChannelMessage({message: data})
+        }
+        console.log(this.props.match.params.channel_id)
+        this.props.fetchChannelMessages(this.props.channels.find(channel => {
+            return channel.id == this.props.match.params.channel_id
+            
+        }).id)
+        
     }
 
     

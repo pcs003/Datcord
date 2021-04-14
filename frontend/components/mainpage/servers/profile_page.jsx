@@ -89,7 +89,7 @@ export default class ProfilePage extends React.Component {
                     </div>            
                     <div className="messages-users-div">
                         <div className="messaging-div">
-                            <h2>ALL FRIENDS - </h2>
+                            <h2>ALL FRIENDS &mdash;&mdash; </h2>
                         </div>
                         <div className="server-members-nav">
                             <h2 className="members-header"></h2>

@@ -10,10 +10,12 @@
         width: 100%;
         border-bottom: 2px solid rgb(32,34,37);
         display: flex;
+        cursor: pointer;
         h2 {
             margin:auto 15px;
             font-weight:700;
             color:white;
+            cursor: pointer;
         }
     }
 

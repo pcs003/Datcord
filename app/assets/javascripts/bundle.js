@@ -1282,8 +1282,8 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       messages: []
-    };
-    _this.getResponseMessage = _this.getResponseMessage.bind(_assertThisInitialized(_this));
+    }; // this.getResponseMessage = this.getResponseMessage.bind(this)
+
     _this.bottom = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
     return _this;
   }
@@ -1291,45 +1291,39 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
   _createClass(ChannelMessages, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
-
-      var channelId = this.props.channels[this.props.match.params.channel_id];
-      App.cable.subscriptions.create({
-        channel: "ChannelMessagesChannel",
-        channelId: channelId
-      }, {
-        received: function received(data) {
-          // this.getResponseMessage(data)
-          _this2.getResponseMessage(data);
-        },
-        speak: function speak(data) {
-          return this.perform("speak", data);
-        }
-      });
+      console.log("it moutned"); //     let channelId = this.props.channels[this.props.match.params.channel_id];
+      //     App.cable.subscriptions.create(
+      //         { channel: "ChannelMessagesChannel", channelId: channelId},
+      //         {
+      //             received: data => {
+      //                 console.log("here")
+      //                 // this.getResponseMessage(data)
+      //                 this.getResponseMessage(data)
+      //             },
+      //             speak: function(data) {
+      //                 return this.perform("speak", data)
+      //             }
+      //         }
+      //     )
     }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate() {// this.bottom.current.scrollIntoView();
-    }
-  }, {
-    key: "getResponseMessage",
-    value: function getResponseMessage(data) {
-      if (this.props.currentUser.id !== data.message.author_id) {
-        this.props.receiveChannelMessage({
-          message: data
-        });
-      }
+    } // getResponseMessage(data) {
+    //     if (this.props.currentUser.id !== data.message.author_id) {
+    //         this.props.receiveChannelMessage({message: data})
+    //     }
+    //     this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id)
+    // }
 
-      this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id);
-    }
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
       var thisServer = this.props.servers.find(function (server) {
-        return _this3.props.match.params.server_id == server.id;
+        return _this2.props.match.params.server_id == server.id;
       });
       var serverMembers = [];
 
@@ -1351,7 +1345,7 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
         }
 
         if (i >= 1) {
-          if (_this3.props.channelMessages[i - 1].author_id === message.author_id) {
+          if (_this2.props.channelMessages[i - 1].author_id === message.author_id) {
             console.log("repeat");
             return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
               className: "repeat",
@@ -1359,7 +1353,7 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
             }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
               className: "message-info"
             }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-              ref: _this3.bottom
+              ref: _this2.bottom
             }));
           }
         }
@@ -1378,7 +1372,7 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           className: "message-info"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, authorName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          ref: _this3.bottom
+          ref: _this2.bottom
         }));
       });
       var thisChannel = this.props.currentChannel || {
@@ -3196,7 +3190,7 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
         className: "messages-users-div"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "messaging-div"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "ALL FRIENDS - ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "ALL FRIENDS \u2014\u2014 ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-members-nav"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
         className: "members-header"
@@ -3305,6 +3299,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
     _this.setClickedChannelId = _this.setClickedChannelId.bind(_assertThisInitialized(_this));
     _this.openChannelSettings = _this.openChannelSettings.bind(_assertThisInitialized(_this));
     _this.closeChannelSettings = _this.closeChannelSettings.bind(_assertThisInitialized(_this));
+    _this.getResponseMessage = _this.getResponseMessage.bind(_assertThisInitialized(_this));
     _this.state = {
       muted: false,
       deafened: false,
@@ -3322,10 +3317,26 @@ var Server = /*#__PURE__*/function (_React$Component) {
   _createClass(Server, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this2 = this;
+
       this.props.getServers();
       this.props.getServer(this.props.match.params.server_id);
       this.props.fetchChannels(this.props.match.params.server_id);
       this.props.fetchChannelMessages(this.props.match.params.channel_id);
+      var channelId = this.props.channels[this.props.match.params.channel_id];
+      App.cable.subscriptions.create({
+        channel: "ChannelMessagesChannel",
+        channelId: channelId
+      }, {
+        received: function received(data) {
+          console.log("here"); // this.getResponseMessage(data)
+
+          _this2.getResponseMessage(data);
+        },
+        speak: function speak(data) {
+          return this.perform("speak", data);
+        }
+      });
     }
   }, {
     key: "sortMembersByUsername",
@@ -3381,7 +3392,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "closeCreateServerForm",
     value: function closeCreateServerForm(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (e) {
         e.preventDefault();
@@ -3392,7 +3403,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
       modal.classList.add("transition-out");
       wrapper.classList.add("inactive");
       setTimeout(function () {
-        _this2.setState({
+        _this3.setState({
           layerName: ""
         });
       }, 100);
@@ -3412,7 +3423,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "closeServerSettings",
     value: function closeServerSettings(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (e) {
         e.preventDefault();
@@ -3421,7 +3432,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
       var wrapper = document.getElementById("server-settings-modal-wrapper");
       wrapper.classList.add("inactive");
       setTimeout(function () {
-        _this3.setState({
+        _this4.setState({
           layerName: ""
         });
       }, 100);
@@ -3437,7 +3448,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "closeUserSettings",
     value: function closeUserSettings(e) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (e) {
         e.preventDefault();
@@ -3446,7 +3457,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
       var wrapper = document.getElementById("user-settings-modal-wrapper");
       wrapper.classList.add("inactive");
       setTimeout(function () {
-        _this4.setState({
+        _this5.setState({
           layerName: ""
         });
       }, 100);
@@ -3471,7 +3482,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "closeCreateChannelForm",
     value: function closeCreateChannelForm(e) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (e) {
         e.preventDefault();
@@ -3482,7 +3493,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
       modal.classList.add("transition-out");
       wrapper.classList.add("inactive");
       setTimeout(function () {
-        _this5.setState({
+        _this6.setState({
           layerName: ""
         });
       }, 100);
@@ -3498,7 +3509,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "closeDeleteChannelForm",
     value: function closeDeleteChannelForm(e) {
-      var _this6 = this;
+      var _this7 = this;
 
       if (e) {
         e.preventDefault();
@@ -3509,7 +3520,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
       modal.classList.add("transition-out");
       wrapper.classList.add("inactive");
       setTimeout(function () {
-        _this6.setState({
+        _this7.setState({
           layerName: ""
         });
       }, 100);
@@ -3537,7 +3548,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "closeChannelSettings",
     value: function closeChannelSettings(e) {
-      var _this7 = this;
+      var _this8 = this;
 
       if (e) {
         e.preventDefault();
@@ -3546,22 +3557,38 @@ var Server = /*#__PURE__*/function (_React$Component) {
       var wrapper = document.getElementById("channel-settings-modal-wrapper");
       wrapper.classList.add("inactive");
       setTimeout(function () {
-        _this7.setState({
+        _this8.setState({
           layerName: ""
         });
       }, 100);
     }
   }, {
+    key: "getResponseMessage",
+    value: function getResponseMessage(data) {
+      var _this9 = this;
+
+      if (this.props.currentUser.id !== data.message.author_id) {
+        this.props.receiveChannelMessage({
+          message: data
+        });
+      }
+
+      console.log(this.props.match.params.channel_id);
+      this.props.fetchChannelMessages(this.props.channels.find(function (channel) {
+        return channel.id == _this9.props.match.params.channel_id;
+      }).id);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this8 = this;
+      var _this10 = this;
 
       var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
       var currentServer = this.props.servers.find(function (server) {
-        return _this8.props.match.params.server_id == server.id;
+        return _this10.props.match.params.server_id == server.id;
       });
       var currentChannel = this.props.channels.find(function (channel) {
-        return channel.id == _this8.props.match.params.channel_id;
+        return channel.id == _this10.props.match.params.channel_id;
       });
       var currentServerName = currentServerName != "" ? currentServerName : "";
       var memberListElements = "";
@@ -3813,6 +3840,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchChannelMessages: function fetchChannelMessages(channelId) {
       return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_5__.fetchChannelMessages)(channelId));
+    },
+    receiveChannelMessage: function receiveChannelMessage(channelMessage) {
+      return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_5__.receiveChannelMessage)(channelMessage));
     }
   };
 };

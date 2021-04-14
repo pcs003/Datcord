@@ -18,6 +18,9 @@
                 white-space: nowrap;
                 padding: 1px 6px;
                 box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
             }
         }
 
@@ -166,6 +169,19 @@
                 }
 
                 .add-friend {
+                    font-weight: 500;
+                    line-height: 20px;
+                    background-color: rgb(67, 181, 129);
+                    border-radius: 4px;
+                    color:white;
+                    text-align: center;
+                    padding: 2px 8px;
+                    padding-top: 4px;
+                    padding-bottom: 0;
+                    margin: auto 8px;
+                }
+
+                .add-friend:hover {
                     font-weight: 500;
                     line-height: 20px;
                     background-color: rgb(67, 181, 129);

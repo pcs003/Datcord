@@ -34,6 +34,7 @@
     margin: auto 0;
     justify-content: space-around;
     z-index: 999;
+    cursor: pointer;
 }
 
 .top-div header a {
@@ -43,11 +44,13 @@
     font-size: 15px;
     color: white;
     z-index: 999;
+    cursor: pointer;
 }
 
 .top-div header img.header-logo {
     width: 140px;
     z-index: 999;
+    cursor: pointer;
 }
 
 .top-div header nav {
@@ -55,6 +58,7 @@
     text-align: center;
     display: flex;
     z-index: 999;
+    cursor: pointer;
 }
 
 .top-div header nav a{
@@ -66,6 +70,7 @@
     padding: 13.5px 17px;
     font-size: 12px;
     z-index: 999;
+    cursor: pointer;
 }
 
 .top-div header nav a:hover {
@@ -85,6 +90,7 @@
     font-weight: 300;
     font-size: 12px;
     z-index: 999;
+    cursor: pointer;
 }
 
 .top-div header nav button.logout-button:hover {

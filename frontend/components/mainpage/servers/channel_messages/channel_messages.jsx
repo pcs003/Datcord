@@ -9,41 +9,44 @@ export default class ChannelMessages extends React.Component {
             messages: []
         }
 
-        this.getResponseMessage = this.getResponseMessage.bind(this)
+        // this.getResponseMessage = this.getResponseMessage.bind(this)
 
         this.bottom = React.createRef();
+
+        
     }
 
     componentDidMount() {
-        let channelId = this.props.channels[this.props.match.params.channel_id];
+        console.log("it moutned")
+    //     let channelId = this.props.channels[this.props.match.params.channel_id];
 
-        App.cable.subscriptions.create(
-            { channel: "ChannelMessagesChannel", channelId: channelId},
-            {
-                received: data => {
-                    // this.getResponseMessage(data)
-                    this.getResponseMessage(data)
-                },
-                speak: function(data) {
-                    return this.perform("speak", data)
-                }
-            }
-        )
-
+    //     App.cable.subscriptions.create(
+    //         { channel: "ChannelMessagesChannel", channelId: channelId},
+    //         {
+    //             received: data => {
+    //                 console.log("here")
+    //                 // this.getResponseMessage(data)
+    //                 this.getResponseMessage(data)
+    //             },
+    //             speak: function(data) {
+    //                 return this.perform("speak", data)
+    //             }
+    //         }
+    //     )
     }
 
     componentDidUpdate() {
         // this.bottom.current.scrollIntoView();
     }
 
-    getResponseMessage(data) {
-        if (this.props.currentUser.id !== data.message.author_id) {
+    // getResponseMessage(data) {
+    //     if (this.props.currentUser.id !== data.message.author_id) {
 
-            this.props.receiveChannelMessage({message: data})
-        }
-        this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id)
+    //         this.props.receiveChannelMessage({message: data})
+    //     }
+    //     this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id)
         
-    }
+    // }
 
     render() {
         let colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"]

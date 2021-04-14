@@ -3,7 +3,7 @@ import { createServer, updateServer, fetchServers, fetchServer, joinServer, leav
 import { logout } from "../../../actions/session_actions"
 import Server from "./server"
 import { createChannel, deleteChannel, fetchChannel, fetchChannels, updateChannel } from '../../../actions/channel_actions'
-import { fetchChannelMessages } from "../../../actions/channel_message_actions"
+import { fetchChannelMessages, receiveChannelMessage } from "../../../actions/channel_message_actions"
 
 
 
@@ -35,7 +35,8 @@ const mapDispatchToProps = dispatch => {
         deleteChannel: channelId => dispatch(deleteChannel(channelId)),
         updateChannel: channel => dispatch(updateChannel(channel)),
         fetchChannel: channelId => dispatch(fetchChannel(channelId)),
-        fetchChannelMessages: channelId => dispatch(fetchChannelMessages(channelId))
+        fetchChannelMessages: channelId => dispatch(fetchChannelMessages(channelId)),
+        receiveChannelMessage: channelMessage => dispatch(receiveChannelMessage(channelMessage))
     }
 }
 
