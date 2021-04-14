@@ -369,7 +369,6 @@ export default class Server extends React.Component {
 
         let currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
 
-
         return (
             <div className="outmost">
                 <div className="discord-page">

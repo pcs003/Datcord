@@ -140,10 +140,50 @@
         }
     }
 
+    .nav-tab-frame.default {
+        z-index: 3;
+        position: relative;
+        span.server-name {
+            opacity: 1;
+            position: absolute;
+            left: 80px;
+            color: #dcddde;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #18191c;
+            border-radius: 5px;
+            width: auto;
+            padding: 10px;
+            z-index: 30 !important;
+            transition: 0.17s;
+            display: none;
+        }
+
+        span.server-name::before {
+            content:"";
+            position: absolute;
+            left: -10px;
+            top: 12px;
+            width: auto;
+            height: auto;
+            border:5px dotted transparent;
+            border-right: 5px solid #18191c;
+            z-index: 30;
+        }
+    }
+
     .nav-tab-frame.default:hover {
         background-color: #43B581;
         svg path {
             fill: white;
+        }
+
+        span.server-name {
+            z-index: 8;
+            position: fixed;
+            display: inline-block;
+            opacity: 1;
+            transition: 0.17s;
         }
     }
 
