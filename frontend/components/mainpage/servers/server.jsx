@@ -11,6 +11,7 @@ import DeleteChannel from './channels/delete_channel'
 import { AuthRoute, ProtectedRoute } from '../../../util/route_util';
 import ChannelSettings from './channels/channel_settings'
 import ChannelMessagesContainer from './channel_messages/channel_messages_container'
+import ProfilePage from './profile_page'
 
 export default class Server extends React.Component {
     constructor(props) {
@@ -337,34 +338,14 @@ export default class Server extends React.Component {
         )
 
         let userPage = (
-            <div className="server-container">
-                <div className="server-channel-nav">
-                    <div className="server-name">
-                        <h2></h2>
-                    </div>
-                    <div className="channel-nav">
-                        
-                    </div>
-                    <CurrentUserInfo openUserSettings={this.openUserSettings} muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
-                </div>
-                <div className="right-div">
-                    <div className="info-navbar">
-                        This page is in progress, it will be the private messaging page
-                    </div>
-                    <div className="messages-users-div">
-                        <div className="messaging-div"></div>
-                        <div className="server-members-nav">
-                            <h2 className="members-header"></h2>
-                            
-                            <div className="user-list-item invis">
-                                <div className="user-list-pic" >
-                                </div>
-                                <h2></h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ProfilePage 
+                openUserSettings={this.openUserSettings} 
+                muted={this.state.muted} 
+                deafened={this.state.deafened} 
+                currentUser={this.props.currentUser} 
+                toggleDeafen={this.toggleDeafen} 
+                toggleMute={this.toggleMute}
+            />
         )
 
         let currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
