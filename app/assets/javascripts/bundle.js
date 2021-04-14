@@ -1282,40 +1282,108 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       messages: []
-    }; // this.getResponseMessage = this.getResponseMessage.bind(this)
-
+    };
     _this.bottom = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
+    _this.generateTimeStamp = _this.generateTimeStamp.bind(_assertThisInitialized(_this));
+    _this.generateTimeStampRepeat = _this.generateTimeStampRepeat.bind(_assertThisInitialized(_this));
+    _this.monthDays = _this.monthDays.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(ChannelMessages, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      console.log("it moutned"); //     let channelId = this.props.channels[this.props.match.params.channel_id];
-      //     App.cable.subscriptions.create(
-      //         { channel: "ChannelMessagesChannel", channelId: channelId},
-      //         {
-      //             received: data => {
-      //                 console.log("here")
-      //                 // this.getResponseMessage(data)
-      //                 this.getResponseMessage(data)
-      //             },
-      //             speak: function(data) {
-      //                 return this.perform("speak", data)
-      //             }
-      //         }
-      //     )
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      console.log(this.bottom);
+
+      if (this.bottom.current) {
+        this.bottom.current.scrollIntoView(false);
+      }
     }
   }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {// this.bottom.current.scrollIntoView();
-    } // getResponseMessage(data) {
-    //     if (this.props.currentUser.id !== data.message.author_id) {
-    //         this.props.receiveChannelMessage({message: data})
-    //     }
-    //     this.props.getChannelMessages(this.props.channels[this.props.match.params.channel_id].id)
-    // }
+    key: "monthDays",
+    value: function monthDays(month) {
+      if ([1, 3, 5, 7, 8, 10, 12].includes(month)) {
+        return 31;
+      } else if ([4, 6, 9, 11].includes(month)) {
+        return 30;
+      } else {
+        return 28;
+      }
+    }
+  }, {
+    key: "generateTimeStamp",
+    value: function generateTimeStamp(date) {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 
+      var yyyy = today.getFullYear();
+      var dateObj = new Date(date);
+      var offset = dateObj.getTimezoneOffset() / 60;
+      var msgD = parseInt(date.slice(8, 10));
+      var msgM = parseInt(date.slice(5, 7));
+      var msgY = parseInt(date.slice(0, 4));
+
+      if (parseInt(date.slice(11, 13)) - offset < 0) {
+        msgD--;
+
+        if (msgD == 0) {
+          msgM--;
+
+          if (msgM == 0) {
+            msgY--;
+            msgM = 12;
+          }
+
+          msgD = this.monthDays(msgM);
+        }
+      }
+
+      if (parseInt(dd) == msgD && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
+        var timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24;
+        var timeM = date.slice(14, 16);
+
+        if (timeH >= 12) {
+          if (timeH > 12) {
+            timeH -= 12;
+          }
+
+          return "Today at ".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " PM");
+        }
+
+        if (timeH == 0) {
+          timeH = 12;
+        }
+
+        return "Today at ".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " AM");
+      } else if (parseInt(dd) == msgD + 1 && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
+        var _timeH = parseInt(date.slice(11, 13));
+
+        var _timeM = date.slice(14, 16);
+
+        if (_timeH > 12) {
+          _timeH -= 12;
+          return "Yesterday at ".concat(_timeH.toString() + ":" + _timeM.padStart(2, '0'), " PM");
+        }
+
+        return "Yesterday at ".concat(_timeH.toString() + ":" + _timeM.padStart(2, '0'), " AM");
+      } else {
+        return "".concat(msgM, "/").concat(msgD.toString().padStart(2, '0'), "/").concat(msgY);
+      }
+    }
+  }, {
+    key: "generateTimeStampRepeat",
+    value: function generateTimeStampRepeat(date) {
+      var timeH = parseInt(date.slice(11, 13));
+      var timeM = date.slice(14, 16);
+
+      if (timeH > 12) {
+        timeH -= 12;
+        return "".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " PM");
+      }
+
+      return "".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " AM");
+    }
   }, {
     key: "render",
     value: function render() {
@@ -1332,7 +1400,14 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
         console.log(serverMembers);
       }
 
-      var messageListItems = this.props.channelMessages.map(function (message, i) {
+      var messageListItems = [];
+      this.props.channelMessages.sort(function (a, b) {
+        if (a.created_at > b.created_at) {
+          return 1;
+        } else {
+          return -1;
+        }
+      }).forEach(function (message, i) {
         var author = serverMembers.find(function (member) {
           return member.id == message.author_id;
         });
@@ -1345,35 +1420,37 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
         }
 
         if (i >= 1) {
-          if (_this2.props.channelMessages[i - 1].author_id === message.author_id) {
-            console.log("repeat");
-            return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
-              className: "repeat",
-              key: message.id
-            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-              className: "message-info"
-            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-              ref: _this2.bottom
-            }));
-          }
+          var prevDate = _this2.props.channelMessages[i - 1];
         }
 
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
-          key: message.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          className: "current-user-pic",
-          style: {
-            backgroundColor: "".concat(thisColor)
-          }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-          className: "default-profile-pic",
-          src: window.whiteDatcordRobot,
-          alt: ""
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          className: "message-info"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, authorName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          ref: _this2.bottom
-        }));
+        if (i >= 1 && _this2.props.channelMessages[i - 1].author_id === message.author_id) {
+          console.log("repeat");
+          messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+            className: "repeat",
+            key: message.id
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "message-info"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+            className: "timestamp"
+          }, _this2.generateTimeStampRepeat(message.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body))));
+        } else {
+          messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+            key: message.id
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "current-user-pic",
+            style: {
+              backgroundColor: "".concat(thisColor)
+            }
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+            className: "default-profile-pic",
+            src: window.whiteDatcordRobot,
+            alt: ""
+          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "message-info"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, authorName, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+            className: "timestamp"
+          }, _this2.generateTimeStamp(message.created_at))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, message.body))));
+        }
       });
       var thisChannel = this.props.currentChannel || {
         name: ""
@@ -1382,7 +1459,9 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
         className: "messaging-div"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "all-messages-wrapper"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, messageListItems)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channel_message_form__WEBPACK_IMPORTED_MODULE_1__.default, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, messageListItems, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        ref: this.bottom
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channel_message_form__WEBPACK_IMPORTED_MODULE_1__.default, {
         createChannelMessage: this.props.createChannelMessage,
         currentChannel: thisChannel,
         getChannelMessages: this.props.getChannelMessages,
