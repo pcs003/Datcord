@@ -29,6 +29,30 @@ export const signup = (user) => (dispatch) => (
     ))
 )
 
+export const addFriend = friendee_id => dispatch => (
+    APIUtil.addFriend(friendee_id).then(user => (
+        dispatch(receiveCurrentUser(user))
+    ), (e) => (
+        dispatch(receiveErrors(e.responseJSON))
+    ))
+)
+
+export const acceptFriend = friendship_id => dispatch => (
+    APIUtil.acceptFriend(friendship_id).then(user => (
+        dispatch(receiveCurrentUser(user))
+    ), (e) => (
+        dispatch(receiveErrors(e.responseJSON))
+    ))
+)
+
+export const removeFriend = friend_id => dispatch => (
+    APIUtil.removeFriend(friend_id).then(user => (
+        dispatch(receiveCurrentUser(user))
+    ), e => (
+        dispatch(receiveErrors(e.responseJSON))
+    ))
+)
+
 export const receiveCurrentUser = (currentUser) => ({
     type: RECEIVE_CURRENT_USER,
     currentUser

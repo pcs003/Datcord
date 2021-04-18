@@ -9,6 +9,8 @@ export default class ChannelMessages extends React.Component {
             messages: []
         }
 
+        this.monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+
 
         this.bottom = React.createRef();
         this.generateTimeStamp = this.generateTimeStamp.bind(this)
@@ -17,7 +19,6 @@ export default class ChannelMessages extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log(this.bottom)
         if (this.bottom.current) {
             this.bottom.current.scrollIntoView(false);
         }
@@ -43,12 +44,18 @@ export default class ChannelMessages extends React.Component {
         let dateObj = new Date(date);
 
         let offset = dateObj.getTimezoneOffset()/60;
+        console.log(offset)
 
-        var msgD = parseInt(date.slice(8,10))
-        var msgM = parseInt(date.slice(5,7))
-        var msgY = parseInt(date.slice(0,4))
-
-        if (parseInt(date.slice(11, 13)) - offset < 0) {
+        var msgD = today.getDate()
+        var msgM = today.getMonth() + 1
+        var msgY = today.getFullYear();
+        if (date) {
+            var msgD = parseInt(date.slice(8,10))
+            var msgM = parseInt(date.slice(5,7))
+            var msgY = parseInt(date.slice(0,4))
+        }
+        console.log(date)
+        if (dateObj.getHours() - offset < 0) {
             msgD--;
             if (msgD == 0) {
                 msgM--;
@@ -61,27 +68,39 @@ export default class ChannelMessages extends React.Component {
         }
 
         if (parseInt(dd) == msgD && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
-            let timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24
-            let timeM = date.slice(14, 16)
+            let dateObj = new Date();
+            let timeH = parseInt(dateObj.getHours())
+            let timeM = dateObj.getMinutes()
+            if (date) {
+                timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24
+                timeM = date.slice(14, 16)
+            }
+            
+            
             if (timeH >= 12) {
                 if (timeH > 12) {
                     timeH -= 12;
                 }
-                return (`Today at ${timeH.toString()}:${timeM.padStart(2, '0')} PM`)
+                return (`Today at ${timeH.toString()}:${timeM.toString().padStart(2, '0')} PM`)
             }
 
             if (timeH == 0) {
                 timeH = 12;
             }
-            return (`Today at ${timeH.toString()}:${timeM.padStart(2, '0')} AM`)
+            return (`Today at ${timeH.toString()}:${timeM.toString().padStart(2, '0')} AM`)
         } else if (parseInt(dd) == msgD + 1 && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
-            let timeH = parseInt(date.slice(11, 13))
-            let timeM = date.slice(14, 16)
+            let dateObj = new Date();
+            let timeH = parseInt(dateObj.getHours());
+            let timeM = dateObj.getMinutes();
+            if (date) {
+                timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24
+                timeM = date.slice(14, 16)
+            }
             if (timeH > 12) {
                 timeH -= 12;
-                return (`Yesterday at ${timeH.toString() + ":" + timeM.padStart(2, '0')} PM`)
+                return (`Yesterday at ${timeH.toString() + ":" + timeM.toString().padStart(2, '0')} PM`)
             }
-            return (`Yesterday at ${timeH.toString() + ":" + timeM.padStart(2, '0')} AM`)
+            return (`Yesterday at ${timeH.toString() + ":" + timeM.toString().padStart(2, '0')} AM`)
         } else {
             return (`${msgM}/${msgD.toString().padStart(2,'0')}/${msgY}`)
         }
@@ -91,15 +110,22 @@ export default class ChannelMessages extends React.Component {
 
     generateTimeStampRepeat(date) {
 
+        let dateObj = new Date();
+        let offset = dateObj.getTimezoneOffset()/60;
         
+        let timeH = dateObj.getHours();
+        let timeM = dateObj.getMinutes()
+        if (date) {
+            timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24
+            timeM = date.slice(14, 16)
+        }
 
-        let timeH = parseInt(date.slice(11, 13))
-        let timeM = date.slice(14, 16)
+        
         if (timeH > 12) {
             timeH -= 12;
-            return (`${timeH.toString()}:${timeM.padStart(2, '0')} PM`)
+            return (`${timeH.toString()}:${timeM.toString().padStart(2, '0')} PM`)
         }
-        return (`${timeH.toString()}:${timeM.padStart(2, '0')} AM`)
+        return (`${timeH.toString()}:${timeM.toString().padStart(2, '0')} AM`)
     }
 
     render() {
@@ -113,10 +139,10 @@ export default class ChannelMessages extends React.Component {
         let serverMembers = []
         if (thisServer) {
             serverMembers = thisServer.members
-            console.log(serverMembers)
         }
 
         const messageListItems = []
+
         
         this.props.channelMessages
         .sort( (a,b) => {
@@ -137,14 +163,63 @@ export default class ChannelMessages extends React.Component {
                 authorName = author.username;
                 thisColor = colors[author.id % colors.length];
             }
+            if (i == 0) {
+                let date = new Date()
+                if (message.created_at) {
+                    date = new Date(message.created_at)
+                }
+    
+                
+                messageListItems.push(
+                    <div className="date-divider">
+                        <div className="line"></div>
+                        <h2>{this.monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()}</h2>
+                    </div>
+                )
+            }
+            
 
             if (i >= 1) {
-                let prevDate = this.props.channelMessages[i - 1]
+                let prevDay = new Date().getDay()
+                if (this.props.channelMessages[i - 1].created_at) {
+                    prevDay = this.props.channelMessages[i - 1].created_at.slice(8,10)
+                }
+                
+                var msgD = new Date().getDate();
+                if (message.created_at) {
+                    msgD = parseInt(message.created_at.slice(8,10))
+                }
+                
+                if (msgD != prevDay) {
+
+                    let date = new Date()
+                    if (message.created_at) {
+                        date = new Date(message.created_at)
+                    }
+
+                    
+                    messageListItems.push(
+                        <div className="date-divider">
+                            <div className="line"></div>
+                            <h2>{this.monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()}</h2>
+                        </div>
+                    )
+                }
             }
 
 
             if (i >= 1 && this.props.channelMessages[i - 1].author_id === message.author_id) {
-                console.log("repeat")
+                let prevDay = new Date().getDate()
+                if (this.props.channelMessages[i - 1].created_at) {
+                    prevDay = this.props.channelMessages[i - 1].created_at.slice(8,10)
+                }
+                
+                var msgD = new Date().getDate();
+                if (message.created_at) {
+                    msgD = parseInt(message.created_at.slice(8,10))
+                }
+                
+        
                 messageListItems.push(
                     <li className="repeat" key={message.id} >
                         <div className="message-info">
@@ -153,6 +228,7 @@ export default class ChannelMessages extends React.Component {
                         </div>
                     </li>
                 );
+                
             } else {
                 messageListItems.push(
                     <li key={message.id} >

@@ -1,5 +1,6 @@
 import React from 'react'
 import Popup from 'react-popup'
+import { RECEIVE_CURRENT_USER } from '../../../actions/session_actions';
 import CurrentUserInfo from './current_user_info'
 
 export default class ProfilePage extends React.Component {
@@ -7,6 +8,18 @@ export default class ProfilePage extends React.Component {
         super(props);
 
         this.unfinished = this.unfinished.bind(this)
+        this.clickTab = this.clickTab.bind(this)
+        this.onChangeName = this.onChangeName.bind(this)
+        this.onAddFriendSubmit = this.onAddFriendSubmit.bind(this)
+        this.acceptFriendRequest = this.acceptFriendRequest.bind(this)
+        this.removeFriend = this.removeFriend.bind(this)
+
+        this.state = {
+            selectedTab: 1,
+            addFriendName: "",
+            errored: true,
+            headerText: "You can add a friend with their discord tag. It's cAsE sEnSitIvE!"
+        }
     }
 
     unfinished(e) {
@@ -14,7 +27,168 @@ export default class ProfilePage extends React.Component {
         Popup.alert("Functionality not yet added")
     }
 
+    clickTab(num) {
+        return e => {
+            e.preventDefault();
+            this.setState({
+                selectedTab: num
+            })
+        }
+    }
+
+    onChangeName(e) {
+        e.preventDefault();
+        this.setState({
+            addFriendName: e.currentTarget.value
+        })
+    }
+
+    onAddFriendSubmit(e) {
+        e.preventDefault();
+
+        if (this.state.addFriendName == "") {
+            return;
+        }
+        let hashIdx = this.state.addFriendName.indexOf('#')
+        if (hashIdx == -1) {
+            this.setState({
+                headerText: `We need ${this.state.addFriendName}'s id after the # so we know which one they are`
+            })
+            return;
+        }
+        
+        let id = parseInt(this.state.addFriendName.slice(hashIdx + 1))
+
+        this.props.addFriend(this.state.addFriendName).then(()=>{
+            this.setState({
+                addFriendName: ""
+            })
+        }, () => {
+            let current = this.state.addFriendName
+            this.setState({
+                headerText: "Hm, didn't work. Double check that the capitalization, spelling, any spaces, and numbers are correct.",
+            })
+        })
+
+        
+    }
+
+    acceptFriendRequest(e) {
+        e.preventDefault();
+        console.log(e.currentTarget.id)
+        this.props.acceptFriend(e.currentTarget.id)
+    }
+
+    removeFriend(e) {
+        e.preventDefault();
+        console.log(e.currentTarget.id)
+        this.props.removeFriend(e.currentTarget.id)
+    }
+
     render() {
+        let colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"]
+
+        let infoItemClass = ["info-item", "info-item", "info-item", "info-item", "info-item add-friend"]
+        infoItemClass[this.state.selectedTab] += " selected"
+
+        let friendItems = []
+        let pendingFriends = [];
+        let option = ""
+        this.props.currentUser.friends
+        .sort( (f1, f2) => {
+            if (f1.username < f2.username) {
+                return -1
+            } else {
+                return 1
+            }
+        }).forEach((friend, i) => {
+            let thisColor = colors[friend.id % colors.length];
+
+            let pendingAdded = this.props.currentUser.friendships_added.filter(friendship => {
+                return friendship.accepted == false
+            }).map(friendship => friendship.friendee_id);
+            let pendingAccepted = this.props.currentUser.friendships_accepted.filter(friendship => {
+                return friendship.accepted == false
+            }).map(friendship => friendship.friender_id);
+
+            
+            if (pendingAdded.concat(pendingAccepted).includes(friend.id)) {
+                
+                if (pendingAdded.includes(friend.id)) {
+                    let fsId = this.props.currentUser.friendships_added.find(fs => {
+                        return fs.friendee_id == friend.id
+                    }).id
+                    option = (
+                        <div className="options">
+                            <div className="x" id={fsId} onClick={this.removeFriend}>&#x2715;</div>
+                        </div>
+                    )
+                } else {
+                    let fsId = this.props.currentUser.friendships_accepted.find(fs => {
+                        return fs.friender_id == friend.id
+                    }).id
+                    console.log(fsId)
+                    option = (
+                        <div className="options">
+                            <div className="check" id={fsId} onClick={this.acceptFriendRequest}>&#x2713;</div>
+                            <div className="x" id={fsId} onClick={this.removeFriend}>&#x2715;</div>
+                        </div>
+                    )
+                }
+                pendingFriends.push(
+                    <li key={friend.id} className="pending">
+                        <div className="user-list-pic" style={{backgroundColor: `${thisColor}`}}>
+                            <img className="default-profile-pic" src={window.whiteDatcordRobot} alt=""/>
+                        </div>
+                        <div className="friend-info">
+                            <h2>{friend.username}</h2>
+                            <h3>Online/Offline</h3>
+                        </div>
+                        {option}
+                    </li>
+                )
+            } else {
+                friendItems.push(
+                    <li key={friend.id}>
+                        <div className="user-list-pic" style={{backgroundColor: `${thisColor}`}}>
+                            <img className="default-profile-pic" src={window.whiteDatcordRobot} alt=""/>
+                        </div>
+                        <div className="friend-info">
+                            <h2>{friend.username}</h2>
+                            <h3>Online/Offline</h3>
+                        </div>
+                        
+                    </li>
+                )
+            }
+            
+        })
+        let currentItems = "";
+        let friendListHeader = ""
+        let buttonClass = this.state.addFriendName == "" ? "disabled" : "";
+        let h3Class = this.state.headerText == "You can add a friend with their discord tag. It's cAsE sEnSitIvE!" ? "" : "errored"
+        if (this.state.selectedTab == 1) {
+            currentItems = friendItems;
+            friendListHeader = <h2>ALL FRIENDS &mdash;&mdash; {friendItems.length}</h2>;
+        } else if (this.state.selectedTab == 2) {
+            currentItems = pendingFriends;
+            friendListHeader = <h2>PENDING &mdash;&mdash; {pendingFriends.length}</h2>
+        } else if (this.state.selectedTab == 4) {
+            currentItems = (
+                <div className="add-friend-container">
+                    <h2 className="add-header">ADD FRIEND</h2>
+                    <h3 className={h3Class}>{this.state.headerText}</h3>
+                    <div className="input-container">
+                        <input type="text" placeholder="Enter a Username#0000"onChange={this.onChangeName} value={this.state.addFriendName}/>
+                        <button className={buttonClass} onClick={this.onAddFriendSubmit}>Send Friend Request</button>
+                    </div>
+                    <div className="wumpus-container">
+                        <img src={window.wumpus} alt=""/>
+                        <h3>Wumpus is waiting on friends. You don't have to though!</h3>
+                    </div>
+                </div>
+            )
+        }
         return (
             <div className="server-container">
                 <div className="server-channel-nav">
@@ -57,19 +231,19 @@ export default class ProfilePage extends React.Component {
                                 <span>Friends</span>
                             </div>
                             <div className="divider"></div>
-                            <div className="info-item" onClick={this.unfinished}>
+                            <div className={infoItemClass[0]} onClick={this.unfinished}>
                                 Online
                             </div>
-                            <div className="info-item selected">
+                            <div className={infoItemClass[1]} onClick={this.clickTab(1)}>
                                 All
                             </div>
-                            <div className="info-item" onClick={this.unfinished}>
+                            <div className={infoItemClass[2]} onClick={this.clickTab(2)}>
                                 Pending
                             </div>
-                            <div className="info-item" onClick={this.unfinished}>
+                            <div className={infoItemClass[3]} onClick={this.unfinished}>
                                 Blocked
                             </div>
-                            <div className="info-item add-friend">
+                            <div className={infoItemClass[4]} onClick={this.clickTab(4)}>
                                 Add Friend
                             </div>
 
@@ -87,9 +261,13 @@ export default class ProfilePage extends React.Component {
                             </svg> 
                         </div>
                     </div>            
-                    <div className="messages-users-div">
-                        <div className="messaging-div">
-                            <h2>ALL FRIENDS &mdash;&mdash; </h2>
+                    <div className="messages-users-div profile">
+                        <div className="messaging-div profile">
+                            {friendListHeader}
+                            <ul className="friends-list">
+                                {currentItems}
+                                
+                            </ul>
                         </div>
                         <div className="server-members-nav">
                             <h2 className="members-header"></h2>

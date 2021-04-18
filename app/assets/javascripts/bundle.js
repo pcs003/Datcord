@@ -456,6 +456,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "login": () => (/* binding */ login),
 /* harmony export */   "logout": () => (/* binding */ logout),
 /* harmony export */   "signup": () => (/* binding */ signup),
+/* harmony export */   "addFriend": () => (/* binding */ addFriend),
+/* harmony export */   "acceptFriend": () => (/* binding */ acceptFriend),
+/* harmony export */   "removeFriend": () => (/* binding */ removeFriend),
 /* harmony export */   "receiveCurrentUser": () => (/* binding */ receiveCurrentUser),
 /* harmony export */   "logoutCurrentUser": () => (/* binding */ logoutCurrentUser),
 /* harmony export */   "receiveErrors": () => (/* binding */ receiveErrors),
@@ -486,6 +489,33 @@ var logout = function logout() {
 var signup = function signup(user) {
   return function (dispatch) {
     return _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__.signup(user).then(function (user) {
+      return dispatch(receiveCurrentUser(user));
+    }, function (e) {
+      return dispatch(receiveErrors(e.responseJSON));
+    });
+  };
+};
+var addFriend = function addFriend(friendee_id) {
+  return function (dispatch) {
+    return _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__.addFriend(friendee_id).then(function (user) {
+      return dispatch(receiveCurrentUser(user));
+    }, function (e) {
+      return dispatch(receiveErrors(e.responseJSON));
+    });
+  };
+};
+var acceptFriend = function acceptFriend(friendship_id) {
+  return function (dispatch) {
+    return _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__.acceptFriend(friendship_id).then(function (user) {
+      return dispatch(receiveCurrentUser(user));
+    }, function (e) {
+      return dispatch(receiveErrors(e.responseJSON));
+    });
+  };
+};
+var removeFriend = function removeFriend(friend_id) {
+  return function (dispatch) {
+    return _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__.removeFriend(friend_id).then(function (user) {
       return dispatch(receiveCurrentUser(user));
     }, function (e) {
       return dispatch(receiveErrors(e.responseJSON));
@@ -1283,6 +1313,7 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       messages: []
     };
+    _this.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     _this.bottom = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
     _this.generateTimeStamp = _this.generateTimeStamp.bind(_assertThisInitialized(_this));
     _this.generateTimeStampRepeat = _this.generateTimeStampRepeat.bind(_assertThisInitialized(_this));
@@ -1293,8 +1324,6 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
   _createClass(ChannelMessages, [{
     key: "componentDidUpdate",
     value: function componentDidUpdate() {
-      console.log(this.bottom);
-
       if (this.bottom.current) {
         this.bottom.current.scrollIntoView(false);
       }
@@ -1320,11 +1349,20 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
       var yyyy = today.getFullYear();
       var dateObj = new Date(date);
       var offset = dateObj.getTimezoneOffset() / 60;
-      var msgD = parseInt(date.slice(8, 10));
-      var msgM = parseInt(date.slice(5, 7));
-      var msgY = parseInt(date.slice(0, 4));
+      console.log(offset);
+      var msgD = today.getDate();
+      var msgM = today.getMonth() + 1;
+      var msgY = today.getFullYear();
 
-      if (parseInt(date.slice(11, 13)) - offset < 0) {
+      if (date) {
+        var msgD = parseInt(date.slice(8, 10));
+        var msgM = parseInt(date.slice(5, 7));
+        var msgY = parseInt(date.slice(0, 4));
+      }
+
+      console.log(date);
+
+      if (dateObj.getHours() - offset < 0) {
         msgD--;
 
         if (msgD == 0) {
@@ -1340,33 +1378,48 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
       }
 
       if (parseInt(dd) == msgD && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
-        var timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24;
-        var timeM = date.slice(14, 16);
+        var _dateObj = new Date();
+
+        var timeH = parseInt(_dateObj.getHours());
+
+        var timeM = _dateObj.getMinutes();
+
+        if (date) {
+          timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24;
+          timeM = date.slice(14, 16);
+        }
 
         if (timeH >= 12) {
           if (timeH > 12) {
             timeH -= 12;
           }
 
-          return "Today at ".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " PM");
+          return "Today at ".concat(timeH.toString(), ":").concat(timeM.toString().padStart(2, '0'), " PM");
         }
 
         if (timeH == 0) {
           timeH = 12;
         }
 
-        return "Today at ".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " AM");
+        return "Today at ".concat(timeH.toString(), ":").concat(timeM.toString().padStart(2, '0'), " AM");
       } else if (parseInt(dd) == msgD + 1 && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
-        var _timeH = parseInt(date.slice(11, 13));
+        var _dateObj2 = new Date();
 
-        var _timeM = date.slice(14, 16);
+        var _timeH = parseInt(_dateObj2.getHours());
+
+        var _timeM = _dateObj2.getMinutes();
+
+        if (date) {
+          _timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24;
+          _timeM = date.slice(14, 16);
+        }
 
         if (_timeH > 12) {
           _timeH -= 12;
-          return "Yesterday at ".concat(_timeH.toString() + ":" + _timeM.padStart(2, '0'), " PM");
+          return "Yesterday at ".concat(_timeH.toString() + ":" + _timeM.toString().padStart(2, '0'), " PM");
         }
 
-        return "Yesterday at ".concat(_timeH.toString() + ":" + _timeM.padStart(2, '0'), " AM");
+        return "Yesterday at ".concat(_timeH.toString() + ":" + _timeM.toString().padStart(2, '0'), " AM");
       } else {
         return "".concat(msgM, "/").concat(msgD.toString().padStart(2, '0'), "/").concat(msgY);
       }
@@ -1374,15 +1427,22 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "generateTimeStampRepeat",
     value: function generateTimeStampRepeat(date) {
-      var timeH = parseInt(date.slice(11, 13));
-      var timeM = date.slice(14, 16);
+      var dateObj = new Date();
+      var offset = dateObj.getTimezoneOffset() / 60;
+      var timeH = dateObj.getHours();
+      var timeM = dateObj.getMinutes();
+
+      if (date) {
+        timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24;
+        timeM = date.slice(14, 16);
+      }
 
       if (timeH > 12) {
         timeH -= 12;
-        return "".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " PM");
+        return "".concat(timeH.toString(), ":").concat(timeM.toString().padStart(2, '0'), " PM");
       }
 
-      return "".concat(timeH.toString(), ":").concat(timeM.padStart(2, '0'), " AM");
+      return "".concat(timeH.toString(), ":").concat(timeM.toString().padStart(2, '0'), " AM");
     }
   }, {
     key: "render",
@@ -1397,7 +1457,6 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
 
       if (thisServer) {
         serverMembers = thisServer.members;
-        console.log(serverMembers);
       }
 
       var messageListItems = [];
@@ -1419,12 +1478,61 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
           thisColor = colors[author.id % colors.length];
         }
 
+        if (i == 0) {
+          var date = new Date();
+
+          if (message.created_at) {
+            date = new Date(message.created_at);
+          }
+
+          messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "date-divider"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "line"
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _this2.monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear())));
+        }
+
         if (i >= 1) {
-          var prevDate = _this2.props.channelMessages[i - 1];
+          var prevDay = new Date().getDay();
+
+          if (_this2.props.channelMessages[i - 1].created_at) {
+            prevDay = _this2.props.channelMessages[i - 1].created_at.slice(8, 10);
+          }
+
+          var msgD = new Date().getDate();
+
+          if (message.created_at) {
+            msgD = parseInt(message.created_at.slice(8, 10));
+          }
+
+          if (msgD != prevDay) {
+            var _date = new Date();
+
+            if (message.created_at) {
+              _date = new Date(message.created_at);
+            }
+
+            messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "date-divider"
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "line"
+            }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _this2.monthNames[_date.getMonth()] + " " + _date.getDate() + ", " + _date.getFullYear())));
+          }
         }
 
         if (i >= 1 && _this2.props.channelMessages[i - 1].author_id === message.author_id) {
-          console.log("repeat");
+          var _prevDay = new Date().getDate();
+
+          if (_this2.props.channelMessages[i - 1].created_at) {
+            _prevDay = _this2.props.channelMessages[i - 1].created_at.slice(8, 10);
+          }
+
+          var msgD = new Date().getDate();
+
+          if (message.created_at) {
+            msgD = parseInt(message.created_at.slice(8, 10));
+          }
+
           messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
             className: "repeat",
             key: message.id
@@ -3109,7 +3217,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_popup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-popup */ "./node_modules/react-popup/dist/index.js");
-/* harmony import */ var _current_user_info__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./current_user_info */ "./frontend/components/mainpage/servers/current_user_info.jsx");
+/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../actions/session_actions */ "./frontend/actions/session_actions.js");
+/* harmony import */ var _current_user_info__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./current_user_info */ "./frontend/components/mainpage/servers/current_user_info.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3136,6 +3245,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var ProfilePage = /*#__PURE__*/function (_React$Component) {
   _inherits(ProfilePage, _React$Component);
 
@@ -3148,6 +3258,17 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.unfinished = _this.unfinished.bind(_assertThisInitialized(_this));
+    _this.clickTab = _this.clickTab.bind(_assertThisInitialized(_this));
+    _this.onChangeName = _this.onChangeName.bind(_assertThisInitialized(_this));
+    _this.onAddFriendSubmit = _this.onAddFriendSubmit.bind(_assertThisInitialized(_this));
+    _this.acceptFriendRequest = _this.acceptFriendRequest.bind(_assertThisInitialized(_this));
+    _this.removeFriend = _this.removeFriend.bind(_assertThisInitialized(_this));
+    _this.state = {
+      selectedTab: 1,
+      addFriendName: "",
+      errored: true,
+      headerText: "You can add a friend with their discord tag. It's cAsE sEnSitIvE!"
+    };
     return _this;
   }
 
@@ -3158,8 +3279,205 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
       react_popup__WEBPACK_IMPORTED_MODULE_1__.default.alert("Functionality not yet added");
     }
   }, {
+    key: "clickTab",
+    value: function clickTab(num) {
+      var _this2 = this;
+
+      return function (e) {
+        e.preventDefault();
+
+        _this2.setState({
+          selectedTab: num
+        });
+      };
+    }
+  }, {
+    key: "onChangeName",
+    value: function onChangeName(e) {
+      e.preventDefault();
+      this.setState({
+        addFriendName: e.currentTarget.value
+      });
+    }
+  }, {
+    key: "onAddFriendSubmit",
+    value: function onAddFriendSubmit(e) {
+      var _this3 = this;
+
+      e.preventDefault();
+
+      if (this.state.addFriendName == "") {
+        return;
+      }
+
+      var hashIdx = this.state.addFriendName.indexOf('#');
+
+      if (hashIdx == -1) {
+        this.setState({
+          headerText: "We need ".concat(this.state.addFriendName, "'s id after the # so we know which one they are")
+        });
+        return;
+      }
+
+      var id = parseInt(this.state.addFriendName.slice(hashIdx + 1));
+      this.props.addFriend(this.state.addFriendName).then(function () {
+        _this3.setState({
+          addFriendName: ""
+        });
+      }, function () {
+        var current = _this3.state.addFriendName;
+
+        _this3.setState({
+          headerText: "Hm, didn't work. Double check that the capitalization, spelling, any spaces, and numbers are correct."
+        });
+      });
+    }
+  }, {
+    key: "acceptFriendRequest",
+    value: function acceptFriendRequest(e) {
+      e.preventDefault();
+      console.log(e.currentTarget.id);
+      this.props.acceptFriend(e.currentTarget.id);
+    }
+  }, {
+    key: "removeFriend",
+    value: function removeFriend(e) {
+      e.preventDefault();
+      console.log(e.currentTarget.id);
+      this.props.removeFriend(e.currentTarget.id);
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this4 = this;
+
+      var colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"];
+      var infoItemClass = ["info-item", "info-item", "info-item", "info-item", "info-item add-friend"];
+      infoItemClass[this.state.selectedTab] += " selected";
+      var friendItems = [];
+      var pendingFriends = [];
+      var option = "";
+      this.props.currentUser.friends.sort(function (f1, f2) {
+        if (f1.username < f2.username) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }).forEach(function (friend, i) {
+        var thisColor = colors[friend.id % colors.length];
+
+        var pendingAdded = _this4.props.currentUser.friendships_added.filter(function (friendship) {
+          return friendship.accepted == false;
+        }).map(function (friendship) {
+          return friendship.friendee_id;
+        });
+
+        var pendingAccepted = _this4.props.currentUser.friendships_accepted.filter(function (friendship) {
+          return friendship.accepted == false;
+        }).map(function (friendship) {
+          return friendship.friender_id;
+        });
+
+        if (pendingAdded.concat(pendingAccepted).includes(friend.id)) {
+          if (pendingAdded.includes(friend.id)) {
+            var fsId = _this4.props.currentUser.friendships_added.find(function (fs) {
+              return fs.friendee_id == friend.id;
+            }).id;
+
+            option = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "options"
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "x",
+              id: fsId,
+              onClick: _this4.removeFriend
+            }, "\u2715"));
+          } else {
+            var _fsId = _this4.props.currentUser.friendships_accepted.find(function (fs) {
+              return fs.friender_id == friend.id;
+            }).id;
+
+            console.log(_fsId);
+            option = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "options"
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "check",
+              id: _fsId,
+              onClick: _this4.acceptFriendRequest
+            }, "\u2713"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+              className: "x",
+              id: _fsId,
+              onClick: _this4.removeFriend
+            }, "\u2715"));
+          }
+
+          pendingFriends.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+            key: friend.id,
+            className: "pending"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "user-list-pic",
+            style: {
+              backgroundColor: "".concat(thisColor)
+            }
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+            className: "default-profile-pic",
+            src: window.whiteDatcordRobot,
+            alt: ""
+          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "friend-info"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, friend.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Online/Offline")), option));
+        } else {
+          friendItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
+            key: friend.id
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "user-list-pic",
+            style: {
+              backgroundColor: "".concat(thisColor)
+            }
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+            className: "default-profile-pic",
+            src: window.whiteDatcordRobot,
+            alt: ""
+          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "friend-info"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, friend.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Online/Offline"))));
+        }
+      });
+      var currentItems = "";
+      var friendListHeader = "";
+      var buttonClass = this.state.addFriendName == "" ? "disabled" : "";
+      var h3Class = this.state.headerText == "You can add a friend with their discord tag. It's cAsE sEnSitIvE!" ? "" : "errored";
+
+      if (this.state.selectedTab == 1) {
+        currentItems = friendItems;
+        friendListHeader = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "ALL FRIENDS \u2014\u2014 ", friendItems.length);
+      } else if (this.state.selectedTab == 2) {
+        currentItems = pendingFriends;
+        friendListHeader = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "PENDING \u2014\u2014 ", pendingFriends.length);
+      } else if (this.state.selectedTab == 4) {
+        currentItems = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "add-friend-container"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+          className: "add-header"
+        }, "ADD FRIEND"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", {
+          className: h3Class
+        }, this.state.headerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "input-container"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+          type: "text",
+          placeholder: "Enter a Username#0000",
+          onChange: this.onChangeName,
+          value: this.state.addFriendName
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+          className: buttonClass,
+          onClick: this.onAddFriendSubmit
+        }, "Send Friend Request")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "wumpus-container"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+          src: window.wumpus,
+          alt: ""
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Wumpus is waiting on friends. You don't have to though!")));
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3200,7 +3518,7 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("polygon", {
         fill: "#b9bbbe",
         points: "15 10 10 10 10 15 8 15 8 10 3 10 3 8 8 8 8 3 10 3 10 8 15 8"
-      }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_current_user_info__WEBPACK_IMPORTED_MODULE_2__.default, {
+      }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_current_user_info__WEBPACK_IMPORTED_MODULE_3__.default, {
         openUserSettings: this.props.openUserSettings,
         muted: this.props.muted,
         deafened: this.props.deafened,
@@ -3225,18 +3543,20 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Friends")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "divider"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "info-item",
+        className: infoItemClass[0],
         onClick: this.unfinished
       }, "Online"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "info-item selected"
+        className: infoItemClass[1],
+        onClick: this.clickTab(1)
       }, "All"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "info-item",
-        onClick: this.unfinished
+        className: infoItemClass[2],
+        onClick: this.clickTab(2)
       }, "Pending"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "info-item",
+        className: infoItemClass[3],
         onClick: this.unfinished
       }, "Blocked"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "info-item add-friend"
+        className: infoItemClass[4],
+        onClick: this.clickTab(4)
       }, "Add Friend")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "other-options"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
@@ -3266,10 +3586,12 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
         fill: "#b9bbbe",
         d: "M12 2C6.486 2 2 6.487 2 12C2 17.515 6.486 22 12 22C17.514 22 22 17.515 22 12C22 6.487 17.514 2 12 2ZM12 18.25C11.31 18.25 10.75 17.691 10.75 17C10.75 16.31 11.31 15.75 12 15.75C12.69 15.75 13.25 16.31 13.25 17C13.25 17.691 12.69 18.25 12 18.25ZM13 13.875V15H11V12H12C13.104 12 14 11.103 14 10C14 8.896 13.104 8 12 8C10.896 8 10 8.896 10 10H8C8 7.795 9.795 6 12 6C14.205 6 16 7.795 16 10C16 11.861 14.723 13.429 13 13.875Z"
       })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "messages-users-div"
+        className: "messages-users-div profile"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "messaging-div"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "ALL FRIENDS \u2014\u2014 ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "messaging-div profile"
+      }, friendListHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", {
+        className: "friends-list"
+      }, currentItems)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "server-members-nav"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
         className: "members-header"
@@ -3408,7 +3730,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
         channelId: channelId
       }, {
         received: function received(data) {
-          console.log("here"); // this.getResponseMessage(data)
+          console.log("here");
 
           _this2.getResponseMessage(data);
         },
@@ -3646,13 +3968,16 @@ var Server = /*#__PURE__*/function (_React$Component) {
     value: function getResponseMessage(data) {
       var _this9 = this;
 
+      console.log(this.props.currentUser.id);
+      console.log(data.message);
+
       if (this.props.currentUser.id !== data.message.author_id) {
+        console.log(data);
         this.props.receiveChannelMessage({
           message: data
         });
       }
 
-      console.log(this.props.match.params.channel_id);
       this.props.fetchChannelMessages(this.props.channels.find(function (channel) {
         return channel.id == _this9.props.match.params.channel_id;
       }).id);
@@ -3807,7 +4132,11 @@ var Server = /*#__PURE__*/function (_React$Component) {
         deafened: this.state.deafened,
         currentUser: this.props.currentUser,
         toggleDeafen: this.toggleDeafen,
-        toggleMute: this.toggleMute
+        toggleMute: this.toggleMute,
+        addFriend: this.props.addFriend,
+        removeFriend: this.props.removeFriend,
+        acceptFriend: this.props.acceptFriend,
+        errors: this.props.errors
       });
       var currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3922,6 +4251,15 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     receiveChannelMessage: function receiveChannelMessage(channelMessage) {
       return dispatch((0,_actions_channel_message_actions__WEBPACK_IMPORTED_MODULE_5__.receiveChannelMessage)(channelMessage));
+    },
+    addFriend: function addFriend(friendee_id) {
+      return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.addFriend)(friendee_id));
+    },
+    removeFriend: function removeFriend(friend_id) {
+      return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.removeFriend)(friend_id));
+    },
+    acceptFriend: function acceptFriend(friendship_id) {
+      return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.acceptFriend)(friendship_id));
     }
   };
 };
@@ -4741,10 +5079,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ SessionForm)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _util_login_canvas__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/login_canvas */ "./frontend/util/login_canvas.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _util_login_canvas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../util/login_canvas */ "./frontend/util/login_canvas.js");
 /* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
+/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -4848,7 +5186,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         email: "demouser@datcord.com",
         password: "password123"
       }).then(function (action) {
-        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.RECEIVE_CURRENT_USER) {
+        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_4__.RECEIVE_CURRENT_USER) {
           _this3.props.history.push("/channels/@me/".concat(action.currentUser.id));
         }
       });
@@ -4882,7 +5220,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }
 
       this.props.processForm(formattedState).then(function (action) {
-        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_2__.RECEIVE_CURRENT_USER) {
+        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_4__.RECEIVE_CURRENT_USER) {
           _this4.props.history.push("/channels/@me/".concat(action.currentUser.id));
         }
       });
@@ -5088,12 +5426,12 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       var subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
       var otherOption = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
         onClick: this.transitionOut,
         to: "/signup"
       }, "Register")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
         onClick: this.transitionOut,
         to: "/login"
       }, "Already have an account?"));
@@ -5119,7 +5457,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Log in with demo account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Click the barcode to log in with a demo account"))) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "login-signup-page"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_1__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_2__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
         href: "/"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "logo",
@@ -6090,10 +6428,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "signup": () => (/* binding */ signup),
 /* harmony export */   "login": () => (/* binding */ login),
-/* harmony export */   "logout": () => (/* binding */ logout)
+/* harmony export */   "logout": () => (/* binding */ logout),
+/* harmony export */   "addFriend": () => (/* binding */ addFriend),
+/* harmony export */   "acceptFriend": () => (/* binding */ acceptFriend),
+/* harmony export */   "removeFriend": () => (/* binding */ removeFriend)
 /* harmony export */ });
 var signup = function signup(user) {
-  console.log(user);
   return $.ajax({
     method: 'POST',
     url: '/api/users',
@@ -6115,6 +6455,33 @@ var logout = function logout() {
   return $.ajax({
     method: 'DELETE',
     url: '/api/session'
+  });
+};
+var addFriend = function addFriend(friendee_id) {
+  return $.ajax({
+    method: 'POST',
+    url: '/api/users/add',
+    data: {
+      friendee_id: friendee_id
+    }
+  });
+};
+var acceptFriend = function acceptFriend(friendship_id) {
+  return $.ajax({
+    method: 'PATCH',
+    url: '/api/users/accept',
+    data: {
+      friendship_id: friendship_id
+    }
+  });
+};
+var removeFriend = function removeFriend(friend_id) {
+  return $.ajax({
+    method: 'DELETE',
+    url: '/api/users',
+    data: {
+      friend_id: friend_id
+    }
   });
 };
 

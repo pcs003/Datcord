@@ -14,6 +14,10 @@ Rails.application.routes.draw do
 
     post 'servers/join', to: 'servers#join'
     delete 'servers', to: 'servers#leave'
+
+    post 'users/add', to: 'users#add_friend'
+    patch 'users/accept', to: 'users#accept_friend'
+    delete 'users', to: 'users#remove_friend'
   end
 
   mount ActionCable.server => '/cable'

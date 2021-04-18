@@ -62,7 +62,6 @@ export default class Server extends React.Component {
             {
                 received: data => {
                     console.log("here")
-                    // this.getResponseMessage(data)
                     this.getResponseMessage(data)
                 },
                 speak: function(data) {
@@ -279,11 +278,12 @@ export default class Server extends React.Component {
     }
 
     getResponseMessage(data) {
+        console.log(this.props.currentUser.id)
+        console.log(data.message)
         if (this.props.currentUser.id !== data.message.author_id) {
-
+            console.log(data)
             this.props.receiveChannelMessage({message: data})
         }
-        console.log(this.props.match.params.channel_id)
         this.props.fetchChannelMessages(this.props.channels.find(channel => {
             return channel.id == this.props.match.params.channel_id
             
@@ -376,6 +376,10 @@ export default class Server extends React.Component {
                 currentUser={this.props.currentUser} 
                 toggleDeafen={this.toggleDeafen} 
                 toggleMute={this.toggleMute}
+                addFriend={this.props.addFriend}
+                removeFriend={this.props.removeFriend}
+                acceptFriend={this.props.acceptFriend}
+                errors={this.props.errors}
             />
         )
 

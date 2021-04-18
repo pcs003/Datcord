@@ -26,6 +26,22 @@ class User < ApplicationRecord
         foreign_key: :author_id,
         class_name: :ChannelMessage
 
+    has_many :friendships_added,
+        foreign_key: :friender_id,
+        class_name: :Friendship
+    
+    has_many :friendships_accepted,
+        foreign_key: :friendee_id,
+        class_name: :Friendship
+
+    has_many :friends_added,
+        through: :friendships_added,
+        source: :friendee
+
+    has_many :friends_accepted,
+        through: :friendships_accepted,
+        source: :friender
+
 
     attr_reader :password
 

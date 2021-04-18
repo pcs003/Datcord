@@ -11,11 +11,13 @@ Server.destroy_all
 ServerMember.destroy_all
 Channel.destroy_all
 ChannelMessage.destroy_all
+Friendship.destroy_all
 ApplicationRecord.connection.reset_pk_sequence!('users')
 ApplicationRecord.connection.reset_pk_sequence!('servers')
 ApplicationRecord.connection.reset_pk_sequence!('server_members')
 ApplicationRecord.connection.reset_pk_sequence!('channels')
 ApplicationRecord.connection.reset_pk_sequence!('channel_messages')
+ApplicationRecord.connection.reset_pk_sequence!('friendships')
 
 u1 = User.create!({email:"demouser@datcord.com", username: "DemoUser", password: "password123", birthdate: "1/1/2000"})
 u2 = User.create!({email:"testuser01@test.com", username: "John Cena", password: "password123", birthdate: "2/2/2002"})
@@ -24,6 +26,12 @@ u4 = User.create!({email:"testuser03@test.com", username: "Elon Musk", password:
 u5 = User.create!({email:"testuser04@test.com", username: "Gordon Hayward", password: "password123", birthdate: "5/5/2005"})
 u6 = User.create!({email:"testuser05@test.com", username: "Lebron James", password: "password123", birthdate: "6/6/2006"})
 u7 = User.create!({email:"testuser06@test.com", username: "Faker", password: "password123", birthdate: "7/7/2007"})
+
+f1 = Friendship.create!({friender_id: 1, friendee_id: 7, accepted: true});
+f2 = Friendship.create!({friender_id: 1, friendee_id: 6, accepted: true});
+f3 = Friendship.create!({friender_id: 1, friendee_id: 4, accepted: false});
+f4 = Friendship.create!({friender_id: 2, friendee_id: 1, accepted: true});
+f5 = Friendship.create!({friender_id: 5, friendee_id: 1, accepted: true});
 
 s1 = Server.create!({name:"Coder Compadres", owner_id: 1})
 s2 = Server.create!({name:"Gamer Gang", owner_id: 7})

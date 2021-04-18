@@ -1,6 +1,6 @@
 import { connect } from "react-redux"
 import { createServer, updateServer, fetchServers, fetchServer, joinServer, leaveServer, deleteServer } from "../../../actions/server_actions"
-import { logout } from "../../../actions/session_actions"
+import { acceptFriend, addFriend, logout, removeFriend } from "../../../actions/session_actions"
 import Server from "./server"
 import { createChannel, deleteChannel, fetchChannel, fetchChannels, updateChannel } from '../../../actions/channel_actions'
 import { fetchChannelMessages, receiveChannelMessage } from "../../../actions/channel_message_actions"
@@ -36,7 +36,10 @@ const mapDispatchToProps = dispatch => {
         updateChannel: channel => dispatch(updateChannel(channel)),
         fetchChannel: channelId => dispatch(fetchChannel(channelId)),
         fetchChannelMessages: channelId => dispatch(fetchChannelMessages(channelId)),
-        receiveChannelMessage: channelMessage => dispatch(receiveChannelMessage(channelMessage))
+        receiveChannelMessage: channelMessage => dispatch(receiveChannelMessage(channelMessage)),
+        addFriend: friendee_id => dispatch(addFriend(friendee_id)),
+        removeFriend: friend_id => dispatch(removeFriend(friend_id)),
+        acceptFriend: friendship_id => dispatch(acceptFriend(friendship_id))
     }
 }
 

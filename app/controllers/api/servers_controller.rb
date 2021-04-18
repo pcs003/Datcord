@@ -41,7 +41,6 @@ class Api::ServersController < ApplicationController
     end
 
     def join
-        puts "---------------#{params}"
         @server = Server.find_by(invite_code: params[:inviteCode])
     
         if @server

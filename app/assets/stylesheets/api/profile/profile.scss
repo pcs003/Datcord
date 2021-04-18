@@ -193,6 +193,11 @@
                     padding-bottom: 0;
                     margin: auto 8px;
                 }
+
+                .add-friend.selected {
+                    color: rgb(67, 181, 129);
+                    background-color: rgba(67, 181, 129, 0.2);
+                }
             }
 
             .other-options {
@@ -225,16 +230,269 @@
             
         }
 
-        .messages-users-div {
-         
-            .messaging-div {
+        .messages-users-div.profile {
+            background-color: rgb(54,57,63);
+            .messaging-div.profile {
+                overflow-y: scroll;
+                overflow-x: hidden;
+                height: auto;
+                max-height: Calc(100% - 55px);
                 h2 {
                     margin: 16px 20px 8px 30px;
                     color: #b9bbbe;
                     font-size: 11px;
                     font-weight: 800;
                 }
+
+                
+
+                .friends-list {
+
+                    li {
+                        box-sizing: border-box;
+                        min-width:100%;
+                        height: 60px;
+                        display: flex;
+                        align-items: center;
+                        margin: 0 20px 0 20px;
+                        padding: 0 8px;
+                        cursor:pointer;
+                        border-radius: 4px;
+                        border-top: 1px solid hsla(0,0%,100%,0.06);
+        
+                        .user-list-pic {
+                            width:32px;
+                            height: 32px;
+                            border-radius: 20px;
+                            display: flex;
+                            cursor:pointer;
+                            margin: auto 0;
+        
+                            img.default-profile-pic {
+                                width: 100%;
+                                height: 110%;
+                                margin: 1px auto 0 auto;
+                                cursor:pointer;
+                            }
+                        }
+                        
+                        .friend-info {
+                            display: flex;
+                            flex-direction: column;
+                            margin: auto 0;
+                            h2 {
+                                cursor:pointer;
+                                margin-left: 10px;
+                                margin-bottom: 0;
+                                margin-top: 0;
+                                color:#ffffff;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                font-size: 16px;
+                                font-weight: 700;
+                            }
+
+                            h3 {
+                                cursor:pointer;
+                                margin-left: 10px;
+                                color:#b9bbbe;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                font-size: 14px;
+                                font-weight: 500;
+                                margin-top:5px;
+                            }
+                        }
+                        
+                    }
+                    li:hover {
+                        background-color: rgba(79,84,92,0.16);
+        
+                        h2 {
+                            color: #dcddde;
+                        }
+                    }
+
+                    li.pending {
+                        position: relative;
+                        .options {
+                            display: flex;
+                            position: absolute;
+                            right: 50px;
+                            cursor: pointer;
+
+                            .x {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                min-width: 36px;
+                                min-height: 36px;
+                                border-radius: 18px;
+                                background-color: #2f3136;
+                                color: #b9bbbe;
+                                font-weight: 900;
+                                font-size: 16px;
+                                transition: 0.17s;
+                                cursor: pointer
+                            }
+
+                            .x:hover {
+                                background-color: rgb(32,34,37);
+                                color: #f04747;
+                                transition: 0.17s;
+                            }
+
+                            .check {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                min-width: 36px;
+                                min-height: 36px;
+                                border-radius: 18px;
+                                background-color: #2f3136;
+                                color: #b9bbbe;
+                                font-weight: 900;
+                                font-size: 16px;
+                                transition: 0.17s;
+                                cursor: pointer;
+                                margin-right: 8px;
+                            }
+
+                            .check:hover {
+                                background-color: rgb(32,34,37);
+                                color: rgb(11, 224, 11);
+                                transition: 0.17s;
+                            }
+                        }
+                    }
+                    
+                    .add-friend-container {
+                        box-sizing: border-box;
+                        display: flex;
+                        flex-direction: column;
+                        padding: 8px 20px 8px 30px;
+                        h2.add-header {
+                            margin: 9px 0px;
+                            font-size: 16px;
+                            font-weight: 900;
+                            color: white;
+                        }
+
+                        h3 {
+                            color: #dcddde;
+                            font-size: 13.5px;
+                            margin: 5px 0;
+                            font-weight: 400;
+                        }
+
+                        h3.errored {
+                            color: #f04747;
+                        }
+
+                        .input-container {
+                            display: flex;
+                            align-items: center;
+                            position: relative;
+                            height: 52px;
+                            margin: 13px 0; 
+                            padding: 0 16px;
+                            border-radius: 8px;
+                            border: 1px solid rgba(0,0,0,0.3);
+                            background-color: rgba(0,0,0,0.1);
+
+                            input[type="text"] {
+                                font-size: 16px;
+                                font-weight: 500;
+                                letter-spacing: .04em;
+                                white-space: pre;
+                                background-color: transparent;
+                                color: #dcddde;
+                                padding: 0;
+                                border: none;
+                                margin-right: 16px;
+                                line-height: 52px;
+                                flex: 1;
+                            }
+
+                            input[type="text"]:focus {
+                                border: none;
+                                outline: none;
+                            }
+
+                            button {
+                                display: flex;
+                                text-align: center;
+                                align-items: center;
+                                border:none;
+                                background-color: #7289da;
+                                color: white;
+                                width: auto;
+                                height: 32px;
+                                min-width: 60px;
+                                min-height: 32px;
+                                box-sizing: border-box;
+                                cursor: pointer;
+                                border: none;
+                                border-radius: 3px;
+                                font-size: 14px;
+                                font-weight: 500;
+                                line-height: 16px;
+                                padding: 2px 16px;
+                            }
+
+                            button:hover {
+                                background-color: #677bc4;;
+                            }
+
+                            button.disabled {
+                                cursor:not-allowed;
+                                opacity: 0.5;
+                            }
+
+                        }
+
+                        .wumpus-container {
+                            display: flex;
+                            justify-content: center;
+                            flex-direction: column;
+                            align-items: center;
+                            margin-top: 15%;
+
+                            h3 {
+                                margin-top: 60px;
+                                font-size: 16px;
+                                color: #72767d;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+
+                }
+
+                
             }
+
+            .messaging-div.profile::-webkit-scrollbar {
+                width: 16px;
+                height: 16px;
+                display: block;
+            }
+
+            .messaging-div.profile::-webkit-scrollbar-corner {
+                background-color: transparent;
+            }
+
+            .messaging-div.profile::-webkit-scrollbar-thumb {
+                background-color: #202225;
+                min-height: 40px;
+            }
+
+            .messaging-div.profile::-webkit-scrollbar-thumb, ::-webkit-scrollbar-track {
+                border: 4px solid transparent;
+                background-clip: padding-box;
+                border-radius: 8px;
+            }
+            
 
             .server-members-nav {
                 min-width:  360px;
