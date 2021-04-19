@@ -120,7 +120,7 @@ export default class ProfilePage extends React.Component {
                     }).id
                     option = (
                         <div className="options">
-                            <div className="x" id={fsId} onClick={this.removeFriend}>&#x2715;</div>
+                            <div className="x" id={fsId} onClick={this.removeFriend}>&#x2715;<span>Cancel</span></div>
                         </div>
                     )
                 } else {
@@ -130,8 +130,8 @@ export default class ProfilePage extends React.Component {
                     console.log(fsId)
                     option = (
                         <div className="options">
-                            <div className="check" id={fsId} onClick={this.acceptFriendRequest}>&#x2713;</div>
-                            <div className="x" id={fsId} onClick={this.removeFriend}>&#x2715;</div>
+                            <div className="check" id={fsId} onClick={this.acceptFriendRequest}>&#x2713;<span>Accept</span></div>
+                            <div className="x" id={fsId} onClick={this.removeFriend}>&#x2715;<span>Reject</span></div>
                         </div>
                     )
                 }

@@ -3390,7 +3390,7 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
               className: "x",
               id: fsId,
               onClick: _this4.removeFriend
-            }, "\u2715"));
+            }, "\u2715", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Cancel")));
           } else {
             var _fsId = _this4.props.currentUser.friendships_accepted.find(function (fs) {
               return fs.friender_id == friend.id;
@@ -3403,11 +3403,11 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
               className: "check",
               id: _fsId,
               onClick: _this4.acceptFriendRequest
-            }, "\u2713"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            }, "\u2713", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Accept")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
               className: "x",
               id: _fsId,
               onClick: _this4.removeFriend
-            }, "\u2715"));
+            }, "\u2715", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Reject")));
           }
 
           pendingFriends.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
