@@ -30,6 +30,7 @@
                 border-radius: 4px;
                 padding: 4px;
                 position: relative;
+                cursor: pointer;
 
                 .current-user-pic {
                     min-width: 40px;
@@ -40,6 +41,7 @@
                     display: flex;
                     margin-left: 10px;
                     margin-right: 10px;
+                    cursor: pointer;
         
                     img.default-profile-pic {
                         width: 100%;
@@ -52,20 +54,26 @@
                 .message-info {
                     display: flex;
                     flex-direction: column;
-                    
+                    cursor: pointer;
 
                     h2 {
                         color: white;
                         font-size: 16px;
                         font-weight: 600;
                         margin-bottom: 8px;
+                        cursor: pointer;
 
                         span.timestamp {
                             font-size: 0.75rem;
                             line-height: 1.375rem;
                             color: #72767d;
                             margin-left: 4px;
+                            cursor: pointer;
                         }
+                    }
+
+                    h3 {
+                        cursor: pointer;
                     }
                 }
             }

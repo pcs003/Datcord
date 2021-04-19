@@ -7,7 +7,6 @@ class Api::ChannelMessagesController < ApplicationController
     end
 
     def create
-        puts "creating"
         @message = ChannelMessage.new(message_params)
         if @message.save
             render 'api/channel_messages/show'
@@ -30,7 +29,7 @@ class Api::ChannelMessagesController < ApplicationController
         if @message
             @message.destroy
         else
-            render json: ["Can't delete another user's mesage"], status: 422
+            render json: ["Can't delete another user's message"], status: 422
         end
     end
 

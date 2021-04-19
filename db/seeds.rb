@@ -12,12 +12,14 @@ ServerMember.destroy_all
 Channel.destroy_all
 ChannelMessage.destroy_all
 Friendship.destroy_all
+PrivateMessage.destroy_all
 ApplicationRecord.connection.reset_pk_sequence!('users')
 ApplicationRecord.connection.reset_pk_sequence!('servers')
 ApplicationRecord.connection.reset_pk_sequence!('server_members')
 ApplicationRecord.connection.reset_pk_sequence!('channels')
 ApplicationRecord.connection.reset_pk_sequence!('channel_messages')
 ApplicationRecord.connection.reset_pk_sequence!('friendships')
+ApplicationRecord.connection.reset_pk_sequence!('private_messages')
 
 u1 = User.create!({email:"demouser@datcord.com", username: "DemoUser", password: "password123", birthdate: "1/1/2000"})
 u2 = User.create!({email:"testuser01@test.com", username: "John Cena", password: "password123", birthdate: "2/2/2002"})
@@ -102,4 +104,5 @@ cm7 = ChannelMessage.create!({body:"I play League", author_id:5, channel_id:8})
 cm8 = ChannelMessage.create!({body:"same", author_id:7, channel_id:8})
 
 
-
+pm1 = PrivateMessage.create!({body: "Hello Elongated Tusk", sender_id:1, recipient_id:4})
+pm2 = PrivateMessage.create!({body: "...why", sender_id:4, recipient_id:1})
