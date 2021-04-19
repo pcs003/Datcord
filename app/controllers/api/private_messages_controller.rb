@@ -4,7 +4,7 @@ class Api::PrivateMessagesController < ApplicationController
         @all_messages = @user.sent_pms + @user.received_pms
         @messages = @all_messages.select {|msg| msg.recipient_id == params[:recipientId] || msg.sender_id == params[:recipientId]}
         
-        render json: @messages.to_json(include: :sender, :receiver)
+        render 'api/private_messages/index'
     end
 
     def create
