@@ -4,8 +4,9 @@ class PrivateMessagesChannel < ApplicationCable::Channel
   end
   
   def speak(data)
+    puts data
     socket = {message:{ body: data['body'], sender_id: data["senderId"], recipient_id: data["recipientId"] }}
-    PrivateMessagesChannel.broadcast_to('private_messages_channel', socket)
+    PrivateMessagesChannel.broadcast_to("private_messages_channel#{data["recipientId"]}", socket)
   end
   
   def unsubscribed; end

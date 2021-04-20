@@ -11,7 +11,7 @@ import DeleteChannel from './channels/delete_channel'
 import { AuthRoute, ProtectedRoute } from '../../../util/route_util';
 import ChannelSettings from './channels/channel_settings'
 import ChannelMessagesContainer from './channel_messages/channel_messages_container'
-import ProfilePage from './profile_page'
+import ProfilePage from './profile/profile_page'
 
 export default class Server extends React.Component {
     constructor(props) {
@@ -61,7 +61,6 @@ export default class Server extends React.Component {
             { channel: "ChannelMessagesChannel", channelId: channelId},
             {
                 received: data => {
-                    console.log("here")
                     this.getResponseMessage(data)
                 },
                 speak: function(data) {
@@ -70,6 +69,19 @@ export default class Server extends React.Component {
             }
         )
     }
+
+    getResponseMessage(data) {
+        if (this.props.currentUser.id !== data.message.author_id) {
+            this.props.receiveChannelMessage({message: data})
+        }
+        this.props.fetchChannelMessages(this.props.channels.find(channel => {
+            return channel.id == this.props.match.params.channel_id
+            
+        }).id)
+        
+    }
+
+    
 
     sortMembersByUsername(a, b) {
         if (a.username < b.username) {
@@ -277,20 +289,6 @@ export default class Server extends React.Component {
         }, 100);
     }
 
-    getResponseMessage(data) {
-        console.log(this.props.currentUser.id)
-        console.log(data.message)
-        if (this.props.currentUser.id !== data.message.author_id) {
-            console.log(data)
-            this.props.receiveChannelMessage({message: data})
-        }
-        this.props.fetchChannelMessages(this.props.channels.find(channel => {
-            return channel.id == this.props.match.params.channel_id
-            
-        }).id)
-        
-    }
-
     
     render() {
         let colors = ["#00C09A", "#008369", "#00D166", "#008E44", "#0099E1", "#006798", "#A652BB", "#7A2F8F", "#FD0061", "#BC0057", "#F8C300", "#CC7900", "#F93A2F", "#A62019", "#91A6A6", "#969C9F", "#596E8D", "#4E6F7B"]
@@ -380,6 +378,12 @@ export default class Server extends React.Component {
                 removeFriend={this.props.removeFriend}
                 acceptFriend={this.props.acceptFriend}
                 errors={this.props.errors}
+                fetchPrivateMessages={this.props.fetchPrivateMessages}
+                match={this.props.match}
+                history={this.props.history}
+                privateMessages={this.props.privateMessages}
+                createPrivateMessage={this.props.createPrivateMessage}
+                recievePrivateMessage={this.props.recievePrivateMessage}
             />
         )
 

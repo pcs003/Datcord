@@ -4,6 +4,7 @@ import { acceptFriend, addFriend, logout, removeFriend } from "../../../actions/
 import Server from "./server"
 import { createChannel, deleteChannel, fetchChannel, fetchChannels, updateChannel } from '../../../actions/channel_actions'
 import { fetchChannelMessages, receiveChannelMessage } from "../../../actions/channel_message_actions"
+import { createPrivateMessage, fetchPrivateMessages, receivePrivateMessage } from "../../../actions/private_message_actions"
 
 
 
@@ -15,7 +16,8 @@ const mapStateToProps = (state, ownProps) => {
         server: Object.values(state.entities.servers).find(server => {
             return server.id == ownProps.match.params.server_id
         }),
-        currentUser: state.entities.users[state.session.id]
+        currentUser: state.entities.users[state.session.id],
+        privateMessages: Object.values(state.entities.privateMessages)
     }
 }
 
@@ -39,7 +41,11 @@ const mapDispatchToProps = dispatch => {
         receiveChannelMessage: channelMessage => dispatch(receiveChannelMessage(channelMessage)),
         addFriend: friendee_id => dispatch(addFriend(friendee_id)),
         removeFriend: friend_id => dispatch(removeFriend(friend_id)),
-        acceptFriend: friendship_id => dispatch(acceptFriend(friendship_id))
+        acceptFriend: friendship_id => dispatch(acceptFriend(friendship_id)),
+        fetchPrivateMessages: recipientId => dispatch(fetchPrivateMessages(recipientId)),
+        receivePrivateMessage: privateMessage => dispatch(receivePrivateMessage(privateMessage)),
+        createPrivateMessage: privateMessage => dispatch(createPrivateMessage(privateMessage))
+        
     }
 }
 

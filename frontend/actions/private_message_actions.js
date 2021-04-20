@@ -32,9 +32,9 @@ export const clearPrivateMessageErrors = () => ({
 
 
 export const fetchPrivateMessages = recipientId => dispatch => (
-    PMApiUtil.fetchPrivateMessages(recipientId).then( privateMessages => (
-        dispatch(receiveAllPrivateMessages(privateMessages))
-    ), (e) => (
+    PMApiUtil.fetchPrivateMessages(recipientId).then( privateMessages => {
+        return dispatch(receiveAllPrivateMessages(privateMessages))
+    }, (e) => (
         dispatch(receivePrivateMessageErrors(e.responseJSON))
     ))
 )
@@ -47,18 +47,18 @@ export const createPrivateMessage = privateMessage => dispatch => (
     })
 )
 
-export const updateChannelMessage = channelMessage => dispatch => (
-    PMApiUtil.updateChannelMessage(channelMessage).then( channelMessage => (
-        dispatch(receiveChannelMessage(channelMessage))
+export const updatePrivateMessage = privateMessage => dispatch => (
+    PMApiUtil.updatePrivateMessage(privateMessage).then( privateMessage => (
+        dispatch(receivePrivateMessage(privateMessage))
     ), (e) => {
         dispatch(receiveChannelMessageErrors(e.responseJSON))
     })
 )
 
-export const deleteChannelMessage = channelMessageId => dispatch => (
-    PMApiUtil.deleteChannelMessage(channelMessageId).then( () => (
-        dispatch(removeChannelMessage(channelMessageId))
+export const deletePrivateMessage = privateMessageId => dispatch => (
+    PMApiUtil.deletePrivateMessage(privateMessageId).then( () => (
+        dispatch(removePrivateMessage(privateMessageId))
     ), (e) => (
-        dispatch(receiveChannelMessageErrors(e.responseJSON))
+        dispatch(receivePrivateMessageErrors(e.responseJSON))
     ))
 )

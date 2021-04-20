@@ -1,7 +1,10 @@
 import React from 'react'
 import Popup from 'react-popup'
-import { RECEIVE_CURRENT_USER } from '../../../actions/session_actions';
-import CurrentUserInfo from './current_user_info'
+import { Link } from 'react-router-dom'
+import { RECEIVE_CURRENT_USER } from '../../../../actions/session_actions';
+import CurrentUserInfo from '../current_user_info'
+import PrivateMessages from './private_messages';
+import PrivateMessageCreate from './private_message_create';
 
 export default class ProfilePage extends React.Component {
     constructor(props) {
@@ -13,18 +16,75 @@ export default class ProfilePage extends React.Component {
         this.onAddFriendSubmit = this.onAddFriendSubmit.bind(this)
         this.acceptFriendRequest = this.acceptFriendRequest.bind(this)
         this.removeFriend = this.removeFriend.bind(this)
+        this.togglePMCreateActive = this.togglePMCreateActive.bind(this)
+        this.conversations = this.conversations.bind(this)
+        this.clickPage = this.clickPage.bind(this)
+        this.getResponsePrivateMessage = this.getResponsePrivateMessage.bind(this)
 
+        let currentPage = "friends"
+        if (parseInt(this.props.match.params.channel_id) != this.props.currentUser.id) {
+            currentPage = parseInt(this.props.match.params.channel_id)
+        }
         this.state = {
             selectedTab: 1,
             addFriendName: "",
             errored: true,
-            headerText: "You can add a friend with their discord tag. It's cAsE sEnSitIvE!"
+            headerText: "You can add a friend with their discord tag. It's cAsE sEnSitIvE!",
+            page: currentPage,
+            pmCreateActive: false
         }
+
+        this.uniqUsers = {}
+    }
+
+    componentDidMount() {
+        this.conversations();
+
+        let recipientId = this.props.match.params.channel_id;
+        if (parseInt(recipientId) != this.props.currentUser.id) {
+            console.log("fetching")
+            this.props.fetchPrivateMessages(recipientId)
+        }
+        
+        console.log("cdm")
+        
+        App.cable.subscriptions.create(
+            { channel: "PrivateMessagesChannel", recipientId: recipientId},
+            {
+                received: data => {
+                    console.log("recieved")
+                    this.getResponsePrivateMessage(data)
+                },
+                speak: function(data) {
+                    console.log("speaking")
+                    return this.perform("speak", data)
+                }
+            }
+        )
+    }
+
+    getResponsePrivateMessage(data) {
+        console.log("here")
+        if (this.props.currentUser.id == data.message.recipient_id) {
+            this.props.receivePrivateMessage({message: data})
+        }
+        this.props.fetchPrivateMessages(data.message.recipient_id)
+        
     }
 
     unfinished(e) {
         e.preventDefault();
         Popup.alert("Functionality not yet added")
+    }
+
+    conversations() {
+        this.props.currentUser.friends.filter(friend => {
+            this.props.fetchPrivateMessages(friend.id).then(action => {
+                if (this.uniqUsers[friend.id] == undefined && Object.values(action.privateMessages).length > 0) {
+                    this.uniqUsers[friend.id] = friend
+                } 
+            })
+        })
     }
 
     clickTab(num) {
@@ -34,6 +94,23 @@ export default class ProfilePage extends React.Component {
                 selectedTab: num
             })
         }
+    }
+
+    clickPage(e) {
+        e.preventDefault();
+        if (e.currentTarget.id == 0) {
+            this.setState({
+                page: "friends"
+            })
+            this.props.history.push(`/channels/@me/${this.props.currentUser.id}`)
+        } else {
+            this.setState({
+                page: e.currentTarget.id
+            })
+            this.props.fetchPrivateMessages(e.currentTarget.id)
+            this.props.history.push(`/channels/@me/${e.currentTarget.id}`)
+        }
+
     }
 
     onChangeName(e) {
@@ -83,6 +160,26 @@ export default class ProfilePage extends React.Component {
         e.preventDefault();
         console.log(e.currentTarget.id)
         this.props.removeFriend(e.currentTarget.id)
+    }
+
+    togglePMCreateActive(e) {
+        e.preventDefault();
+        let current = this.state.pmCreateActive;
+        console.log(e.target)
+
+        if (current) {
+            if (e.target.id == "modal") {
+                this.setState({
+                    pmCreateActive: !current
+                })
+            }
+        } else {
+            this.setState({
+                pmCreateActive: !current
+            })
+        }
+        
+        
     }
 
     render() {
@@ -189,6 +286,58 @@ export default class ProfilePage extends React.Component {
                 </div>
             )
         }
+
+        let rightContent=""
+        if (this.state.page === "friends") {
+            rightContent = (
+                <div className="messages-users-div profile">
+                    <div className="messaging-div profile">
+                        {friendListHeader}
+                        <ul className="friends-list">
+                            {currentItems}
+                            
+                        </ul>
+                    </div>
+                    <div className="server-members-nav">
+                        <h2 className="members-header"></h2>
+                        
+                        <div className="user-list-item invis">
+                            <div className="user-list-pic" >
+                            </div>
+                            <h2></h2>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            rightContent = (
+                <PrivateMessages
+                    match={this.props.match}
+                    currentUser={this.props.currentUser}
+                    fetchPrivateMessages={this.props.fetchPrivateMessages}
+                    page={this.state.page}
+                    privateMessages={this.props.privateMessages}
+                    colors={colors}
+                    createPrivateMessage={this.props.createPrivateMessage}
+                    recievePrivateMessage={this.props.recievePrivateMessage}
+                />
+            )
+        }
+
+        let conversations = Object.values(this.uniqUsers).map(user => {
+            let thisColor = colors[user.id % colors.length];
+            let thisClass = parseInt(this.state.page) == user.id ? "conversations selected" : "conversations"
+            return (
+                <div id={user.id} className={thisClass} onClick={this.clickPage}>
+                    <div className="user-list-pic" style={{backgroundColor: `${thisColor}`}}>
+                        <img className="default-profile-pic" src={window.whiteDatcordRobot} alt=""/>
+                    </div>
+                    <h2>{user.username}</h2>
+                </div>
+            )
+        })
+
+        let friendsClass = this.state.page == "friends" ? "option friends selected" : "option friends"
         return (
             <div className="server-container">
                 <div className="server-channel-nav">
@@ -197,7 +346,7 @@ export default class ProfilePage extends React.Component {
                     </div>
                     <div className="channel-nav profile">
                         <div className="friends-nitro-select">
-                            <div className="option friends">
+                            <div className={friendsClass} id="0" onClick={this.clickPage}>
                                 <svg width="24" height="24" viewBox="0 0 24 24">
                                     <path fill="#ffffff" d="M0.5,0 L0.5,1.5 C0.5,5.65 2.71,9.28 6,11.3 L6,16 L21,16 L21,14 C21,11.34 15.67,10 13,10 C13,10 12.83,10 12.75,10 C8,10 4,6 4,1.5 L4,0 L0.5,0 Z M13,0 C10.790861,0 9,1.790861 9,4 C9,6.209139 10.790861,8 13,8 C15.209139,8 17,6.209139 17,4 C17,1.790861 15.209139,0 13,0 Z"></path>    
                                 </svg> 
@@ -213,10 +362,15 @@ export default class ProfilePage extends React.Component {
                         <div className="direct-messages-wrapper">
                             <h2>
                                 DIRECT MESSAGES
-                                <svg width="15" height="15" viewBox="0 0 16 16">
-                                    <polygon fill="#b9bbbe" points="15 10 10 10 10 15 8 15 8 10 3 10 3 8 8 8 8 3 10 3 10 8 15 8"></polygon>
-                                </svg> 
+                                <div className="svg-container" onClick={this.togglePMCreateActive}>
+                                    <svg width="15" height="15" viewBox="0 0 16 16">
+                                        <polygon fill="#b9bbbe" points="15 10 10 10 10 15 8 15 8 10 3 10 3 8 8 8 8 3 10 3 10 8 15 8"></polygon>
+                                    </svg> 
+                                    <span>Create DM</span>
+                                    
+                                </div>
                             </h2>
+                            {conversations}
                         </div>
                     </div>
                     <CurrentUserInfo openUserSettings={this.props.openUserSettings} muted={this.props.muted} deafened={this.props.deafened} currentUser={this.props.currentUser} toggleDeafen={this.props.toggleDeafen} toggleMute={this.props.toggleMute} />
@@ -261,25 +415,14 @@ export default class ProfilePage extends React.Component {
                             </svg> 
                         </div>
                     </div>            
-                    <div className="messages-users-div profile">
-                        <div className="messaging-div profile">
-                            {friendListHeader}
-                            <ul className="friends-list">
-                                {currentItems}
-                                
-                            </ul>
-                        </div>
-                        <div className="server-members-nav">
-                            <h2 className="members-header"></h2>
-                            
-                            <div className="user-list-item invis">
-                                <div className="user-list-pic" >
-                                </div>
-                                <h2></h2>
-                            </div>
-                        </div>
-                    </div>
+                    {rightContent}
                 </div>
+                <PrivateMessageCreate 
+                    currentUser={this.props.currentUser}
+                    colors={colors}
+                    pmCreateActive={this.state.pmCreateActive}
+                    togglePMCreateActive={this.togglePMCreateActive}
+                />
                 <Popup />
             </div>
         )

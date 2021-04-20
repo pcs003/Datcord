@@ -1,5 +1,6 @@
 import React from 'react'
 import ChannelMessageForm from './channel_message_form'
+import * as Util from '../../../../util/general_util'
 
 export default class ChannelMessages extends React.Component {
     constructor(props) {
@@ -13,9 +14,6 @@ export default class ChannelMessages extends React.Component {
 
 
         this.bottom = React.createRef();
-        this.generateTimeStamp = this.generateTimeStamp.bind(this)
-        this.generateTimeStampRepeat = this.generateTimeStampRepeat.bind(this)
-        this.monthDays = this.monthDays.bind(this)
     }
 
     componentDidUpdate() {
@@ -23,109 +21,6 @@ export default class ChannelMessages extends React.Component {
             this.bottom.current.scrollIntoView(false);
         }
         
-    }
-
-    monthDays(month) {
-        if ([1,3,5,7,8,10,12].includes(month)){
-            return 31;
-        } else if ([4,6,9,11].includes(month)) {
-            return 30;
-        } else {
-            return 28;
-        }
-    }
-
-    generateTimeStamp(date) {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        
-        let dateObj = new Date(date);
-
-        let offset = dateObj.getTimezoneOffset()/60;
-        console.log(offset)
-
-        var msgD = today.getDate()
-        var msgM = today.getMonth() + 1
-        var msgY = today.getFullYear();
-        if (date) {
-            var msgD = parseInt(date.slice(8,10))
-            var msgM = parseInt(date.slice(5,7))
-            var msgY = parseInt(date.slice(0,4))
-        }
-        console.log(date)
-        if (dateObj.getHours() - offset < 0) {
-            msgD--;
-            if (msgD == 0) {
-                msgM--;
-                if (msgM == 0) {
-                    msgY--;
-                    msgM = 12;
-                }
-                msgD = this.monthDays(msgM)
-            }
-        }
-
-        if (parseInt(dd) == msgD && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
-            let dateObj = new Date();
-            let timeH = parseInt(dateObj.getHours())
-            let timeM = dateObj.getMinutes()
-            if (date) {
-                timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24
-                timeM = date.slice(14, 16)
-            }
-            
-            
-            if (timeH >= 12) {
-                if (timeH > 12) {
-                    timeH -= 12;
-                }
-                return (`Today at ${timeH.toString()}:${timeM.toString().padStart(2, '0')} PM`)
-            }
-
-            if (timeH == 0) {
-                timeH = 12;
-            }
-            return (`Today at ${timeH.toString()}:${timeM.toString().padStart(2, '0')} AM`)
-        } else if (parseInt(dd) == msgD + 1 && parseInt(mm) == msgM && parseInt(yyyy) == msgY) {
-            let dateObj = new Date();
-            let timeH = parseInt(dateObj.getHours());
-            let timeM = dateObj.getMinutes();
-            if (date) {
-                timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24
-                timeM = date.slice(14, 16)
-            }
-            if (timeH > 12) {
-                timeH -= 12;
-                return (`Yesterday at ${timeH.toString() + ":" + timeM.toString().padStart(2, '0')} PM`)
-            }
-            return (`Yesterday at ${timeH.toString() + ":" + timeM.toString().padStart(2, '0')} AM`)
-        } else {
-            return (`${msgM}/${msgD.toString().padStart(2,'0')}/${msgY}`)
-        }
-
-        
-    }
-
-    generateTimeStampRepeat(date) {
-
-        let dateObj = new Date();
-        let offset = dateObj.getTimezoneOffset()/60;
-        
-        let timeH = dateObj.getHours();
-        let timeM = dateObj.getMinutes()
-        if (date) {
-            timeH = (parseInt(date.slice(11, 13)) + 24 - offset) % 24
-            timeM = date.slice(14, 16)
-        }
-
-        
-        if (timeH > 12) {
-            timeH -= 12;
-            return (`${timeH.toString()}:${timeM.toString().padStart(2, '0')} PM`)
-        }
-        return (`${timeH.toString()}:${timeM.toString().padStart(2, '0')} AM`)
     }
 
     render() {
@@ -173,7 +68,7 @@ export default class ChannelMessages extends React.Component {
                 messageListItems.push(
                     <div className="date-divider">
                         <div className="line"></div>
-                        <h2>{this.monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()}</h2>
+                        <h2>{this.monthNames[parseInt(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear()}</h2>
                     </div>
                 )
             }
@@ -223,7 +118,7 @@ export default class ChannelMessages extends React.Component {
                 messageListItems.push(
                     <li className="repeat" key={message.id} >
                         <div className="message-info">
-                            <span className="timestamp">{this.generateTimeStampRepeat(message.created_at)}</span>
+                            <span className="timestamp">{Util.generateTimeStampRepeat(message.created_at)}</span>
                             <h3>{message.body}</h3>
                         </div>
                     </li>
@@ -236,7 +131,7 @@ export default class ChannelMessages extends React.Component {
                             <img className="default-profile-pic" src={window.whiteDatcordRobot} alt=""/>
                         </div>
                         <div className="message-info">
-                            <h2>{authorName} <span className="timestamp">{this.generateTimeStamp(message.created_at)}</span></h2>
+                            <h2>{authorName} <span className="timestamp">{Util.generateTimeStamp(message.created_at)}</span></h2>
                             <h3>{message.body}</h3>
                         </div>
                         

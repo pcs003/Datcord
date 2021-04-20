@@ -2,8 +2,8 @@ class Api::PrivateMessagesController < ApplicationController
     def index
         @user = current_user
         @all_messages = @user.sent_pms + @user.received_pms
-        @messages = @all_messages.select {|msg| msg.recipient_id == params[:recipientId] || msg.sender_id == params[:recipientId]}
-        
+        @messages = @all_messages.select {|msg| msg.recipient_id == params[:recipientId].to_i || msg.sender_id == params[:recipientId].to_i}
+
         render 'api/private_messages/index'
     end
 

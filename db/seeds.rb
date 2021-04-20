@@ -106,3 +106,5 @@ cm8 = ChannelMessage.create!({body:"same", author_id:7, channel_id:8})
 
 pm1 = PrivateMessage.create!({body: "Hello Elongated Tusk", sender_id:1, recipient_id:4})
 pm2 = PrivateMessage.create!({body: "...why", sender_id:4, recipient_id:1})
+
+pm3 = PrivateMessage.create!({body: "Hello", sender_id:1, recipient_id:6})

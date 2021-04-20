@@ -1,6 +1,6 @@
 @messages.each do |message|
     json.set! message.id do
-        json.extract! message, :id, :body, :sender_id, :recipient_id
+        json.extract! message, :id, :body, :sender_id, :recipient_id, :created_at
 
         json.sender do 
             json.extract! message.sender, :id, :username
