@@ -1,0 +1,96 @@
+.friends-context-menu {
+    min-width: 188px;
+    max-width: 320px;
+    height: auto;
+    background-color: #18191c;
+    z-index: 5;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.24);
+    padding:8px;
+    display:none;
+
+    .divider {
+        box-sizing: border-box;
+        margin: 4px;
+        border-bottom: 1px solid hsla(0,0%,100%,0.06);
+    }
+
+    .option {
+        min-width: 172px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 2px;
+
+        span {
+            color: #b9bbbe;
+            font-size: 14px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+    }
+
+    .option:hover {
+        background-color: #4e5d94;
+        span {
+            color: white;
+            font-weight: 600;
+        }
+        
+    }
+
+    .option.blue {
+        min-width: 172px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 2px;
+
+        span {
+            color: #b9bbbe;
+            font-size: 14px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+    }
+
+    .option.blue:hover {
+        background-color: #4e5d94;
+        span {
+            color: white;
+            font-weight: 600;
+        }
+        
+    }
+
+    .option.red {
+        min-width: 172px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 2px;
+
+        span {
+            color: #F04747;
+            font-size: 14px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+    }
+
+    .option.red {
+        background-color: #F04747;
+        span {
+            color: white;
+            font-weight: 600;
+        }
+        
+    }
+}
+
+.friends-context-menu.active {
+    display: block;
+}

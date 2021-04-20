@@ -371,6 +371,25 @@
                     background-color: hsla(0,0%,100%,0.06);
                 }
 
+                input[type=text]{
+                    background-color: rgb(32,34,37);
+                    color:#dcddde;
+                    border:none;
+                    height: 20px;
+                    width:135px;
+                    border-radius: 3px;
+                    margin: 0 8px;
+                    padding-left: 7px;
+                    font-size: 14px;
+                    text-overflow: ellipsis;
+                }
+    
+                input[type=text]:focus{
+                    
+                    outline:none;
+                    width:225px;
+                }
+
             }
             
         }
