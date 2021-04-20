@@ -39,9 +39,12 @@ export default class PrivateMessages extends Component {
         
         let messageListItems = [];
         this.props.privateMessages.forEach((msg, i) => {
-            
-            let thisColor = this.props.colors[msg.sender_id % this.props.colors.length];
+            if (msg.message) {
+                return;
+            };
 
+            let thisColor = this.props.colors[msg.sender_id % this.props.colors.length];
+            console.log(msg)
             if (i == 0) {
                 let date = new Date()
                 if (msg.created_at) {

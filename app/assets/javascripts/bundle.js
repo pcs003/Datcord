@@ -3572,7 +3572,13 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
 
       var messageListItems = [];
       this.props.privateMessages.forEach(function (msg, i) {
+        if (msg.message) {
+          return;
+        }
+
+        ;
         var thisColor = _this2.props.colors[msg.sender_id % _this2.props.colors.length];
+        console.log(msg);
 
         if (i == 0) {
           var date = new Date();
