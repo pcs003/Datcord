@@ -383,7 +383,7 @@ export default class Server extends React.Component {
                 history={this.props.history}
                 privateMessages={this.props.privateMessages}
                 createPrivateMessage={this.props.createPrivateMessage}
-                recievePrivateMessage={this.props.recievePrivateMessage}
+                receivePrivateMessage={this.props.receivePrivateMessage}
             />
         )
 

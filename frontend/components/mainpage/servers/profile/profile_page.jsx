@@ -61,6 +61,20 @@ export default class ProfilePage extends React.Component {
                 }
             }
         )
+
+        App.cable.subscriptions.create(
+            { channel: "PrivateMessagesChannel", recipientId: this.props.currentUser.id},
+            {
+                received: data => {
+                    console.log("recieved")
+                    this.getResponsePrivateMessage(data)
+                },
+                speak: function(data) {
+                    console.log("speaking")
+                    return this.perform("speak", data)
+                }
+            }
+        )
     }
 
     getResponsePrivateMessage(data) {

@@ -3819,6 +3819,20 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
           return this.perform("speak", data);
         }
       });
+      App.cable.subscriptions.create({
+        channel: "PrivateMessagesChannel",
+        recipientId: this.props.currentUser.id
+      }, {
+        received: function received(data) {
+          console.log("recieved");
+
+          _this2.getResponsePrivateMessage(data);
+        },
+        speak: function speak(data) {
+          console.log("speaking");
+          return this.perform("speak", data);
+        }
+      });
     }
   }, {
     key: "getResponsePrivateMessage",
@@ -4793,7 +4807,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
         history: this.props.history,
         privateMessages: this.props.privateMessages,
         createPrivateMessage: this.props.createPrivateMessage,
-        recievePrivateMessage: this.props.recievePrivateMessage
+        receivePrivateMessage: this.props.receivePrivateMessage
       });
       var currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
