@@ -51,7 +51,7 @@ export const updatePrivateMessage = privateMessage => dispatch => (
     PMApiUtil.updatePrivateMessage(privateMessage).then( privateMessage => (
         dispatch(receivePrivateMessage(privateMessage))
     ), (e) => {
-        dispatch(receiveChannelMessageErrors(e.responseJSON))
+        dispatch(receivePrivateMessageErrors(e.responseJSON))
     })
 )
 

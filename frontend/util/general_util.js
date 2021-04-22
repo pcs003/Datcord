@@ -24,9 +24,9 @@ export const generateTimeStamp = (date) => {
     var msgM = today.getMonth() + 1
     var msgY = today.getFullYear();
     if (date) {
-        var msgD = parseInt(date.slice(8,10))
-        var msgM = parseInt(date.slice(5,7))
-        var msgY = parseInt(date.slice(0,4))
+        var msgD = dateObj.getDate('en-US', { timeZone: 'America/New_York' })
+        var msgM = dateObj.getMonth('en-US', { timeZone: 'America/New_York' }) + 1
+        var msgY = dateObj.getFullYear('en-US', { timeZone: 'America/New_York' })
     }
     
     if (dateObj.getHours() - offset < 0) {

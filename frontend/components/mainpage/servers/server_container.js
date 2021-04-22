@@ -4,7 +4,7 @@ import { acceptFriend, addFriend, logout, removeFriend } from "../../../actions/
 import Server from "./server"
 import { createChannel, deleteChannel, fetchChannel, fetchChannels, updateChannel } from '../../../actions/channel_actions'
 import { fetchChannelMessages, receiveChannelMessage } from "../../../actions/channel_message_actions"
-import { createPrivateMessage, fetchPrivateMessages, receivePrivateMessage } from "../../../actions/private_message_actions"
+import { createPrivateMessage, deletePrivateMessage, fetchPrivateMessages, receivePrivateMessage, updatePrivateMessage } from "../../../actions/private_message_actions"
 
 
 
@@ -44,8 +44,9 @@ const mapDispatchToProps = dispatch => {
         acceptFriend: friendship_id => dispatch(acceptFriend(friendship_id)),
         fetchPrivateMessages: recipientId => dispatch(fetchPrivateMessages(recipientId)),
         receivePrivateMessage: privateMessage => dispatch(receivePrivateMessage(privateMessage)),
-        createPrivateMessage: privateMessage => dispatch(createPrivateMessage(privateMessage))
-        
+        createPrivateMessage: privateMessage => dispatch(createPrivateMessage(privateMessage)),
+        updatePrivateMessage: privateMessage => dispatch(updatePrivateMessage(privateMessage)),
+        deletePrivateMessage: privateMessageId => dispatch(deletePrivateMessage(privateMessageId))
     }
 }
 

@@ -384,6 +384,8 @@ export default class Server extends React.Component {
                 privateMessages={this.props.privateMessages}
                 createPrivateMessage={this.props.createPrivateMessage}
                 receivePrivateMessage={this.props.receivePrivateMessage}
+                updatePrivateMessage={this.props.updatePrivateMessage}
+                deletePrivateMessage={this.props.deletePrivateMessage}
             />
         )
 

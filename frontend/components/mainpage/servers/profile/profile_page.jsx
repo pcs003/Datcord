@@ -25,10 +25,12 @@ export default class ProfilePage extends React.Component {
         this.getResponsePrivateMessage = this.getResponsePrivateMessage.bind(this)
         this.friendContextMenu = this.friendContextMenu.bind(this)
         this.handleClick = this.handleClick.bind(this)
+        this.addNewConversation = this.addNewConversation.bind(this)
 
         let currentPage = "friends"
         if (parseInt(this.props.match.params.channel_id) != this.props.currentUser.id) {
             currentPage = parseInt(this.props.match.params.channel_id)
+            this.props.fetchPrivateMessages(this.props.match.params.channel_id)
         }
         this.state = {
             selectedTab: 1,
@@ -36,14 +38,16 @@ export default class ProfilePage extends React.Component {
             errored: true,
             headerText: "You can add a friend with their discord tag. It's cAsE sEnSitIvE!",
             page: currentPage,
-            pmCreateActive: false.currentUser,
+            pmCreateActive: false,
             contextMenuVisible: false,
             cmX: "100px",
             cmY: "100px",
-            clickedFriend: 0
+            clickedFriend: 0,
+            newConversations: [],
+            uniqUsers: {}
         }
 
-        this.uniqUsers = {}
+        
     }
 
     componentDidMount() {
@@ -52,7 +56,9 @@ export default class ProfilePage extends React.Component {
         let recipientId = this.props.match.params.channel_id;
         if (parseInt(recipientId) != this.props.currentUser.id) {
             console.log("fetching")
-            this.props.fetchPrivateMessages(recipientId)
+            this.props.fetchPrivateMessages(recipientId).then(() =>{
+                console.log("1")
+            })
         }
         
         console.log("cdm")
@@ -105,13 +111,20 @@ export default class ProfilePage extends React.Component {
     }
 
     conversations() {
-        this.props.currentUser.friends.filter(friend => {
+        let current = this.state.uniqUsers;
+        this.props.currentUser.friends.forEach(friend => {
             this.props.fetchPrivateMessages(friend.id).then(action => {
-                if (this.uniqUsers[friend.id] == undefined && Object.values(action.privateMessages).length > 0) {
-                    this.uniqUsers[friend.id] = friend
-                } 
+                if (current[friend.id] == undefined && Object.values(action.privateMessages).length > 0) {
+                    current[friend.id] = friend
+                    this.setState({
+                        uniqUsers: current
+                    })
+                }
+                this.props.fetchPrivateMessages(this.props.match.params.channel_id)
             })
         })
+        
+        
     }
 
     clickTab(num) {
@@ -134,7 +147,9 @@ export default class ProfilePage extends React.Component {
             this.setState({
                 page: e.currentTarget.id
             })
-            this.props.fetchPrivateMessages(e.currentTarget.id)
+            this.props.fetchPrivateMessages(e.currentTarget.id).then(action => {
+                console.log(action.privateMessages)
+            })
             this.props.history.push(`/channels/@me/${e.currentTarget.id}`)
         }
 
@@ -191,7 +206,6 @@ export default class ProfilePage extends React.Component {
     togglePMCreateActive(e) {
         e.preventDefault();
         let current = this.state.pmCreateActive;
-        console.log(e.target)
 
         if (current) {
             if (e.target.id == "modal") {
@@ -228,6 +242,20 @@ export default class ProfilePage extends React.Component {
         e.preventDefault();
         this.setState({
             contextMenuVisible: false,
+        })
+    }
+
+    addNewConversation(id) {
+        let friendName = this.props.currentUser.friends.find(friend => {
+            return friend.id == id
+        }).username
+        let convObj = {id: id, username: friendName}
+        let current = this.state.newConversations;
+        current.push(convObj);
+        console.log(current)
+        this.setState({
+            newConversations: current,
+            pmCreateActive: false,
         })
     }
 
@@ -369,11 +397,13 @@ export default class ProfilePage extends React.Component {
                     colors={colors}
                     createPrivateMessage={this.props.createPrivateMessage}
                     recievePrivateMessage={this.props.recievePrivateMessage}
+                    updatePrivateMessage={this.props.updatePrivateMessage}
+                    deletePrivateMessage={this.props.deletePrivateMessage}
                 />
             )
         }
 
-        let conversations = Object.values(this.uniqUsers).map(user => {
+        let conversations = Object.values(this.state.uniqUsers).concat(this.state.newConversations).map(user => {
             let thisColor = colors[user.id % colors.length];
             let thisClass = parseInt(this.state.page) == user.id ? "conversations selected" : "conversations"
             return (
@@ -471,6 +501,7 @@ export default class ProfilePage extends React.Component {
                     colors={colors}
                     pmCreateActive={this.state.pmCreateActive}
                     togglePMCreateActive={this.togglePMCreateActive}
+                    addNewConversation={this.addNewConversation}
                 />
                 <Popup />
             </div>

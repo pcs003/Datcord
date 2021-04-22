@@ -394,7 +394,7 @@ var updatePrivateMessage = function updatePrivateMessage(privateMessage) {
     return _util_private_messages_api_util__WEBPACK_IMPORTED_MODULE_0__.updatePrivateMessage(privateMessage).then(function (privateMessage) {
       return dispatch(receivePrivateMessage(privateMessage));
     }, function (e) {
-      dispatch(receiveChannelMessageErrors(e.responseJSON));
+      dispatch(receivePrivateMessageErrors(e.responseJSON));
     });
   };
 };
@@ -3186,6 +3186,111 @@ var InfoNavbar = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
+/***/ "./frontend/components/mainpage/servers/profile/confirm_delete_message.jsx":
+/*!*********************************************************************************!*\
+  !*** ./frontend/components/mainpage/servers/profile/confirm_delete_message.jsx ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ConfirmDeleteMessage)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _util_general_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../util/general_util */ "./frontend/util/general_util.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var ConfirmDeleteMessage = /*#__PURE__*/function (_Component) {
+  _inherits(ConfirmDeleteMessage, _Component);
+
+  var _super = _createSuper(ConfirmDeleteMessage);
+
+  function ConfirmDeleteMessage(props) {
+    var _this;
+
+    _classCallCheck(this, ConfirmDeleteMessage);
+
+    _this = _super.call(this, props);
+    _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(ConfirmDeleteMessage, [{
+    key: "handleDelete",
+    value: function handleDelete(e) {
+      e.preventDefault();
+      this.props.confirmDelete(e.currentTarget.id);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var thisMessage = this.props.privateMessages.find(function (pm) {
+        return pm.id == _this2.props.messageId;
+      });
+      var thisColor = this.props.colors[thisMessage.sender_id % this.props.colors.length];
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "modal-wrapper",
+        id: "modal-wrapper",
+        onClick: this.props.handleClick
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "modal"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "DELETE MESSAGE"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Are you sure you want to delete this message?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "message"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "current-user-pic",
+        style: {
+          backgroundColor: "".concat(thisColor)
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "default-profile-pic",
+        src: window.whiteDatcordRobot,
+        alt: ""
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "message-info"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, thisMessage.sender.username, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "timestamp"
+      }, _util_general_util__WEBPACK_IMPORTED_MODULE_1__.generateTimeStamp(thisMessage.created_at))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, thisMessage.body))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "options"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+        onClick: this.handleDelete,
+        id: thisMessage.id
+      }, "Delete"))));
+    }
+  }]);
+
+  return ConfirmDeleteMessage;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+
+
+/***/ }),
+
 /***/ "./frontend/components/mainpage/servers/profile/friends_info_navbar.jsx":
 /*!******************************************************************************!*\
   !*** ./frontend/components/mainpage/servers/profile/friends_info_navbar.jsx ***!
@@ -3488,6 +3593,7 @@ var PrivateMessageCreate = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
     _this.updateFilter = _this.updateFilter.bind(_assertThisInitialized(_this));
     _this.clickFriend = _this.clickFriend.bind(_assertThisInitialized(_this));
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.state = {
       filter: "",
       selectedFriend: ""
@@ -3516,6 +3622,15 @@ var PrivateMessageCreate = /*#__PURE__*/function (_Component) {
         this.setState({
           selectedFriend: e.currentTarget.id
         });
+      }
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      e.preventDefault();
+
+      if (this.state.selectedFriend != "") {
+        this.props.addNewConversation(this.state.selectedFriend);
       }
     }
   }, {
@@ -3578,7 +3693,8 @@ var PrivateMessageCreate = /*#__PURE__*/function (_Component) {
         onChange: this.updateFilter,
         placeholder: "Type the username of a friend"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, friendList), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-        className: buttonClass
+        className: buttonClass,
+        onClick: this.handleSubmit
       }, "Create Group DM")));
     }
   }]);
@@ -3758,6 +3874,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_popup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-popup */ "./node_modules/react-popup/dist/index.js");
 /* harmony import */ var _private_message_form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./private_message_form */ "./frontend/components/mainpage/servers/profile/private_message_form.jsx");
 /* harmony import */ var _util_general_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../util/general_util */ "./frontend/util/general_util.js");
+/* harmony import */ var _confirm_delete_message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./confirm_delete_message */ "./frontend/components/mainpage/servers/profile/confirm_delete_message.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3785,6 +3902,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var PrivateMessages = /*#__PURE__*/function (_Component) {
   _inherits(PrivateMessages, _Component);
 
@@ -3797,15 +3915,29 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
     _this.unfinished = _this.unfinished.bind(_assertThisInitialized(_this));
+    _this.clickEdit = _this.clickEdit.bind(_assertThisInitialized(_this));
+    _this.clickDelete = _this.clickDelete.bind(_assertThisInitialized(_this));
+    _this.confirmDelete = _this.confirmDelete.bind(_assertThisInitialized(_this));
+    _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
+    _this.editBody = _this.editBody.bind(_assertThisInitialized(_this));
+    _this.saveChanges = _this.saveChanges.bind(_assertThisInitialized(_this));
+    _this.enterKeyEdit = _this.enterKeyEdit.bind(_assertThisInitialized(_this));
+    _this.saveButton = _this.saveButton.bind(_assertThisInitialized(_this));
+    _this.cancelButton = _this.cancelButton.bind(_assertThisInitialized(_this));
+    _this.cancelChanges = _this.cancelChanges.bind(_assertThisInitialized(_this));
+    _this.state = {
+      editMsgIdx: "",
+      deleteMsgIdx: "",
+      deleteModalActive: false,
+      prevBody: "",
+      editedBody: ""
+    };
     _this.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     _this.bottom = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createRef();
     return _this;
   }
 
   _createClass(PrivateMessages, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate() {
       if (this.bottom.current) {
@@ -3819,10 +3951,134 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
       react_popup__WEBPACK_IMPORTED_MODULE_1__.default.alert("Functionality not yet added");
     }
   }, {
-    key: "render",
-    value: function render() {
+    key: "clickEdit",
+    value: function clickEdit(e) {
+      e.preventDefault();
+      var body = this.props.privateMessages.find(function (pm) {
+        return pm.id == e.currentTarget.id;
+      }).body;
+      this.setState({
+        editMsgIdx: e.currentTarget.id,
+        editedBody: body,
+        prevBody: body
+      });
+    }
+  }, {
+    key: "editBody",
+    value: function editBody(e) {
+      e.preventDefault();
+      this.setState({
+        editedBody: e.currentTarget.value
+      });
+    }
+  }, {
+    key: "clickDelete",
+    value: function clickDelete(e) {
+      e.preventDefault();
+      this.setState({
+        deleteMsgIdx: e.currentTarget.id,
+        deleteModalActive: true
+      });
+      console.log(e.currentTarget.id);
+    }
+  }, {
+    key: "confirmDelete",
+    value: function confirmDelete(id) {
       var _this2 = this;
 
+      this.setState({
+        deleteModalActive: false
+      });
+      this.props.deletePrivateMessage(id).then(function () {
+        _this2.props.fetchPrivateMessages(_this2.props.match.params.channel_id);
+      });
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick(e) {
+      e.preventDefault();
+      console.log(e.currentTarget.id);
+
+      if (e.target.id == "modal-wrapper") {
+        this.setState({
+          deleteModalActive: false
+        });
+      }
+    }
+  }, {
+    key: "enterKeyEdit",
+    value: function enterKeyEdit(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        this.saveChanges();
+      } else if (e.keyCode == 27) {
+        e.preventDefault();
+        this.cancelChanges();
+      }
+    }
+  }, {
+    key: "saveButton",
+    value: function saveButton(e) {
+      e.preventDefault();
+      this.saveChanges();
+    }
+  }, {
+    key: "saveChanges",
+    value: function saveChanges() {
+      var _this3 = this;
+
+      this.props.updatePrivateMessage({
+        id: this.state.editMsgIdx,
+        body: this.state.editedBody,
+        sender_id: this.props.currentUser.id,
+        recipient_id: this.props.match.params.channel_id
+      }).then(function () {
+        _this3.props.fetchPrivateMessages(_this3.props.match.params.channel_id).then(function () {
+          _this3.setState({
+            editMsgIdx: ""
+          });
+        });
+      });
+    }
+  }, {
+    key: "cancelButton",
+    value: function cancelButton(e) {
+      e.preventDefault();
+      this.cancelChanges();
+    }
+  }, {
+    key: "cancelChanges",
+    value: function cancelChanges() {
+      // let prev = this.state.prevBody;
+      this.setState({
+        editMsgIdx: ""
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
+
+      var otherUser = this.props.currentUser.friends.find(function (friend) {
+        return friend.id == _this4.props.page;
+      });
+      var otherColor = this.props.colors[otherUser.id % this.props.colors.length];
+      var beginning = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "beginning-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "current-user-pic",
+        style: {
+          backgroundColor: "".concat(otherColor)
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "default-profile-pic",
+        src: window.whiteDatcordRobot,
+        alt: ""
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, otherUser.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "This is the beginning of your direct message history with ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "@", otherUser.username)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "date-divider"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "line"
+      })));
       var messageListItems = [];
       this.props.privateMessages.forEach(function (msg, i) {
         if (msg.message) {
@@ -3830,39 +4086,34 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
         }
 
         ;
-        var thisColor = _this2.props.colors[msg.sender_id % _this2.props.colors.length];
-        console.log(msg);
+        var thisColor = _this4.props.colors[msg.sender_id % _this4.props.colors.length]; // determines if date divider is necessary and adds if it is
 
-        if (i == 0) {
-          var date = new Date();
+        if (i >= 1) {
+          var prevDay = new Date().getDate('en-US', {
+            timeZone: 'America/New_York'
+          });
 
-          if (msg.created_at) {
-            date = new Date(msg.created_at);
+          if (_this4.props.privateMessages[i - 1].created_at) {
+            prevDay = new Date(_this4.props.privateMessages[i - 1].created_at).getDate('en-US', {
+              timeZone: 'America/New_York'
+            });
           }
 
-          messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            className: "date-divider"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            className: "line"
-          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _this2.monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear())));
-        } else if (i >= 1) {
-          var prevDay = new Date().getDay();
-
-          if (_this2.props.privateMessages[i - 1].created_at) {
-            prevDay = _this2.props.privateMessages[i - 1].created_at.slice(8, 10);
-          }
-
-          var msgD = new Date().getDate();
+          var msgD = new Date().getDate('en-US', {
+            timeZone: 'America/New_York'
+          });
 
           if (msg.created_at) {
-            msgD = parseInt(msg.created_at.slice(8, 10));
+            msgD = new Date(msg.created_at).getDate('en-US', {
+              timeZone: 'America/New_York'
+            });
           }
 
           if (msgD != prevDay) {
-            var _date = new Date();
+            var date = new Date();
 
             if (msg.created_at) {
-              _date = new Date(msg.created_at);
+              date = new Date(msg.created_at);
             }
 
             messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3870,22 +4121,88 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
               key: i
             }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
               className: "line"
-            }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _this2.monthNames[_date.getMonth()] + " " + _date.getDate() + ", " + _date.getFullYear())));
+            }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _this4.monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear())));
           }
-        }
+        } // creates edit and delete options when hovering over message
 
-        if (i >= 1 && _this2.props.privateMessages[i - 1].sender_id == msg.sender_id) {
-          var _prevDay = new Date().getDay();
 
-          if (_this2.props.privateMessages[i - 1].created_at) {
-            _prevDay = _this2.props.privateMessages[i - 1].created_at.slice(8, 10);
+        var msgOptions = "";
+
+        if (msg.sender_id == parseInt(_this4.props.currentUser.id)) {
+          msgOptions = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "message-options"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "option edit",
+            id: msg.id,
+            onClick: _this4.clickEdit
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+            className: "",
+            width: "16",
+            height: "16",
+            viewBox: "0 0 24 24"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+            fill: "#b9bbbe",
+            d: "M19.2929 9.8299L19.9409 9.18278C21.353 7.77064 21.353 5.47197 19.9409 4.05892C18.5287 2.64678 16.2292 2.64678 14.817 4.05892L14.1699 4.70694L19.2929 9.8299ZM12.8962 5.97688L5.18469 13.6906L10.3085 18.813L18.0201 11.0992L12.8962 5.97688ZM4.11851 20.9704L8.75906 19.8112L4.18692 15.239L3.02678 19.8796C2.95028 20.1856 3.04028 20.5105 3.26349 20.7337C3.48669 20.9569 3.8116 21.046 4.11851 20.9704Z"
+          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Edit")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "option delete",
+            id: msg.id,
+            onClick: _this4.clickDelete
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+            className: "",
+            width: "16",
+            height: "16",
+            viewBox: "0 0 20 24"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+            fill: "#f04747",
+            d: "M15 3.999V2H9V3.999H3V5.999H21V3.999H15Z"
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+            fill: "#f04747",
+            d: "M5 6.99902V18.999C5 20.101 5.897 20.999 7 20.999H17C18.103 20.999 19 20.101 19 18.999V6.99902H5ZM11 17H9V11H11V17ZM15 17H13V11H15V17Z"
+          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Delete")));
+        } // handles edit form
+
+
+        var msgBody = "";
+
+        if (_this4.state.editMsgIdx == msg.id) {
+          msgBody = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "edit-message-container",
+            onKeyDown: _this4.enterKeyEdit
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+            type: "text",
+            onChange: _this4.editBody,
+            value: _this4.state.editedBody
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h4", null, "escape to ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+            onClick: _this4.cancelButton
+          }, "cancel"), " \u2022 enter to ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+            onClick: _this4.saveButton
+          }, "save")));
+        } else {
+          if (msg.edited) {
+            msgBody = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, msg.body, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "(edited)"));
+          } else {
+            msgBody = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, msg.body);
+          }
+        } // handles if same user sent two in a row
+
+
+        if (i >= 1 && _this4.props.privateMessages[i - 1].sender_id == msg.sender_id) {
+          var _prevDay = new Date().getDate();
+
+          if (_this4.props.privateMessages[i - 1].created_at) {
+            _prevDay = new Date(_this4.props.privateMessages[i - 1].created_at).getDate('en-US', {
+              timeZone: 'America/New_York'
+            });
           }
 
           var msgD = new Date().getDate();
 
           if (msg.created_at) {
-            msgD = parseInt(msg.created_at.slice(8, 10));
-          }
+            msgD = new Date(msg.created_at).getDate('en-US', {
+              timeZone: 'America/New_York'
+            });
+          } // handles multiple messages sent by same user
+
 
           if (msgD == _prevDay) {
             messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
@@ -3895,8 +4212,13 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
               className: "message-info"
             }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
               className: "timestamp"
-            }, _util_general_util__WEBPACK_IMPORTED_MODULE_3__.generateTimeStampRepeat(msg.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, msg.body))));
+            }, _util_general_util__WEBPACK_IMPORTED_MODULE_3__.generateTimeStampRepeat(msg.created_at)), msgBody), msgOptions));
           } else {
+            // if same user sent message on separate days it is not repeat  
+            var uName = _this4.props.currentUser.friends.concat(_this4.props.currentUser).find(function (friend) {
+              return friend.id == msg.sender_id;
+            }).username;
+
             messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
               key: msg.id
             }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3910,16 +4232,15 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
               alt: ""
             })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
               className: "message-info"
-            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, msg.sender.username, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+            }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, uName, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
               className: "timestamp"
-            }, _util_general_util__WEBPACK_IMPORTED_MODULE_3__.generateTimeStamp(msg.created_at))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, msg.body))));
+            }, _util_general_util__WEBPACK_IMPORTED_MODULE_3__.generateTimeStamp(msg.created_at))), msgBody), msgOptions));
           }
         } else {
-          var uname = _this2.props.currentUser.username;
-
-          if (msg.sender) {
-            uname = msg.sender.username;
-          }
+          // handles different user message
+          var _uName = _this4.props.currentUser.friends.concat(_this4.props.currentUser).find(function (friend) {
+            return friend.id == msg.sender_id;
+          }).username;
 
           messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", {
             key: msg.id
@@ -3934,16 +4255,28 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
             alt: ""
           })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "message-info"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, uname, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _uName, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
             className: "timestamp"
-          }, _util_general_util__WEBPACK_IMPORTED_MODULE_3__.generateTimeStamp(msg.created_at))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, msg.body))));
+          }, _util_general_util__WEBPACK_IMPORTED_MODULE_3__.generateTimeStamp(msg.created_at))), msgBody), msgOptions));
         }
       });
+      var deleteModal = "";
+
+      if (this.state.deleteModalActive) {
+        deleteModal = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_confirm_delete_message__WEBPACK_IMPORTED_MODULE_4__.default, {
+          privateMessages: this.props.privateMessages,
+          confirmDelete: this.confirmDelete,
+          messageId: this.state.deleteMsgIdx,
+          colors: this.props.colors,
+          handleClick: this.handleClick
+        });
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "pms-container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "all-messages-wrapper"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, messageListItems, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, beginning, messageListItems, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         ref: this.bottom
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_private_message_form__WEBPACK_IMPORTED_MODULE_2__.default, {
         unfinished: this.unfinished,
@@ -3952,7 +4285,7 @@ var PrivateMessages = /*#__PURE__*/function (_Component) {
         createPrivateMessage: this.props.createPrivateMessage,
         fetchPrivateMessages: this.props.fetchPrivateMessages,
         match: this.props.match
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_popup__WEBPACK_IMPORTED_MODULE_1__.default, null));
+      }), deleteModal, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_popup__WEBPACK_IMPORTED_MODULE_1__.default, null));
     }
   }]);
 
@@ -4039,10 +4372,13 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
     _this.getResponsePrivateMessage = _this.getResponsePrivateMessage.bind(_assertThisInitialized(_this));
     _this.friendContextMenu = _this.friendContextMenu.bind(_assertThisInitialized(_this));
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
+    _this.addNewConversation = _this.addNewConversation.bind(_assertThisInitialized(_this));
     var currentPage = "friends";
 
     if (parseInt(_this.props.match.params.channel_id) != _this.props.currentUser.id) {
       currentPage = parseInt(_this.props.match.params.channel_id);
+
+      _this.props.fetchPrivateMessages(_this.props.match.params.channel_id);
     }
 
     _this.state = {
@@ -4051,13 +4387,14 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
       errored: true,
       headerText: "You can add a friend with their discord tag. It's cAsE sEnSitIvE!",
       page: currentPage,
-      pmCreateActive: false.currentUser,
+      pmCreateActive: false,
       contextMenuVisible: false,
       cmX: "100px",
       cmY: "100px",
-      clickedFriend: 0
+      clickedFriend: 0,
+      newConversations: [],
+      uniqUsers: {}
     };
-    _this.uniqUsers = {};
     return _this;
   }
 
@@ -4071,7 +4408,9 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
 
       if (parseInt(recipientId) != this.props.currentUser.id) {
         console.log("fetching");
-        this.props.fetchPrivateMessages(recipientId);
+        this.props.fetchPrivateMessages(recipientId).then(function () {
+          console.log("1");
+        });
       }
 
       console.log("cdm");
@@ -4131,11 +4470,18 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
     value: function conversations() {
       var _this3 = this;
 
-      this.props.currentUser.friends.filter(function (friend) {
+      var current = this.state.uniqUsers;
+      this.props.currentUser.friends.forEach(function (friend) {
         _this3.props.fetchPrivateMessages(friend.id).then(function (action) {
-          if (_this3.uniqUsers[friend.id] == undefined && Object.values(action.privateMessages).length > 0) {
-            _this3.uniqUsers[friend.id] = friend;
+          if (current[friend.id] == undefined && Object.values(action.privateMessages).length > 0) {
+            current[friend.id] = friend;
+
+            _this3.setState({
+              uniqUsers: current
+            });
           }
+
+          _this3.props.fetchPrivateMessages(_this3.props.match.params.channel_id);
         });
       });
     }
@@ -4166,7 +4512,9 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
         this.setState({
           page: e.currentTarget.id
         });
-        this.props.fetchPrivateMessages(e.currentTarget.id);
+        this.props.fetchPrivateMessages(e.currentTarget.id).then(function (action) {
+          console.log(action.privateMessages);
+        });
         this.props.history.push("/channels/@me/".concat(e.currentTarget.id));
       }
     }
@@ -4229,7 +4577,6 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
     value: function togglePMCreateActive(e) {
       e.preventDefault();
       var current = this.state.pmCreateActive;
-      console.log(e.target);
 
       if (current) {
         if (e.target.id == "modal") {
@@ -4268,6 +4615,24 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
       e.preventDefault();
       this.setState({
         contextMenuVisible: false
+      });
+    }
+  }, {
+    key: "addNewConversation",
+    value: function addNewConversation(id) {
+      var friendName = this.props.currentUser.friends.find(function (friend) {
+        return friend.id == id;
+      }).username;
+      var convObj = {
+        id: id,
+        username: friendName
+      };
+      var current = this.state.newConversations;
+      current.push(convObj);
+      console.log(current);
+      this.setState({
+        newConversations: current,
+        pmCreateActive: false
       });
     }
   }, {
@@ -4433,11 +4798,13 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
           privateMessages: this.props.privateMessages,
           colors: colors,
           createPrivateMessage: this.props.createPrivateMessage,
-          recievePrivateMessage: this.props.recievePrivateMessage
+          recievePrivateMessage: this.props.recievePrivateMessage,
+          updatePrivateMessage: this.props.updatePrivateMessage,
+          deletePrivateMessage: this.props.deletePrivateMessage
         });
       }
 
-      var conversations = Object.values(this.uniqUsers).map(function (user) {
+      var conversations = Object.values(this.state.uniqUsers).concat(this.state.newConversations).map(function (user) {
         var thisColor = colors[user.id % colors.length];
         var thisClass = parseInt(_this6.state.page) == user.id ? "conversations selected" : "conversations";
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -4542,7 +4909,8 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
         currentUser: this.props.currentUser,
         colors: colors,
         pmCreateActive: this.state.pmCreateActive,
-        togglePMCreateActive: this.togglePMCreateActive
+        togglePMCreateActive: this.togglePMCreateActive,
+        addNewConversation: this.addNewConversation
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_popup__WEBPACK_IMPORTED_MODULE_1__.default, null));
     }
   }]);
@@ -5080,7 +5448,9 @@ var Server = /*#__PURE__*/function (_React$Component) {
         history: this.props.history,
         privateMessages: this.props.privateMessages,
         createPrivateMessage: this.props.createPrivateMessage,
-        receivePrivateMessage: this.props.receivePrivateMessage
+        receivePrivateMessage: this.props.receivePrivateMessage,
+        updatePrivateMessage: this.props.updatePrivateMessage,
+        deletePrivateMessage: this.props.deletePrivateMessage
       });
       var currentPage = this.props.match.params.server_id == "@me" ? userPage : serverPage;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -5216,6 +5586,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     createPrivateMessage: function createPrivateMessage(privateMessage) {
       return dispatch((0,_actions_private_message_actions__WEBPACK_IMPORTED_MODULE_6__.createPrivateMessage)(privateMessage));
+    },
+    updatePrivateMessage: function updatePrivateMessage(privateMessage) {
+      return dispatch((0,_actions_private_message_actions__WEBPACK_IMPORTED_MODULE_6__.updatePrivateMessage)(privateMessage));
+    },
+    deletePrivateMessage: function deletePrivateMessage(privateMessageId) {
+      return dispatch((0,_actions_private_message_actions__WEBPACK_IMPORTED_MODULE_6__.deletePrivateMessage)(privateMessageId));
     }
   };
 };
@@ -7201,9 +7577,15 @@ var generateTimeStamp = function generateTimeStamp(date) {
   var msgY = today.getFullYear();
 
   if (date) {
-    var msgD = parseInt(date.slice(8, 10));
-    var msgM = parseInt(date.slice(5, 7));
-    var msgY = parseInt(date.slice(0, 4));
+    var msgD = dateObj.getDate('en-US', {
+      timeZone: 'America/New_York'
+    });
+    var msgM = dateObj.getMonth('en-US', {
+      timeZone: 'America/New_York'
+    }) + 1;
+    var msgY = dateObj.getFullYear('en-US', {
+      timeZone: 'America/New_York'
+    });
   }
 
   if (dateObj.getHours() - offset < 0) {

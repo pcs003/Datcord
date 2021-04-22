@@ -6,6 +6,7 @@ export default class PrivateMessageCreate extends Component {
 
         this.updateFilter = this.updateFilter.bind(this)
         this.clickFriend = this.clickFriend.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
 
         this.state = {
             filter: "",
@@ -30,6 +31,14 @@ export default class PrivateMessageCreate extends Component {
             this.setState({
                 selectedFriend: e.currentTarget.id
             })
+        }
+        
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        if (this.state.selectedFriend != "") {
+            this.props.addNewConversation(this.state.selectedFriend)
         }
         
     }
@@ -81,7 +90,7 @@ export default class PrivateMessageCreate extends Component {
                     <ul>
                         {friendList}
                     </ul>
-                    <button className={buttonClass}>Create Group DM</button>
+                    <button className={buttonClass} onClick={this.handleSubmit}>Create Group DM</button>
                 </div>
             </div>
         )

@@ -18,7 +18,7 @@ class Api::PrivateMessagesController < ApplicationController
 
     def update
         @message = current_user.sent_pms.find_by(id: params[:id])
-        if @message && @message.update(message_params)
+        if @message && @message.update(body:params[:body], edited:true)
             render 'api/private_messages/show'
         else
             render json: @message.errors.full_messages, status: 422

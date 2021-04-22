@@ -1,1 +1,1 @@
-json.extract! private_message, :id, :body, :sender_id, :recipient_id
+json.extract! private_message, :id, :body, :sender_id, :recipient_id, :edited
