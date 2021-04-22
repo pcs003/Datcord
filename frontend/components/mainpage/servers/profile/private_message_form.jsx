@@ -22,9 +22,7 @@ export default class PrivateMessageForm extends Component {
     handleSubmit(e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            console.log("IN THE HANDLE SUBMIT")
             
-            console.log(App.cable.subscriptions.subscriptions)
             this.props.createPrivateMessage({message:{
                 body: this.state.body,
                 sender_id: this.props.currentUser.id,

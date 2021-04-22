@@ -55,22 +55,17 @@ export default class ProfilePage extends React.Component {
 
         let recipientId = this.props.match.params.channel_id;
         if (parseInt(recipientId) != this.props.currentUser.id) {
-            console.log("fetching")
-            this.props.fetchPrivateMessages(recipientId).then(() =>{
-                console.log("1")
-            })
+            this.props.fetchPrivateMessages(recipientId)
         }
         
-        console.log("cdm")
         
         App.cable.subscriptions.create(
             { channel: "PrivateMessagesChannel", recipientId: recipientId},
             {
                 received: data => {
-                    console.log("recieved")
+                    
                 },
                 speak: function(data) {
-                    console.log("speaking")
                     return this.perform("speak", data)
                 }
             }
@@ -80,11 +75,9 @@ export default class ProfilePage extends React.Component {
             { channel: "PrivateMessagesChannel", recipientId: this.props.currentUser.id},
             {
                 received: data => {
-                    console.log("recieved")
                     this.getResponsePrivateMessage(data)
                 },
                 speak: function(data) {
-                    console.log("speaking")
                 }
             }
         )
@@ -97,7 +90,6 @@ export default class ProfilePage extends React.Component {
     }
 
     getResponsePrivateMessage(data) {
-        console.log("here")
         if (this.props.currentUser.id == data.message.recipient_id) {
             this.props.receivePrivateMessage({message: data})
         }
@@ -147,9 +139,7 @@ export default class ProfilePage extends React.Component {
             this.setState({
                 page: e.currentTarget.id
             })
-            this.props.fetchPrivateMessages(e.currentTarget.id).then(action => {
-                console.log(action.privateMessages)
-            })
+            this.props.fetchPrivateMessages(e.currentTarget.id)
             this.props.history.push(`/channels/@me/${e.currentTarget.id}`)
         }
 
@@ -199,7 +189,6 @@ export default class ProfilePage extends React.Component {
 
     removeFriend(e) {
         e.preventDefault();
-        console.log(e.currentTarget.id)
         this.props.removeFriend(e.currentTarget.id)
     }
 
@@ -229,12 +218,10 @@ export default class ProfilePage extends React.Component {
             clickedFriend: e.currentTarget.id
 
         })
-        console.log(e.currentTarget.id)
     }
 
     removeFriendCM(e) {
         e.preventDefault();
-        console.log(this.state.clickedFriend)
         this.props.removeFriend(this.state.clickedFriend)
     }
 
@@ -252,7 +239,6 @@ export default class ProfilePage extends React.Component {
         let convObj = {id: id, username: friendName}
         let current = this.state.newConversations;
         current.push(convObj);
-        console.log(current)
         this.setState({
             newConversations: current,
             pmCreateActive: false,
@@ -298,7 +284,7 @@ export default class ProfilePage extends React.Component {
                     let fsId = this.props.currentUser.friendships_accepted.find(fs => {
                         return fs.friender_id == friend.id
                     }).id
-                    console.log(fsId)
+                    
                     option = (
                         <div className="options">
                             <div className="check" id={fsId} onClick={this.acceptFriendRequest}>&#x2713;<span>Accept</span></div>

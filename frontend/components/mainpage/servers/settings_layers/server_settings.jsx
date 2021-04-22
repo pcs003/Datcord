@@ -35,8 +35,6 @@ export default class ServerSettings extends React.Component {
                 this.props.history.push(`/channels/@me/${this.props.currentUser.id}`)
             })
         } else {
-            console.log(this.state.deletePopupText)
-            console.log(this.state.originalName)
             this.setState({
                 deleteFailed: true
             })

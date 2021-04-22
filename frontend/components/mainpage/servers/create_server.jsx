@@ -120,7 +120,6 @@ export default class CreateServer extends React.Component {
                 this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"text"}).then(() => {
                     this.props.createChannel({name: "General", serverId:action.server.server.id, channelType:"voice"}).then(()=> {
                         this.props.fetchChannels(action.server.server.id).then(action2 => {
-                            console.log(Object.values(action2.channels))
                             let thisChannelId = Object.values(action2.channels)[0].id
                             this.props.history.push(`/channels/${thisServerId}/${thisChannelId}`)
                         })

@@ -16,8 +16,8 @@ class Api::ChannelMessagesController < ApplicationController
     end
 
     def update
-        @message = current_user.messages.find_by(id: params[:id])
-        if @message && @message.update(message_params, edited:true)
+        @message = current_user.channel_messages.find_by(id: params[:id])
+        if @message && @message.update(body:params[:body], edited:true)
             render 'api/channel_messages/show'
         else
             render json: @message.errors.full_messages, status: 422
@@ -25,7 +25,7 @@ class Api::ChannelMessagesController < ApplicationController
     end
 
     def destroy
-        @message = current_user.messages.find_by(id: params[:id])
+        @message = current_user.channel_messages.find_by(id: params[:id])
         if @message
             @message.destroy
         else

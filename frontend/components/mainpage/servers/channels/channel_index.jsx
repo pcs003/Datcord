@@ -100,7 +100,6 @@ export default class ChannelIndex extends React.Component {
 
     clickSettingsIcon(e) {
         e.preventDefault();
-        console.log("CLICKED")
         this.props.setClickedChannelId(e.currentTarget.id);
         this.props.openChannelSettings();
     }

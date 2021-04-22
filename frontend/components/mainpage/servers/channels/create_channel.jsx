@@ -47,11 +47,9 @@ export default class CreateChannel extends React.Component {
             serverId: this.props.match.params.server_id
         }
 
-        console.log(formattedState)
 
         this.props.createChannel(formattedState).then((action) => {
             if (action.type === RECEIVE_CHANNEL) {
-                console.log(action.channel)
                 let thisServer = this.props.currentServer || {id:1}
                 let thisChannelId = action.channel.id;
                 this.props.fetchChannels(thisServer.id).then(() => {

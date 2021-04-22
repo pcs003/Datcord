@@ -30,7 +30,6 @@ export default class ChannelMessageForm extends React.Component {
         
         if (e.keyCode === 13) {
             e.preventDefault();     
-            console.log(App.cable.subscriptions.subscriptions)
             this.props.createChannelMessage({message:{
                 body: this.state.body,
                 author_id: this.props.currentUser.id,

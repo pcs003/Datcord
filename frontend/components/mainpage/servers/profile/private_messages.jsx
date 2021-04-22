@@ -70,7 +70,6 @@ export default class PrivateMessages extends Component {
             deleteMsgIdx: e.currentTarget.id,
             deleteModalActive: true
         })
-        console.log(e.currentTarget.id)
     }
 
     confirmDelete(id) {
@@ -84,8 +83,7 @@ export default class PrivateMessages extends Component {
 
     handleClick(e) {
         e.preventDefault();
-        console.log(e.currentTarget.id)
-        if (e.target.id == "modal-wrapper") {
+        if (e.target.id == "modal-wrapper" || e.target.id == "close-delete-modal") {
             this.setState({
                 deleteModalActive: false
             })
@@ -135,6 +133,7 @@ export default class PrivateMessages extends Component {
     }
 
     render() {
+        
         let otherUser = this.props.currentUser.friends.find(friend => {
             return friend.id == this.props.page
         })
