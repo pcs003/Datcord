@@ -462,7 +462,7 @@ export default class ProfilePage extends React.Component {
                 {friendContextMenu}
                 <div className="server-channel-nav">
                     <div className="server-name profile">
-                        <span className="profile-find-conv">Find or start a conversation</span>
+                        <span className="profile-find-conv" onClick={this.unfinished}>Find or start a conversation</span>
                     </div>
                     <div className="channel-nav profile">
                         <div className="friends-nitro-select">
