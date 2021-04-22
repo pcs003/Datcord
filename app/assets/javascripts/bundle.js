@@ -1647,7 +1647,8 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
           }
 
           messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            className: "date-divider"
+            className: "date-divider",
+            key: date.getMilliseconds
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "line"
           }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _this4.monthNames[parseInt(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear())));
@@ -1678,7 +1679,8 @@ var ChannelMessages = /*#__PURE__*/function (_React$Component) {
             }
 
             messageListItems.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-              className: "date-divider"
+              className: "date-divider",
+              key: _date.getMilliseconds
             }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
               className: "line"
             }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, _this4.monthNames[_date.getMonth()] + " " + _date.getDate() + ", " + _date.getFullYear())));

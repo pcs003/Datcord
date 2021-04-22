@@ -169,7 +169,7 @@ export default class ChannelMessages extends React.Component {
     
                 
                 messageListItems.push(
-                    <div className="date-divider">
+                    <div className="date-divider" key={date.getMilliseconds}>
                         <div className="line"></div>
                         <h2>{this.monthNames[parseInt(date.getMonth())] + " " + date.getDate() + ", " + date.getFullYear()}</h2>
                     </div>
@@ -196,7 +196,7 @@ export default class ChannelMessages extends React.Component {
 
                     
                     messageListItems.push(
-                        <div className="date-divider">
+                        <div className="date-divider" key={date.getMilliseconds}>
                             <div className="line"></div>
                             <h2>{this.monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()}</h2>
                         </div>

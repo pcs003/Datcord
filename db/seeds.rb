@@ -25,7 +25,7 @@ u1 = User.create!({email:"demouser@datcord.com", username: "DemoUser", password:
 u2 = User.create!({email:"testuser01@test.com", username: "John Cena", password: "password123", birthdate: "2/2/2002"})
 u3 = User.create!({email:"testuser02@test.com", username: "Owen Wilson", password: "password123", birthdate: "3/3/2003"})
 u4 = User.create!({email:"testuser03@test.com", username: "Elon Musk", password: "password123", birthdate: "4/4/2004"})
-u5 = User.create!({email:"testuser04@test.com", username: "Gordon Hayward", password: "password123", birthdate: "5/5/2005"})
+u5 = User.create!({email:"testuser04@test.com", username: "Rafael Nadal", password: "password123", birthdate: "5/5/2005"})
 u6 = User.create!({email:"testuser05@test.com", username: "Lebron James", password: "password123", birthdate: "6/6/2006"})
 u7 = User.create!({email:"testuser06@test.com", username: "Faker", password: "password123", birthdate: "7/7/2007"})
 
@@ -45,7 +45,6 @@ sm1 = ServerMember.create!({member_id:4, server_id:1})
 sm15 = ServerMember.create!({member_id:1, server_id:1})
 
 sm2 = ServerMember.create!({member_id:1, server_id:2})
-sm3 = ServerMember.create!({member_id:5, server_id:2})
 sm16 = ServerMember.create!({member_id:7, server_id:2})
 
 sm4 = ServerMember.create!({member_id:1, server_id:3})
@@ -100,11 +99,15 @@ cm4 = ChannelMessage.create!({body:":(", author_id:1, channel_id:1})
 cm5 = ChannelMessage.create!({body:"Can someone explain react websockets to me", author_id:1, channel_id:2})
 cm6 = ChannelMessage.create!({body:"No", author_id:4, channel_id:2})
 
-cm7 = ChannelMessage.create!({body:"I play League", author_id:5, channel_id:8})
+cm7 = ChannelMessage.create!({body:"I play League", author_id:1, channel_id:8})
 cm8 = ChannelMessage.create!({body:"same", author_id:7, channel_id:8})
 
 
 pm1 = PrivateMessage.create!({body: "Hello Elongated Tusk", sender_id:1, recipient_id:4})
 pm2 = PrivateMessage.create!({body: "...why", sender_id:4, recipient_id:1})
 
-pm3 = PrivateMessage.create!({body: "Hello", sender_id:1, recipient_id:6})
+pm3 = PrivateMessage.create!({body: "5th championship this year?", sender_id:1, recipient_id:6})
+pm4 = PrivateMessage.create!({body: "Yessir", sender_id:6, recipient_id:1})
+
+pm5 = PrivateMessage.create!({body: "Hola Rafa, sóc un gran fan", sender_id:1, recipient_id:5})
+pm6 = PrivateMessage.create!({body: "gràcies", sender_id:5, recipient_id:1})
