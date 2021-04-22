@@ -84,7 +84,7 @@ export default class PrivateMessageCreate extends Component {
         return (
             <div id="modal" className={pmClass} onClick={this.props.togglePMCreateActive}>
                 <div className="pm-create">
-                    <h2>SELECT FRIENDS</h2>
+                    <h2>SELECT FRIEND</h2>
                     <h3>Select a friend to start a conversation</h3>
                     <input type="text" onChange={this.updateFilter} placeholder="Type the username of a friend"/>
                     <ul>

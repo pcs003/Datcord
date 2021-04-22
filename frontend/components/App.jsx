@@ -12,7 +12,7 @@ import LoginFormContainer from "./session_form/login_form_container"
 import SignupFormContainer from "./session_form/signup_form_container"
 import MainPageContainer from "./mainpage/main_page_container"
 import { AuthRoute, ProtectedRoute } from '../util/route_util';
-import LandingPage from "./greeting/landing";
+import LandingPageContainer from "./greeting/landing_page_container";
 import WhyDatcord from "./funstuff/whydatcord";
 
 const App = () => (
@@ -22,11 +22,11 @@ const App = () => (
     </style>
     <Switch>
       <Route exact path="/whydatcord" component={WhyDatcord}/>
-      <Route exact path="/" component={LandingPage} />
+      <Route exact path="/" component={LandingPageContainer} />
       <AuthRoute exact path="/login" component={LoginFormContainer}/>
       <AuthRoute exact path="/signup" component={SignupFormContainer}/>
       <ProtectedRoute path="/channels/" component={MainPageContainer} />
-      <Route component={LandingPage}/>
+      <Route component={LandingPageContainer}/>
     </Switch>
   </div>
 );

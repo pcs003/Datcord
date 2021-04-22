@@ -9,6 +9,25 @@
     background-image: linear-gradient(0deg,#7196ff -.45%,#2a5ee8 71.18%);
     width: 100%;
     height: 625px;
+    overflow:hidden;
+}
+
+.top-div .propane-rocket{
+    position: fixed;
+    right: Calc(50% - 3000px);
+    top: 800px;
+    transform: scale(1,1) flip;
+    width: 120px;
+    z-index: 900;
+}
+
+.top-div .propane-rocket.finished{
+    position: fixed;
+    right: Calc(50% + 3000px);
+    top: -200px;
+    transform: scale(2,2);
+    transition: 4s;
+    z-index: 1;
 }
 
 // LANDING PAGE TOP DIV HEADER CSS
@@ -35,6 +54,11 @@
     justify-content: space-around;
     z-index: 999;
     cursor: pointer;
+
+    a:hover {
+        text-decoration: underline;
+
+    }
 }
 
 .top-div header a {
@@ -160,19 +184,32 @@
     margin: auto;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .top-div .middle-blob .discord-buttons a.white {
     background-color: white;
     color: rgb(35,39,42);
-    
+    transition: 0.25s;
+}
+
+.top-div .middle-blob .discord-buttons a.white:hover {
+    color: rgb(112,150,255);
+    box-shadow: 0 0 15px 5px rgba(50,50,50,0.3);
+    transition: 0.25s;
 }
 
 .top-div .middle-blob .discord-buttons a.black {
     background-color: rgb(35,39,42);
     color: white;
+    transition: 0.25s;
 }
 
+.top-div .middle-blob .discord-buttons a.black:hover {
+    background-color: #36393f;
+    box-shadow: 0 0 15px 5px rgba(50,50,50,0.3);
+    transition: 0.25s;
+}
 
 
 

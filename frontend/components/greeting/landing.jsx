@@ -3,18 +3,49 @@ import GreetingContainer from "./greeting_container";
 import { Link } from 'react-router-dom'
 
 export default class LandingPage extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.moveRocket = this.moveRocket.bind(this)
+
+        this.state = {
+            rocketStart: false
+        }
+    }
+
+    moveRocket(e) {
+        e.preventDefault();
+        this.setState({
+            rocketStart: true
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    rocketStart:false
+                })
+            }, 4000)
+        })
+    }
     render() {
+        let rocketClass = "propane-rocket"
+        if (this.state.rocketStart) {
+            rocketClass = "propane-rocket finished"
+        }
+        let thisLink = '/login'
+        if (this.props.currentUser) {
+            thisLink=`/channels/@me/${this.props.currentUser.id}`
+        }
         return (
             <div>
                 <div className="top-div">
+                    <img className={rocketClass} src={window.rocket} alt=""/>
                     <header>
                         <a className="header-logo-link"href="/"><img className="header-logo" src={window.headerLogoURL}/></a>
                         <div className="navlinks">
-                            <a href="/">Download</a>
+                            <a href="http://www.parthcshah.com">My Website</a>
                             <Link to="/whydatcord">Why Datcord?</Link>
-                            <a href="/">Propane</a>
-                            <a href="/">Safety</a>
-                            <a href="/">Support</a>
+                            <a onClick={this.moveRocket}>Propane</a>
+                            <a href="https://www.linkedin.com/in/parth-shah-b6265763/">LinkedIn</a>
+                            <a href="https://angel.co/u/parth-shah-190">AngelList</a>
                         </div>
                         <GreetingContainer />
                     </header>
@@ -23,8 +54,8 @@ export default class LandingPage extends React.Component {
                             <h1>Your place to talk</h1>
                             <p>Whether you’re part of a school club, gaming group, worldwide art community, or just a handful of friends that want to spend time together, Datcord makes it easy to talk every day and hang out more often.</p>
                             <div className="discord-buttons">
-                                <a className="white" href="/"><img src={window.downloadIconURL}/>Download for Windows</a>
-                                <Link className="black" to="/">Open Discord in your browser</Link>
+                                <a className="white" href="https://github.com/pcs003/Datcord"><img src={window.downloadIconURL}/>Check out my Github</a>
+                                <Link className="black" to={thisLink}>Open Discord in your browser</Link>
                             </div>
                         </div>
                     </div>
@@ -86,8 +117,8 @@ export default class LandingPage extends React.Component {
                     </div>
                     <div className="end-middle">
                         <img className="sparkles" src={window.landingPageSparklesURL} />
-                        <h2>Ready to start your jounrey?</h2>
-                        <a className="download" href="/"><img src={window.downloadWhiteIconURL}/>Download for Windows</a>
+                        <h2>Ready to start your journey?</h2>
+                        <GreetingContainer />
                     </div>
                 </div>
                 <div className="bottom-div">

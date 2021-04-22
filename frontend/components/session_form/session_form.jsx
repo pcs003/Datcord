@@ -1,4 +1,5 @@
 import React from 'react'
+import Popup from 'react-popup'
 import { Link } from 'react-router-dom';
 import Canvas from '../../util/login_canvas'
 import { Redirect } from 'react-router';
@@ -30,10 +31,14 @@ export default class SessionForm extends React.Component {
         this.errors = this.errors.bind(this)
         this.update = this.update.bind(this)
         this.demoUser = this.demoUser.bind(this)
+        this.secondDemoUser = this.secondDemoUser.bind(this)
         this.transitionOut = this.transitionOut.bind(this)
         this.emailErrors = this.emailErrors.bind(this)
         this.passwordErrors = this.passwordErrors.bind(this)
         this.usernameErrors = this.usernameErrors.bind(this)
+        this.terms = this.terms.bind(this)
+        this.privacy = this.privacy.bind(this)
+        this.forgot = this.forgot.bind(this)
     }
 
     componentDidMount() {
@@ -45,6 +50,20 @@ export default class SessionForm extends React.Component {
         
     }
 
+    terms(e) {
+        e.preventDefault()
+        Popup.alert("There are no terms just don't hurt my site please")
+    }
+
+    privacy(e) {
+        e.preventDefault();
+        Popup.alert("You find yourself on a deserted island, a message in a bottle washes up on the shore, you open the bottle and it reads: 'We've updated our privacy policy'")
+    }
+
+    forgot(e) {
+        e.preventDefault();
+        Popup.alert("That's unfortunate")
+    }
 
     transitionOut(e) {
         e.preventDefault();
@@ -65,6 +84,21 @@ export default class SessionForm extends React.Component {
 
         this.props.processForm({
             email: "demouser@datcord.com",
+            password: "password123"
+        }).then((action) => {
+            if (action.type === RECEIVE_CURRENT_USER) {
+                this.props.history.push(`/channels/@me/${action.currentUser.id}`)
+            }
+        });
+    }
+
+    secondDemoUser(e) {
+        e.preventDefault();
+        let nums = [1,2,3,4,5,6]
+        let num = nums[Math.floor(Math.random() * nums.length)]
+        console.log(num)
+        this.props.processForm({
+            email: `testuser0${num}@test.com`,
             password: "password123"
         }).then((action) => {
             if (action.type === RECEIVE_CURRENT_USER) {
@@ -262,16 +296,16 @@ export default class SessionForm extends React.Component {
         const header = this.props.formType === 'Log In' ? <h2 className="welcome-header">Welcome Back!</h2> : <h2 className="create-header">Create an account</h2>;
         const subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
         const otherOption = this.props.formType === 'Log In' ? <span className="other-option">Need an account? <Link onClick={this.transitionOut} to="/signup">Register</Link></span> : <span className="other-option"><Link onClick={this.transitionOut} to="/login">Already have an account?</Link></span>
-        const forgotPass = this.props.formType === 'Log In' ? <a className="forgot-pass" href="">Forgot your password?</a> : "";
+        const forgotPass = this.props.formType === 'Log In' ? <a className="forgot-pass" onClick={this.forgot}>Forgot your password?</a> : "";
         const terms = this.props.formType === 'Log In' ? "" : (
-            <span className="tos">By registering you agree to Datcord's <a href="#/signup">Terms of Service</a> and <a href="#/signup">Privacy Policy</a></span>
+            <span className="tos">By registering you agree to Datcord's <a onClick={this.terms}>Terms of Service</a> and <a onClick={this.privacy}>Privacy Policy</a></span>
         )
         const barcode = this.props.formType === 'Log In' ? (
             <div className="barcode-box">
                 <img onClick={this.demoUser} className= "fake-barcode" src={window.loginBarcodeURL} />
                 <div className="barcode-text">
                     <h2>Log in with demo account</h2>
-                    <p>Click the barcode to log in with a demo account</p>
+                    <p>Click <a onClick={this.secondDemoUser}>here</a> to log in as a different demo user</p>
                 </div>
             </div>
         ) : ""
@@ -322,6 +356,7 @@ export default class SessionForm extends React.Component {
                     
 
                 </div>
+                <Popup />
             </div>
         )
     }

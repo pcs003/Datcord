@@ -1,4 +1,5 @@
 import React from 'react'
+import Popup from 'react-popup'
 import { Link } from 'react-router-dom'
 
 export default class SideNav extends React.Component {
@@ -10,12 +11,13 @@ export default class SideNav extends React.Component {
         this.handleClick = this.handleClick.bind(this)
         this.leaveServer = this.leaveServer.bind(this)
         this.handleServerClick = this.handleServerClick.bind(this)
+        this.copyInviteCode = this.copyInviteCode.bind(this)
 
         this.state = {
             contextMenuVisible: false,
             cmX: "100px",
             cmY: "100px",
-            clickedServer: { id: "", owner_id: ""},
+            clickedServer: { id: "", owner_id: "", invite_code: ""},
             addServerOpen: false
         }
     }
@@ -83,6 +85,12 @@ export default class SideNav extends React.Component {
         this.props.openCreateServerForm();
     }
 
+    copyInviteCode(e) {
+        e.preventDefault()
+        navigator.clipboard.writeText(this.state.clickedServer.invite_code)
+        Popup.alert("Invite code copied to clipboard")
+    }
+
     render() {
         //create all server icons
         let serverEles = null;
@@ -124,8 +132,8 @@ export default class SideNav extends React.Component {
 
         let serverContextMenu = this.state.contextMenuVisible ? (
             <div className={contextMenuClass} style={contextMenuStyle}>
-                <div className="mark-read-div">
-                    <span>Mark As Read</span>
+                <div className="mark-read-div" onClick={this.copyInviteCode}>
+                    <span>Copy Invite Code</span>
                 </div>
                 <div className="divider"></div>
                 {updateLeaveOption}
@@ -168,6 +176,7 @@ export default class SideNav extends React.Component {
                     <span className="server-name">Download Apps (Not Functional Yet)</span>
                 </div>
                 {serverContextMenu}
+                <Popup />
             </div>
         )
     }

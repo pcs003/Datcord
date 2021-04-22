@@ -1,4 +1,5 @@
 import React from 'react'
+import Popup from 'react-popup'
 import InfoNavbar from './info_navbar'
 import SideNav from '../side_nav/side_nav'
 import CreateServer from './create_server'
@@ -34,7 +35,7 @@ export default class Server extends React.Component {
         this.setClickedChannelId = this.setClickedChannelId.bind(this)
         this.openChannelSettings = this.openChannelSettings.bind(this) 
         this.closeChannelSettings = this.closeChannelSettings.bind(this)
-
+        this.unfinished = this.unfinished.bind(this)
         this.getResponseMessage = this.getResponseMessage.bind(this)
 
         this.state = {
@@ -49,6 +50,7 @@ export default class Server extends React.Component {
             clickedChannelId: 1,
         }
     }
+
     componentDidMount() {
         this.props.getServers();
         this.props.getServer(this.props.match.params.server_id)
@@ -68,6 +70,11 @@ export default class Server extends React.Component {
                 }
             }
         )
+    }
+
+    unfinished(e) {
+        e.preventDefault();
+        Popup.alert("Functionality not yet added")
     }
 
     getResponseMessage(data) {
@@ -347,7 +354,7 @@ export default class Server extends React.Component {
                     <CurrentUserInfo openUserSettings={this.openUserSettings} muted={this.state.muted} deafened={this.state.deafened} currentUser={this.props.currentUser} toggleDeafen={this.toggleDeafen} toggleMute={this.toggleMute} />
                 </div>
                 <div className="right-div">
-                    <InfoNavbar currentChannel={currentChannel}/>
+                    <InfoNavbar currentChannel={currentChannel} unfinished={this.unfinished}/>
                     <div className="messages-users-div">
 
                         <ChannelMessagesContainer servers={this.props.servers} currentServer={currentServer} currentChannel={currentChannel} match={this.props.match}/>
@@ -401,6 +408,7 @@ export default class Server extends React.Component {
                 <div className="layer-wrapper">
                     {currentLayer}
                 </div>
+                <Popup />
             </div>
         )
     }
