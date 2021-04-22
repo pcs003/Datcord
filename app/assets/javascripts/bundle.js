@@ -2284,9 +2284,7 @@ var ChannelSettings = /*#__PURE__*/function (_React$Component) {
     _this.updateName = _this.updateName.bind(_assertThisInitialized(_this));
     _this.resetName = _this.resetName.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
-    var thisChannel = Object.values(_this.props.currentServer.channels).find(function (channel) {
-      return channel.id == _this.props.clickedChannelId;
-    });
+    var thisChannel = _this.props.currentChannel;
     _this.state = {
       name: thisChannel.name,
       originalName: thisChannel.name,
@@ -2296,14 +2294,7 @@ var ChannelSettings = /*#__PURE__*/function (_React$Component) {
       deleteFailed: false
     };
     return _this;
-  } // componentDidMount() {
-  //     let thisChannel = Object.values(this.props.currentServer.channels).find(channel => channel.id == this.props.clickedChannelId);
-  //     this.setState({
-  //         name: thisChannel.name,
-  //         originalName: thisChannel.name
-  //     })
-  // }
-
+  }
 
   _createClass(ChannelSettings, [{
     key: "updateName",
@@ -2336,6 +2327,8 @@ var ChannelSettings = /*#__PURE__*/function (_React$Component) {
       updated.name = this.state.name;
       this.props.updateChannel(updated).then(function (action) {
         _this2.props.fetchChannels(_this2.props.currentServer.id);
+
+        _this2.props.getServer(_this2.props.match.params.server_id);
 
         _this2.setState({
           originalName: action.channel.name
@@ -2746,7 +2739,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ CreateServer)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _actions_server_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../actions/server_actions */ "./frontend/actions/server_actions.js");
+/* harmony import */ var react_popup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-popup */ "./node_modules/react-popup/dist/index.js");
+/* harmony import */ var _actions_server_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../actions/server_actions */ "./frontend/actions/server_actions.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2768,6 +2762,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -2798,10 +2793,17 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
     _this.onClickJoin = _this.onClickJoin.bind(_assertThisInitialized(_this));
     _this.handleJoinSubmit = _this.handleJoinSubmit.bind(_assertThisInitialized(_this));
     _this.updateCode = _this.updateCode.bind(_assertThisInitialized(_this));
+    _this.unfinished = _this.unfinished.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(CreateServer, [{
+    key: "unfinished",
+    value: function unfinished(e) {
+      e.preventDefault();
+      react_popup__WEBPACK_IMPORTED_MODULE_1__.default.alert("Functionality not yet added");
+    }
+  }, {
     key: "forwardScreen",
     value: function forwardScreen(e) {
       e.preventDefault();
@@ -2901,7 +2903,7 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
         owner_id: this.props.currentUser.id
       };
       this.props.createServer(serverState).then(function (action) {
-        if (action.type === _actions_server_actions__WEBPACK_IMPORTED_MODULE_1__.RECEIVE_SERVER) {
+        if (action.type === _actions_server_actions__WEBPACK_IMPORTED_MODULE_2__.RECEIVE_SERVER) {
           _this3.props.joinServer({
             inviteCode: action.server.server.invite_code
           });
@@ -3067,7 +3069,8 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "screen-three-header"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Customize your server"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Give your new server a personality with a name and an icon. You can always change it later")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "input-image-wrapper"
+        className: "input-image-wrapper",
+        onClick: this.unfinished
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         width: "80",
         height: "80",
@@ -3111,7 +3114,7 @@ var CreateServer = /*#__PURE__*/function (_React$Component) {
         onClick: this.handleFormSubmit,
         type: "submit",
         value: "Create"
-      })))))));
+      })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_popup__WEBPACK_IMPORTED_MODULE_1__.default, null));
     }
   }]);
 
@@ -4596,6 +4599,7 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
     _this.friendContextMenu = _this.friendContextMenu.bind(_assertThisInitialized(_this));
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
     _this.addNewConversation = _this.addNewConversation.bind(_assertThisInitialized(_this));
+    _this.messageFriendCM = _this.messageFriendCM.bind(_assertThisInitialized(_this));
     var currentPage = "friends";
 
     if (parseInt(_this.props.match.params.channel_id) != _this.props.currentUser.id) {
@@ -4838,6 +4842,13 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
         newConversations: current,
         pmCreateActive: false
       });
+      this.props.history.push("/channels/@me/".concat(id));
+    }
+  }, {
+    key: "messageFriendCM",
+    value: function messageFriendCM(e) {
+      e.preventDefault();
+      this.addNewConversation(this.state.clickedFriend);
     }
   }, {
     key: "render",
@@ -5007,7 +5018,21 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
         });
       }
 
-      var conversations = Object.values(this.state.uniqUsers).concat(this.state.newConversations).map(function (user) {
+      var temp = [];
+      console.log();
+
+      if (this.state.page != "friends") {
+        if (this.state.newConversations.length === 0 && !Object.values(this.state.uniqUsers).map(function (u) {
+          return u.id;
+        }).includes(parseInt(this.props.match.params.channel_id))) {
+          var friend = this.props.currentUser.friends.find(function (friend) {
+            return friend.id == _this6.props.match.params.channel_id;
+          });
+          temp.push(friend);
+        }
+      }
+
+      var conversations = Object.values(this.state.uniqUsers).concat(this.state.newConversations).concat(temp).map(function (user) {
         var thisColor = colors[user.id % colors.length];
         var thisClass = parseInt(_this6.state.page) == user.id ? "conversations selected" : "conversations";
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -5047,7 +5072,8 @@ var ProfilePage = /*#__PURE__*/function (_React$Component) {
         className: contextMenuClass,
         style: contextMenuStyle
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "option"
+        className: "option",
+        onClick: this.messageFriendCM
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Message")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "divider"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -5582,6 +5608,7 @@ var Server = /*#__PURE__*/function (_React$Component) {
         });
       } else if (this.state.layerName === "channelSettings") {
         currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channels_channel_settings__WEBPACK_IMPORTED_MODULE_11__.default, {
+          currentChannel: this.props.channel,
           openDeleteChannelForm: this.openDeleteChannelForm,
           currentServer: currentServer,
           fetchChannels: this.props.fetchChannels,
@@ -5716,6 +5743,9 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
     errors: state.errors.server,
     channels: Object.values(state.entities.channels),
+    channel: Object.values(state.entities.channels).find(function (channel) {
+      return channel.id == ownProps.match.params.channel_id;
+    }),
     servers: Object.values(state.entities.servers),
     server: Object.values(state.entities.servers).find(function (server) {
       return server.id == ownProps.match.params.server_id;
@@ -5962,6 +5992,11 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this5 = this;
+
+      var thisServer = this.props.servers.find(function (server) {
+        return server.id == _this5.props.clickedServerId;
+      });
       var saveClass = "save-changes-container";
 
       if (this.state.justLoaded === false) {
@@ -6022,7 +6057,7 @@ var ServerSettings = /*#__PURE__*/function (_React$Component) {
         className: "esc-text"
       }, "ESC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "overview"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "SERVER OVERVIEW"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "SERVER OVERVIEW"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Invite Code: #", thisServer.invite_code), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "update-server-wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "image-update-wrapper"

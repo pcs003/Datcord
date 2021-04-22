@@ -332,7 +332,7 @@ export default class Server extends React.Component {
         } else if (this.state.layerName === "deleteChannel") {
             currentLayer = <DeleteChannel currentServer={currentServer} history={this.props.history} fetchChannels={this.props.fetchChannels} clickedChannelId={this.state.clickedChannelId} deleteChannel={this.props.deleteChannel} closeForm={this.closeDeleteChannelForm}/>
         } else if (this.state.layerName === "channelSettings") {
-            currentLayer = <ChannelSettings openDeleteChannelForm={this.openDeleteChannelForm} currentServer={currentServer} fetchChannels={this.props.fetchChannels} updateChannel={this.props.updateChannel} clickedChannelId={this.state.clickedChannelId} closeChannelSettings={this.closeChannelSettings}/>
+            currentLayer = <ChannelSettings currentChannel={this.props.channel} openDeleteChannelForm={this.openDeleteChannelForm} currentServer={currentServer} fetchChannels={this.props.fetchChannels} updateChannel={this.props.updateChannel} clickedChannelId={this.state.clickedChannelId} closeChannelSettings={this.closeChannelSettings}/>
         }
 
         //handles user vs server page

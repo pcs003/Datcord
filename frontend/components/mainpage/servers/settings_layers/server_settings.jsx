@@ -102,6 +102,10 @@ export default class ServerSettings extends React.Component {
 
     render() {
 
+        let thisServer = this.props.servers.find(server => {
+            return server.id == this.props.clickedServerId
+        })
+
         let saveClass = "save-changes-container"
         if (this.state.justLoaded === false) {
             if (this.state.name === this.state.originalName ) {
@@ -169,6 +173,7 @@ export default class ServerSettings extends React.Component {
                     </div>
                     <div className="overview">
                         <h1>SERVER OVERVIEW</h1>
+                        <span>Invite Code: #{thisServer.invite_code}</span>
                         <div className="update-server-wrapper">
                             <div className="image-update-wrapper">
                                 <div className="left-side">

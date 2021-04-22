@@ -8,7 +8,7 @@ export default class ChannelSettings extends React.Component {
         this.resetName = this.resetName.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
 
-        let thisChannel = Object.values(this.props.currentServer.channels).find(channel => channel.id == this.props.clickedChannelId);
+        let thisChannel = this.props.currentChannel;
 
         this.state = {
             name: thisChannel.name,
@@ -20,13 +20,6 @@ export default class ChannelSettings extends React.Component {
         }
     }
 
-    // componentDidMount() {
-    //     let thisChannel = Object.values(this.props.currentServer.channels).find(channel => channel.id == this.props.clickedChannelId);
-    //     this.setState({
-    //         name: thisChannel.name,
-    //         originalName: thisChannel.name
-    //     })
-    // }
 
     updateName(e) {
         e.preventDefault();
@@ -51,6 +44,7 @@ export default class ChannelSettings extends React.Component {
         updated.name = this.state.name;
         this.props.updateChannel(updated).then((action) => {
             this.props.fetchChannels(this.props.currentServer.id);
+            this.props.getServer(this.props.match.params.server_id)
             this.setState({
                 originalName: action.channel.name
             })

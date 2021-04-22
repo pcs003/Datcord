@@ -12,6 +12,9 @@ const mapStateToProps = (state, ownProps) => {
     return {
         errors: state.errors.server,
         channels: Object.values(state.entities.channels),
+        channel: Object.values(state.entities.channels).find(channel => {
+            return channel.id == ownProps.match.params.channel_id
+        }),
         servers: Object.values(state.entities.servers),
         server: Object.values(state.entities.servers).find(server => {
             return server.id == ownProps.match.params.server_id

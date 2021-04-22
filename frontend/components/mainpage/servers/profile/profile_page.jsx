@@ -26,6 +26,7 @@ export default class ProfilePage extends React.Component {
         this.friendContextMenu = this.friendContextMenu.bind(this)
         this.handleClick = this.handleClick.bind(this)
         this.addNewConversation = this.addNewConversation.bind(this)
+        this.messageFriendCM = this.messageFriendCM.bind(this)
 
         let currentPage = "friends"
         if (parseInt(this.props.match.params.channel_id) != this.props.currentUser.id) {
@@ -243,6 +244,12 @@ export default class ProfilePage extends React.Component {
             newConversations: current,
             pmCreateActive: false,
         })
+        this.props.history.push(`/channels/@me/${id}`)
+    }
+
+    messageFriendCM(e) {
+        e.preventDefault()
+        this.addNewConversation(this.state.clickedFriend)
     }
 
     render() {
@@ -388,8 +395,18 @@ export default class ProfilePage extends React.Component {
                 />
             )
         }
-
-        let conversations = Object.values(this.state.uniqUsers).concat(this.state.newConversations).map(user => {
+        let temp = [];
+        console.log()
+        if (this.state.page != "friends") {
+            if (this.state.newConversations.length === 0 && !Object.values(this.state.uniqUsers).map(u => u.id).includes(parseInt(this.props.match.params.channel_id))) {
+                let friend = this.props.currentUser.friends.find(friend => {
+                    return friend.id == this.props.match.params.channel_id
+                })
+                temp.push(friend)
+            }
+        }
+        
+        let conversations = Object.values(this.state.uniqUsers).concat(this.state.newConversations).concat(temp).map(user => {
             let thisColor = colors[user.id % colors.length];
             let thisClass = parseInt(this.state.page) == user.id ? "conversations selected" : "conversations"
             return (
@@ -430,7 +447,7 @@ export default class ProfilePage extends React.Component {
 
         let friendContextMenu = this.state.contextMenuVisible ? (
             <div className={contextMenuClass} style={contextMenuStyle}>
-                <div className="option">
+                <div className="option" onClick={this.messageFriendCM}>
                     <span>Message</span>
                 </div>
                 <div className="divider"></div>
