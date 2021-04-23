@@ -2384,11 +2384,10 @@ var ChannelSettings = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       e.preventDefault();
-      var thisChannel = Object.values(this.props.currentServer.channels).find(function (channel) {
-        return channel.id == _this2.props.clickedChannelId;
-      });
-      var updated = Object.assign({}, thisChannel);
-      updated.name = this.state.name;
+      var updated = {
+        id: this.props.match.params.channel_id,
+        name: this.state.name
+      };
       this.props.updateChannel(updated).then(function (action) {
         _this2.props.fetchChannels(_this2.props.currentServer.id);
 
@@ -5689,6 +5688,8 @@ var Server = /*#__PURE__*/function (_React$Component) {
         });
       } else if (this.state.layerName === "channelSettings") {
         currentLayer = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_channels_channel_settings__WEBPACK_IMPORTED_MODULE_12__.default, {
+          getServer: this.props.getServer,
+          match: this.props.match,
           currentChannel: this.props.channel,
           openDeleteChannelForm: this.openDeleteChannelForm,
           currentServer: currentServer,
@@ -6742,10 +6743,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_popup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-popup */ "./node_modules/react-popup/dist/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _util_login_canvas__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/login_canvas */ "./frontend/util/login_canvas.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _util_login_canvas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../util/login_canvas */ "./frontend/util/login_canvas.js");
 /* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
+/* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -6872,7 +6873,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         email: "demouser@datcord.com",
         password: "password123"
       }).then(function (action) {
-        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_5__.RECEIVE_CURRENT_USER) {
+        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_3__.RECEIVE_CURRENT_USER) {
           _this3.props.history.push("/channels/@me/".concat(action.currentUser.id));
         }
       });
@@ -6890,7 +6891,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         email: "testuser0".concat(num, "@test.com"),
         password: "password123"
       }).then(function (action) {
-        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_5__.RECEIVE_CURRENT_USER) {
+        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_3__.RECEIVE_CURRENT_USER) {
           _this4.props.history.push("/channels/@me/".concat(action.currentUser.id));
         }
       });
@@ -6924,7 +6925,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }
 
       this.props.processForm(formattedState).then(function (action) {
-        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_5__.RECEIVE_CURRENT_USER) {
+        if (action.type === _actions_session_actions__WEBPACK_IMPORTED_MODULE_3__.RECEIVE_CURRENT_USER) {
           _this5.props.history.push("/channels/@me/".concat(action.currentUser.id));
         }
       });
@@ -7130,12 +7131,12 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       var subHeader = this.props.formType === 'Log In' ? "We're so excited to see you again!" : "";
       var otherOption = this.props.formType === 'Log In' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+      }, "Need an account? ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
         onClick: this.transitionOut,
         to: "/signup"
       }, "Register")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "other-option"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
         onClick: this.transitionOut,
         to: "/login"
       }, "Already have an account?"));
@@ -7163,7 +7164,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, "here"), " to log in as a different demo user"))) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "login-signup-page"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_3__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&display=swap');"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_login_canvas__WEBPACK_IMPORTED_MODULE_2__.default, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
         href: "/"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "logo",

@@ -20,8 +20,9 @@ class Api::ChannelsController < ApplicationController
     end
 
     def update
+        @test = Channel.find_by(id: params[:id])
+        puts @test
         @channel = current_user.owned_channels.find_by(id: params[:id])
-        puts channel_params
         if @channel
             if @channel.update(channel_params)
                 render :show

@@ -39,9 +39,8 @@ export default class ChannelSettings extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        let thisChannel = Object.values(this.props.currentServer.channels).find(channel => channel.id == this.props.clickedChannelId);
-        let updated = Object.assign({}, thisChannel);
-        updated.name = this.state.name;
+        let updated = {id: this.props.match.params.channel_id, name: this.state.name}
+
         this.props.updateChannel(updated).then((action) => {
             this.props.fetchChannels(this.props.currentServer.id);
             this.props.getServer(this.props.match.params.server_id)
