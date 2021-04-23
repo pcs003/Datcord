@@ -96,7 +96,6 @@ export default class SessionForm extends React.Component {
         e.preventDefault();
         let nums = [1,2,3,4,5,6]
         let num = nums[Math.floor(Math.random() * nums.length)]
-        console.log(num)
         this.props.processForm({
             email: `testuser0${num}@test.com`,
             password: "password123"

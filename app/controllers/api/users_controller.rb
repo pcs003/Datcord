@@ -45,7 +45,7 @@ class Api::UsersController < ApplicationController
     def remove_friend
         @friendship = Friendship.find_by(id: params[:friend_id])
         @user = current_user
-        puts @friendship
+
         if @friendship
             @friendship.destroy
             render 'api/users/show'

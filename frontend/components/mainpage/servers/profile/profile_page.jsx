@@ -396,7 +396,6 @@ export default class ProfilePage extends React.Component {
             )
         }
         let temp = [];
-        console.log()
         if (this.state.page != "friends") {
             if (this.state.newConversations.length === 0 && !Object.values(this.state.uniqUsers).map(u => u.id).includes(parseInt(this.props.match.params.channel_id))) {
                 let friend = this.props.currentUser.friends.find(friend => {
