@@ -33,7 +33,7 @@ This site was built on a Ruby on Rails framework for the backend with active rec
 * [Servers](#Servers)
 * [Channels](#Channels)
 * [LiveChat](#LiveChat)
-* 
+
 ### UserAuth
 ![Alt Text](https://media.giphy.com/media/cGKJgBe7W7KBB4dJPL/giphy.gif)
 
@@ -70,7 +70,32 @@ If you are not the owner, you can leave a server at any time by right clicking t
 If you are the owner, you can delete a server at any time by right clicking the server in the server nav and clicking 'Server Settings'. There, you can click delete server and a modal will pop up asking you to type the name of the server to confirm that you actually want to delete the server. Once finished, the server will be deleted from you page and all memebers' pages.
 
 ### Channels
+The main content of a server is its channels. A server owner can create, update, and delete channels within any servers they own. Server members can view channels and participate in the channel chat.
 
+#### Create Channels
+![Alt Text](https://media.giphy.com/media/ntvEGp8Uk70wLz7rpK/giphy.gif)
+
+A server owner can create a channel at any time by clicking the plus icon next to the 'Text Channels' or 'Voice Channels' header in the channel nav. Upon clicking it, a modal appears, prompting the user for the channel type (i.e. text or voice) and a channel name. Upon submitting the form, the channel will appear in the channel nav and can be opened.
+
+#### Update Channels
+![Alt Text]()
+
+A server owner can update any channel within any server they own. To do so, the server owner can either right click the channel and select the 'Edit Channel' option or click the settings gear icon that appears upon selecting or hovering over a channel. Once in the channel settings menu, the functionality is similar to server settings in that a modal appears asking you to save changes if you make any changes to the channel.
+
+#### Delete Channels
+![Alt Text](https://media.giphy.com/media/MV9IIVGh6xMYMF6BVW/giphy.gif)
+
+A server owner can delete any channel within any server they own. To do so, the server owner can either open the channel settings and click 'Delete Channel' or right click the channel and select 'Delete Channel'. Upon clicking 'Delete Channel' a modal will pop up asking you to confirm. After confirming, the channel will be removed from the server.
 
 ### LiveChat
+A user can participate in live chat in both channels and in their private messages. This feature is implemented using rails actioncable and redis to manage web-socket connections. Separate channels and subscriptions are made for channel and private chat.
 
+#### Channel Messaging
+![Alt Text](https://media.giphy.com/media/DcrxhVreDZgxuIg9tV/giphy.gif)
+
+All members of a server can participate in live messaging in any of that servers channels, each channel with its own message history. 
+
+#### Private Messaging
+![Alt Text](https://media.giphy.com/media/1ZjhXTBkIFPsrvhH8D/giphy.gif)
+
+A user can start conversations with any of their friends by clicking the plus icon next to the direct messages header. There is a search bar in which you can search for a friend by their username. Once a conversation is created it will appear in the list of conversations in the nav on the left. If no message is sent in that conversation and you refresh the page, the conversation will remain, however, when you leave that conversation page it will disappear.
