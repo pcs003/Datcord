@@ -30,7 +30,7 @@ This site was built on a Ruby on Rails framework for the backend with active rec
 
 ## Features
 ### UserAuth
-![Alt Text](https://gph.is/g/4wYV1Kd)
+![Alt Text](https://media.giphy.com/media/cGKJgBe7W7KBB4dJPL/giphy.gif)
 
 ### Servers
 
