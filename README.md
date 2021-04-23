@@ -46,22 +46,27 @@ A logged in user can create, view, and leave and server of which they are a memb
 
 #### View Servers
 ![Alt Text](https://media.giphy.com/media/7WbnGu08K9uNthGCUd/giphy.gif)
+
 The server page has navbar on the left side in which you can scroll through all of the servers in which you are a member. Clicking on a server will open that server's page on the right. The server page includes a list of all of the server's channels, a view of the currenlty selected channel's chat, and a list of the members of the current server.
 
 #### Create Servers
 ![Alt Text](https://media.giphy.com/media/qdczKBZ6cIvWgeGMgF/giphy.gif)
+
 In the server navbar there is a tab that, when clicked, opens the create server modal. This modal allows you to create a new server with a name of your choice of which you will be the owner and have the ability to update and delete. A new server has a default General text and voice channel. The invite code for the server is on the server settings page to which only the owner has access.
 
 #### Update Servers
 ![Alt Text](https://media.giphy.com/media/SoIjtizeYv28twTas6/giphy.gif)
+
 As previously stated, only the server owner has access to the server settings page, which is where you can update the server info. Upon changing the server name, a popup will appear that lets you know that the name has been changed and you must click save changes to apply the change.
 
 #### Leave Server
 ![Alt Text](https://media.giphy.com/media/JModWMMuvl4BSxfGmg/giphy.gif)
+
 If you are not the owner, you can leave a server at any time by right clicking the server in the server nav and clicking 'Leave Server'. This immediately re-renders the page without that server and if you are currently on that server's page then it redirects to your home page.
 
 #### Delete Server
 ![Alt Text](https://media.giphy.com/media/7VCbv24tI2bZOITBuX/giphy.gif)
+
 If you are the owner, you can delete a server at any time by right clicking the server in the server nav and clicking 'Server Settings'. There, you can click delete server and a modal will pop up asking you to type the name of the server to confirm that you actually want to delete the server. Once finished, the server will be deleted from you page and all memebers' pages.
 
 ### Channels
